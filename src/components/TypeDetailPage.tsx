@@ -1,5 +1,5 @@
-import React from 'react';
-import { ArrowLeft, Heart, Brain, Users, AlertTriangle, Target, MessageCircle, Lightbulb, TrendingUp, Shield, Zap } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowLeft, Heart, Brain, Users, AlertTriangle, Target, MessageCircle, Lightbulb, TrendingUp, Shield, Zap, ChevronDown, ChevronUp } from 'lucide-react';
 import { TypeDetail } from '../data/typeDetails';
 import { WingResult } from '../types/wings';
 import { type1WingQuestions } from '../data/wingQuestions/wingQuestions1';
@@ -23,6 +23,7 @@ interface TypeDetailPageProps {
 }
 
 const TypeDetailPage: React.FC<TypeDetailPageProps> = ({ typeDetail, onBack, onStartWingTest, wingResult }) => {
+  const [showExamples, setShowExamples] = useState(false);
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-8 px-4">
       <div className="max-w-4xl mx-auto">
@@ -341,23 +342,38 @@ const TypeDetailPage: React.FC<TypeDetailPageProps> = ({ typeDetail, onBack, onS
             </div>
             
             <div className="bg-white rounded-lg p-6 mb-6 border border-blue-200">
-              <h4 className="font-semibold text-blue-800 mb-3">🪶 Hvad er Enneagram-vinger?</h4>
-              <p className="text-blue-700 text-sm mb-4">
-                Din {typeDetail.type} har to "naboer" på Enneagram-cirklen, som kaldes <strong>vinger</strong>. 
-                Disse vinger blander sig med din grundtype og skaber en mere nuanceret og præcis beskrivelse af din personlighed.
-              </p>
-              <p className="text-blue-700 text-sm mb-4">
-                {getWingExplanationForType(typeDetail.type)}
-              </p>
-              <div className="bg-blue-50 rounded-lg p-4">
-                <h5 className="font-semibold text-blue-800 mb-2">Hvad kan du forvente?</h5>
-                <ul className="space-y-1 text-sm text-blue-700">
-                  <li>• 10 spørgsmål der sammenligner hvordan du bruger dine to vinger</li>
-                  <li>• En detaljeret beskrivelse af din dominerende vinge</li>
-                  <li>• Forståelse af hvordan vingerne nuancerer din {typeDetail.type} personlighed</li>
-                  <li>• Tager kun 3-5 minutter at gennemføre</li>
-                </ul>
-              </div>
+              <button
+                onClick={() => setShowExamples(!showExamples)}
+                className="w-full flex items-center justify-between mb-3 text-left"
+              >
+                <h4 className="font-semibold text-blue-800">🪶 Hvad er Enneagram-vinger?</h4>
+                {showExamples ? (
+                  <ChevronUp className="w-5 h-5 text-blue-600" />
+                ) : (
+                  <ChevronDown className="w-5 h-5 text-blue-600" />
+                )}
+              </button>
+
+              {showExamples && (
+                <>
+                  <p className="text-blue-700 text-sm mb-4">
+                    Din {typeDetail.type} har to "naboer" på Enneagram-cirklen, som kaldes <strong>vinger</strong>.
+                    Disse vinger blander sig med din grundtype og skaber en mere nuanceret og præcis beskrivelse af din personlighed.
+                  </p>
+                  <p className="text-blue-700 text-sm mb-4">
+                    {getWingExplanationForType(typeDetail.type)}
+                  </p>
+                  <div className="bg-blue-50 rounded-lg p-4">
+                    <h5 className="font-semibold text-blue-800 mb-2">Hvad kan du forvente?</h5>
+                    <ul className="space-y-1 text-sm text-blue-700">
+                      <li>• 10 spørgsmål der sammenligner hvordan du bruger dine to vinger</li>
+                      <li>• En detaljeret beskrivelse af din dominerende vinge</li>
+                      <li>• Forståelse af hvordan vingerne nuancerer din {typeDetail.type} personlighed</li>
+                      <li>• Tager kun 3-5 minutter at gennemføre</li>
+                    </ul>
+                  </div>
+                </>
+              )}
             </div>
             
             <div className="text-center">
