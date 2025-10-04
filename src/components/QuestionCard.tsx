@@ -25,7 +25,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   canGoPrevious,
   currentRating
 }) => {
-  const [showExamples, setShowExamples] = React.useState(true);
+  const [showExamples, setShowExamples] = React.useState(false);
 
   // Handle Enter key press
   React.useEffect(() => {
