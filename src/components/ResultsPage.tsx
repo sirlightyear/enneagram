@@ -100,8 +100,11 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   const [showWingTestIntro, setShowWingTestIntro] = React.useState(false);
   const [wingResults, setWingResults] = React.useState<WingResultState | null>(null);
   const [selfIdentifiedType, setSelfIdentifiedType] = React.useState<string | null>(null);
+  const [showReviewAnswers, setShowReviewAnswers] = React.useState(false);
+  const [editedResponses, setEditedResponses] = React.useState(responses || []);
+  const [currentResults, setCurrentResults] = React.useState(results);
 
-  const topResult = results[0];
+  const topResult = currentResults[0];
   const displayType = selfIdentifiedType || topResult.type;
   const typeInfo = typeDescriptions[displayType];
   const TypeIcon = typeIcons[displayType];
@@ -246,6 +249,85 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
     }
   }, []);
 
+  // Handle answer editing
+  const handleEditAnswer = (questionIndex: number, newRating: number) => {
+    setEditedResponses(prev => {
+      const updated = [...prev];
+      const existingIndex = updated.findIndex(r => r.questionIndex === questionIndex);
+      if (existingIndex >= 0) {
+        updated[existingIndex] = { questionIndex, rating: newRating };
+      } else {
+        updated.push({ questionIndex, rating: newRating });
+      }
+      return updated;
+    });
+  };
+
+  // Update URL when edited responses change
+  React.useEffect(() => {
+    if (showReviewAnswers && editedResponses.length > 0) {
+      const params = new URLSearchParams();
+      params.set('responses', btoa(JSON.stringify(editedResponses)));
+      if (wingResults) {
+        const wingResponses = wingResults.testData.questions.map((_, index) => ({
+          questionIndex: index,
+          selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
+        }));
+        params.set('wingResponses', btoa(JSON.stringify(wingResponses)));
+      }
+      if (selfIdentifiedType) {
+        params.set('selfType', selfIdentifiedType);
+      }
+      window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
+      recalculateResults();
+    }
+  }, [editedResponses, showReviewAnswers, wingResults, selfIdentifiedType]);
+
+  // Recalculate results when responses change
+  const recalculateResults = React.useCallback(() => {
+    const typeScores: Record<string, number> = {};
+    const typeCounts: Record<string, number> = {};
+
+    enneagramQuestions.forEach(q => {
+      if (!q) return;
+      if (!typeScores[q.type]) {
+        typeScores[q.type] = 0;
+        typeCounts[q.type] = 0;
+      }
+    });
+
+    const getPointsForRating = (rating: number): number => {
+      switch (rating) {
+        case 1: return 1;
+        case 2: return 2;
+        case 3: return 3;
+        case 4: return 4;
+        case 5: return 5;
+        default: return 0;
+      }
+    };
+
+    editedResponses.forEach(response => {
+      const question = enneagramQuestions[response.questionIndex];
+      if (!question) return;
+      typeScores[question.type] += getPointsForRating(response.rating);
+      typeCounts[question.type]++;
+    });
+
+    const newResults: TestResult[] = Object.entries(typeScores).map(([type, score]) => {
+      const maxPossibleScore = typeCounts[type] * 5;
+      const percentage = Math.round((score / maxPossibleScore) * 100);
+
+      return {
+        type,
+        score,
+        percentage
+      };
+    });
+
+    setCurrentResults(newResults.sort((a, b) => b.percentage - a.percentage));
+  }, [editedResponses]);
+
   // Handle wing test completion
   React.useEffect(() => {
     if (wingTestComplete) {
@@ -387,6 +469,80 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
         currentResponse={getCurrentWingResponse()}
         primaryType={topResult.type}
       />
+    );
+  }
+
+  // Show review/edit answers view
+  if (showReviewAnswers) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-12 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-800">Gennemse og rediger dine svar</h2>
+                <p className="text-gray-600 mt-1">Dine resultater opdateres automatisk når du ændrer svar</p>
+              </div>
+              <button
+                onClick={() => setShowReviewAnswers(false)}
+                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+              >
+                Tilbage til resultater
+              </button>
+            </div>
+
+            <div className="space-y-6">
+              {enneagramQuestions.map((question, index) => {
+                const response = editedResponses.find(r => r.questionIndex === index);
+                const currentRating = response?.rating;
+
+                return (
+                  <div key={index} className="border-b border-gray-200 pb-6 last:border-0">
+                    <div className="mb-3">
+                      <span className="text-sm font-semibold text-indigo-600">
+                        Spørgsmål {index + 1} af {enneagramQuestions.length}
+                      </span>
+                      <h3 className="text-lg font-semibold text-gray-800 mt-1">{question.text}</h3>
+                    </div>
+
+                    <div className="flex gap-2">
+                      {[1, 2, 3, 4, 5].map(rating => (
+                        <button
+                          key={rating}
+                          onClick={() => handleEditAnswer(index, rating)}
+                          className={`flex-1 py-3 px-4 rounded-lg border-2 transition-all ${
+                            currentRating === rating
+                              ? 'border-indigo-600 bg-indigo-50 text-indigo-700 font-semibold'
+                              : 'border-gray-200 hover:border-indigo-300 text-gray-600'
+                          }`}
+                        >
+                          <div className="text-2xl mb-1">{rating}</div>
+                          <div className="text-xs">
+                            {rating === 1 && 'Slet ikke'}
+                            {rating === 2 && 'Ikke særlig godt'}
+                            {rating === 3 && 'Nogenlunde'}
+                            {rating === 4 && 'Godt'}
+                            {rating === 5 && 'Meget godt'}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="mt-8 text-center">
+              <button
+                onClick={() => setShowReviewAnswers(false)}
+                className="px-8 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700"
+              >
+                Færdig - Se opdaterede resultater
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 
@@ -911,6 +1067,14 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+            <button
+              onClick={() => setShowReviewAnswers(true)}
+              className="inline-flex items-center px-6 py-3 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors duration-200 no-print"
+            >
+              <Search className="w-5 h-5 mr-2" />
+              Gennemse / Rediger svar
+            </button>
+
             <button
               onClick={handlePrint}
               className="inline-flex items-center px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors duration-200 no-print"
