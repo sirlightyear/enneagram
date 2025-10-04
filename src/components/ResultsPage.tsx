@@ -19,6 +19,7 @@ import { Award, BarChart3, RefreshCw, Users, Heart, Target, Palette, Search, Shi
 import EnneagramChart from './EnneagramChart';
 import WingQuestionCard from './WingQuestionCard';
 import { enneagramQuestions } from '../data/questions';
+import EnneagramInfoSection from './EnneagramInfoSection';
 
 interface ResultsPageProps {
   results: TestResult[];
@@ -687,6 +688,9 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
             </div>
           </div>
         </div>
+
+        {/* Enneagram Info Sections - Triads and Stress/Growth */}
+        <EnneagramInfoSection primaryType={topResult.type} />
 
         {/* Learn more about your type */}
         <div className="bg-white rounded-xl shadow-lg p-8 mb-8 print-hide-detailed">
