@@ -99,10 +99,12 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   const [showWingTest, setShowWingTest] = React.useState(false);
   const [showWingTestIntro, setShowWingTestIntro] = React.useState(false);
   const [wingResults, setWingResults] = React.useState<WingResultState | null>(null);
-  
+  const [selfIdentifiedType, setSelfIdentifiedType] = React.useState<string | null>(null);
+
   const topResult = results[0];
-  const typeInfo = typeDescriptions[topResult.type];
-  const TypeIcon = typeIcons[topResult.type];
+  const displayType = selfIdentifiedType || topResult.type;
+  const typeInfo = typeDescriptions[displayType];
+  const TypeIcon = typeIcons[displayType];
   
   // Print/PDF functionality
   const handlePrint = () => {
@@ -122,6 +124,9 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
         selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
       }));
       params.set('wingResponses', btoa(JSON.stringify(wingResponses)));
+    }
+    if (selfIdentifiedType) {
+      params.set('selfType', selfIdentifiedType);
     }
     const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
 
@@ -164,6 +169,9 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
         selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
       }));
       params.set('wingResponses', btoa(JSON.stringify(wingResponses)));
+    }
+    if (selfIdentifiedType) {
+      params.set('selfType', selfIdentifiedType);
     }
     const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
 
@@ -228,6 +236,15 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
     getCurrentResponse: getCurrentWingResponse,
     restart: restartWingTest
   } = useWingTest(wingTestData);
+
+  // Load self-identified type from URL
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const selfType = params.get('selfType');
+    if (selfType) {
+      setSelfIdentifiedType(selfType);
+    }
+  }, []);
 
   // Handle wing test completion
   React.useEffect(() => {
@@ -403,20 +420,81 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
           <p className="text-gray-600">Baseret på dine svar har vi identificeret din primære personlighedstype</p>
         </div>
 
+        {/* Disclaimer about test accuracy */}
+        <div className="bg-amber-50 border-l-4 border-amber-500 rounded-lg p-6 mb-8">
+          <div className="flex items-start mb-3">
+            <span className="text-2xl mr-3">🧭</span>
+            <h3 className="text-xl font-semibold text-amber-900">
+              Din test er et pejlemærke – ikke en endelig dom
+            </h3>
+          </div>
+          <div className="space-y-3 text-amber-900">
+            <p>
+              Du har nu taget en Enneagram-test, og den har givet dig et resultat – en mulig type.
+              Men det er vigtigt at huske, at testen ikke nødvendigvis afslører din endelige type.
+              Den er et værktøj til refleksion, ikke en facitliste.
+            </p>
+            <p>
+              Enneagrammet handler om selverkendelse, og det kan tage tid at finde frem til den type,
+              der virkelig matcher dine dybeste mønstre. Som Riso og Hudson skriver:
+            </p>
+            <blockquote className="border-l-2 border-amber-400 pl-4 italic text-amber-800">
+              "Selvopdagelse er en proces – og den slutter ikke med at finde sin type.
+              Faktisk er det kun begyndelsen."
+            </blockquote>
+            <p className="text-sm">
+              <em>- The Wisdom of the Enneagram, Riso & Hudson</em>
+            </p>
+            <p>
+              Testen kan give dig en indikation – måske de 2-3 mest sandsynlige typer – men det er
+              gennem selvobservation, refleksion og samtale med mennesker, der kender dig godt, at
+              du gradvist vil kunne mærke, hvilken type der virkelig passer.
+            </p>
+            <div className="bg-white rounded-lg p-4 mt-4 border border-amber-200">
+              <h4 className="font-semibold text-amber-900 mb-2 flex items-center">
+                <Lightbulb className="w-5 h-5 mr-2" />
+                Hvad du kan gøre nu
+              </h4>
+              <ul className="space-y-1 text-sm text-amber-800">
+                <li>• Læs om den type, du har fået – og de nærliggende typer</li>
+                <li>• Vær nysgerrig: Hvad resonerer? Hvad føles fremmed?</li>
+                <li>• Tal med andre om dine mønstre og reaktioner</li>
+                <li>• Husk: Du har alle ni typer i dig – men én er dit "hjemmeområde"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
         <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
           <div className="text-center mb-6">
+            {selfIdentifiedType && selfIdentifiedType !== topResult.type && (
+              <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-800">
+                  <strong>Du har identificeret dig selv som {selfIdentifiedType}</strong>
+                </p>
+                <p className="text-xs text-blue-700 mt-1">
+                  (Testresultatet viste {topResult.type} med {topResult.percentage}% match)
+                </p>
+              </div>
+            )}
             <div className="flex items-center justify-center mb-4">
               {TypeIcon && <TypeIcon className="w-12 h-12 text-indigo-600 mr-3" />}
               <div>
                 <h2 className="text-2xl font-bold text-indigo-600 mb-2">
-                  {topResult.type}: {typeInfo.title}
+                  {displayType}: {typeInfo.title}
                 </h2>
               </div>
             </div>
-            <div className="text-4xl font-bold text-gray-800 mb-2">
-              {topResult.percentage}%
-            </div>
-            <p className="text-gray-600">match med denne type</p>
+            {!selfIdentifiedType || selfIdentifiedType === topResult.type ? (
+              <>
+                <div className="text-4xl font-bold text-gray-800 mb-2">
+                  {topResult.percentage}%
+                </div>
+                <p className="text-gray-600">match med denne type</p>
+              </>
+            ) : (
+              <p className="text-gray-600">Din selv-identificerede type</p>
+            )}
           </div>
 
           <div className="mb-6">
@@ -676,10 +754,10 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
               const info = typeDescriptions[result.type];
               const ResultIcon = typeIcons[result.type];
               return (
-                <TypeResultCard 
-                  key={result.type} 
-                  result={result} 
-                  info={info} 
+                <TypeResultCard
+                  key={result.type}
+                  result={result}
+                  info={info}
                   index={index}
                   icon={ResultIcon}
                   onSelectTypeForDetail={(type) => {
@@ -689,6 +767,57 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                 />
               );
             })}
+          </div>
+
+          {/* Self-identification section */}
+          {selfIdentifiedType && selfIdentifiedType !== topResult.type && (
+            <div className="mt-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-lg">
+              <p className="text-blue-800">
+                <strong>Du har identificeret dig selv som {selfIdentifiedType}</strong> (selvom testresultatet viste {topResult.type})
+              </p>
+            </div>
+          )}
+
+          <div className="mt-6 p-5 bg-gray-50 border border-gray-200 rounded-lg">
+            <h4 className="font-semibold text-gray-800 mb-3 flex items-center">
+              <Compass className="w-5 h-5 mr-2" />
+              Tror du, at en anden type passer bedre?
+            </h4>
+            <p className="text-sm text-gray-700 mb-4">
+              Efter at have læst om de forskellige typer, identificerer du dig måske mere med en anden type.
+              Det er helt normalt – testen giver en indikation, men kun du kan virkelig vide, hvilken type der passer bedst.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {results.slice(0, 5).map((result) => (
+                <button
+                  key={result.type}
+                  onClick={() => {
+                    if (selfIdentifiedType === result.type) {
+                      setSelfIdentifiedType(null);
+                    } else {
+                      setSelfIdentifiedType(result.type);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                  }}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    selfIdentifiedType === result.type
+                      ? 'bg-blue-600 text-white'
+                      : result.type === topResult.type
+                      ? 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  {result.type}
+                  {result.type === topResult.type && ' (testresultat)'}
+                  {selfIdentifiedType === result.type && ' ✓'}
+                </button>
+              ))}
+            </div>
+            {selfIdentifiedType && selfIdentifiedType !== topResult.type && (
+              <p className="text-xs text-gray-600 mt-3">
+                💡 Din valgte type gemmes automatisk i din personlige URL
+              </p>
+            )}
           </div>
         </div>
 
@@ -851,6 +980,9 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                   selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
                 }));
                 params.set('wingResponses', btoa(JSON.stringify(wingResponses)));
+              }
+              if (selfIdentifiedType) {
+                params.set('selfType', selfIdentifiedType);
               }
               return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
             })()}
