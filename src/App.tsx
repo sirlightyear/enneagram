@@ -48,24 +48,28 @@ function App() {
     }
   }, [isComplete]);*/
   
-  // Check if we have results in URL and should skip email capture
+  // Check if we have results in URL - if so, we should always show results
+  const [hasUrlResults, setHasUrlResults] = React.useState(false);
+
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const responsesParam = params.get('responses');
-    const wingResponsesParam = params.get('wingResponses');
-    
-    if (responsesParam && !showIntro && !isComplete) {
-      // We have results in URL, skip email capture and go directly to results
+
+    if (responsesParam) {
+      setHasUrlResults(true);
       setShowEmailCapture(false);
-      setUserEmail('shared-results@example.com'); // Dummy email for shared results
+      setUserEmail('url-results@example.com'); // Dummy email for URL results
     }
-  }, [showIntro, isComplete]);
+  }, []);
 
   const restartComplete = React.useCallback(() => {
     // Clear all debug and test state
     setIsDebugMode(false);
     setShowEmailCapture(false);
     setUserEmail('');
+    setHasUrlResults(false);
+    // Clear URL parameters
+    window.history.replaceState({}, '', window.location.pathname);
     // Clear any stored data
     localStorage.removeItem('enneagram_responses');
     localStorage.removeItem('enneagram_questions');
@@ -114,8 +118,8 @@ function App() {
     );
   }*/
 
-  // Show results directly when test is complete
-  if (isComplete || isDebugMode) {
+  // Show results directly when test is complete OR if we have URL results
+  if (isComplete || isDebugMode || hasUrlResults) {
     const results = isDebugMode ? getDebugResults() : calculateResults();
     return <ResultsPage results={results} onRestart={restartComplete} responses={responses} />;
   }
