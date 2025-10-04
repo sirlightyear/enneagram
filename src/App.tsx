@@ -49,25 +49,24 @@ function App() {
   }, [isComplete]);*/
   
   // Check if we have results in URL - if so, we should always show results
-  const [hasUrlResults, setHasUrlResults] = React.useState(false);
+  // Use useMemo so it recalculates on every render based on current URL
+  const hasUrlResults = React.useMemo(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.has('responses');
+  }, [window.location.search]);
 
   React.useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const responsesParam = params.get('responses');
-
-    if (responsesParam) {
-      setHasUrlResults(true);
+    if (hasUrlResults) {
       setShowEmailCapture(false);
-      setUserEmail('url-results@example.com'); // Dummy email for URL results
+      setUserEmail('url-results@example.com');
     }
-  }, []);
+  }, [hasUrlResults]);
 
   const restartComplete = React.useCallback(() => {
     // Clear all debug and test state
     setIsDebugMode(false);
     setShowEmailCapture(false);
     setUserEmail('');
-    setHasUrlResults(false);
     // Clear URL parameters
     window.history.replaceState({}, '', window.location.pathname);
     // Clear any stored data
