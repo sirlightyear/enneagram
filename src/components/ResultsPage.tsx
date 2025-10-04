@@ -183,7 +183,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
     } else {
       // Fallback: copy to clipboard
       await navigator.clipboard.writeText(url);
-      alert('Link kopieret til udklipsholder!');
+      alert('✅ Link kopieret til udklipsholder!\n\nIndsæt dette link i en email, SMS eller besked for at dele dine resultater.');
     }
   };
 
@@ -795,7 +795,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
               className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200 no-print"
             >
               <Share2 className="w-5 h-5 mr-2" />
-              Del dine resultater
+              Del via email/SMS
             </button>
           </div>
           
@@ -831,6 +831,33 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
               📊
             </span>
           </div>
+        </div>
+
+        {/* Print-only URL section */}
+        <div className="print-only hidden bg-gray-50 rounded-lg p-6 border-2 border-gray-300 mt-8" style={{ display: 'none' }}>
+          <h3 className="font-bold text-gray-800 mb-3 text-center">💾 Din personlige URL</h3>
+          <p className="text-gray-700 text-sm mb-3 text-center">
+            Besøg denne URL for at vende tilbage til dine resultater:
+          </p>
+          <div className="bg-white p-3 rounded border border-gray-300 break-all text-xs font-mono text-center">
+            {(() => {
+              const params = new URLSearchParams();
+              if (responses && responses.length > 0) {
+                params.set('responses', btoa(JSON.stringify(responses)));
+              }
+              if (wingResults) {
+                const wingResponses = wingResults.testData.questions.map((_, index) => ({
+                  questionIndex: index,
+                  selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
+                }));
+                params.set('wingResponses', btoa(JSON.stringify(wingResponses)));
+              }
+              return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+            })()}
+          </div>
+          <p className="text-gray-600 text-xs mt-3 text-center">
+            Denne URL indeholder alle dine svar og vil altid vise dine resultater.
+          </p>
         </div>
       </div>
     </div>

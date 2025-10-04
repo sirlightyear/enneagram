@@ -16,6 +16,7 @@
   
   .print-only {
     display: block !important;
+    page-break-before: always;
   }
   
   .print-break {
