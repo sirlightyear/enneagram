@@ -41,11 +41,12 @@ function App() {
   }, []);
 
   // Save results when test is complete
-  React.useEffect(() => {
+  // Email capture disabled - using URL-based saving instead
+  /*React.useEffect(() => {
     if (isComplete) {
       setShowEmailCapture(true);
     }
-  }, [isComplete]);
+  }, [isComplete]);*/
   
   // Check if we have results in URL and should skip email capture
   React.useEffect(() => {
@@ -95,7 +96,8 @@ function App() {
     return <IntroPage onStart={startTest} />;
   }
 
-  if (showEmailCapture) {
+  // Email capture commented out - using URL-based saving
+  /*if (showEmailCapture) {
     const results = isDebugMode ? getDebugResults() : calculateResults();
     return (
       <EmailCapture
@@ -110,9 +112,10 @@ function App() {
         }}
       />
     );
-  }
+  }*/
 
-  if (userEmail && (isComplete || isDebugMode)) {
+  // Show results directly when test is complete
+  if (isComplete || isDebugMode) {
     const results = isDebugMode ? getDebugResults() : calculateResults();
     return <ResultsPage results={results} onRestart={restartComplete} responses={responses} />;
   }
