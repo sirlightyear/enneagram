@@ -1,20 +1,146 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, BookOpen, TrendingUp, TrendingDown } from 'lucide-react';
-import { triadInfo, stressGrowthLines, getTriadForType } from '../data/enneagramInfo';
+import { ChevronDown, ChevronUp, BookOpen, TrendingUp, TrendingDown, AlertCircle, Heart } from 'lucide-react';
+import { triadInfo, stressGrowthLines, getTriadForType, basicFearsInfo, basicDesiresInfo } from '../data/enneagramInfo';
 
 interface EnneagramInfoSectionProps {
   primaryType: string;
 }
 
 const EnneagramInfoSection: React.FC<EnneagramInfoSectionProps> = ({ primaryType }) => {
+  const [showBasicFear, setShowBasicFear] = useState(false);
+  const [showBasicDesire, setShowBasicDesire] = useState(false);
   const [showTriads, setShowTriads] = useState(false);
   const [showStressGrowth, setShowStressGrowth] = useState(false);
 
   const userTriad = getTriadForType(primaryType);
   const stressGrowthInfo = stressGrowthLines.lines[primaryType as keyof typeof stressGrowthLines.lines];
+  const userFearInfo = basicFearsInfo.fears[primaryType as keyof typeof basicFearsInfo.fears];
+  const userDesireInfo = basicDesiresInfo.desires[primaryType as keyof typeof basicDesiresInfo.desires];
 
   return (
     <div className="space-y-6 mb-8">
+      {/* Basic Fear Section */}
+      {userFearInfo && (
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <button
+            onClick={() => setShowBasicFear(!showBasicFear)}
+            className="w-full p-6 flex items-center justify-between hover:bg-gray-50 transition-colors"
+          >
+            <div className="flex items-center">
+              <AlertCircle className="w-6 h-6 text-red-600 mr-3" />
+              <div className="text-left">
+                <h3 className="text-xl font-semibold text-gray-800">
+                  Din basisfrygt - Hvad driver dig?
+                </h3>
+                <p className="text-sm text-gray-600 mt-1">
+                  Forstå den dybtliggende frygt bag din type
+                </p>
+              </div>
+            </div>
+            {showBasicFear ? (
+              <ChevronUp className="w-6 h-6 text-gray-400" />
+            ) : (
+              <ChevronDown className="w-6 h-6 text-gray-400" />
+            )}
+          </button>
+
+          {showBasicFear && (
+            <div className="p-6 pt-0 border-t border-gray-100">
+              <p className="text-gray-700 mb-4">{basicFearsInfo.description}</p>
+
+              <div className="bg-red-50 rounded-lg p-6 border-2 border-red-200">
+                <div className="flex items-start mb-4">
+                  <span className="text-4xl mr-4">{userFearInfo.icon}</span>
+                  <div>
+                    <h4 className="text-lg font-semibold text-red-800 mb-2">
+                      {userFearInfo.name}
+                    </h4>
+                    <p className="text-red-900 font-medium mb-3">
+                      <strong>Basisfrygt:</strong> {userFearInfo.fear}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg p-4 border border-red-200">
+                  <p className="text-gray-700 leading-relaxed">
+                    {userFearInfo.description}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <p className="text-sm text-gray-600">
+                  <strong>Kilde:</strong> {basicFearsInfo.source}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Basic Desire Section */}
+      {userDesireInfo && (
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <button
+            onClick={() => setShowBasicDesire(!showBasicDesire)}
+            className="w-full p-6 flex items-center justify-between hover:bg-gray-50 transition-colors"
+          >
+            <div className="flex items-center">
+              <Heart className="w-6 h-6 text-pink-600 mr-3" />
+              <div className="text-left">
+                <h3 className="text-xl font-semibold text-gray-800">
+                  Dit basisønske - Hvad søger du?
+                </h3>
+                <p className="text-sm text-gray-600 mt-1">
+                  Forstå den længsel der former din adfærd
+                </p>
+              </div>
+            </div>
+            {showBasicDesire ? (
+              <ChevronUp className="w-6 h-6 text-gray-400" />
+            ) : (
+              <ChevronDown className="w-6 h-6 text-gray-400" />
+            )}
+          </button>
+
+          {showBasicDesire && (
+            <div className="p-6 pt-0 border-t border-gray-100">
+              <p className="text-gray-700 mb-4">{basicDesiresInfo.description}</p>
+
+              <div className="bg-pink-50 rounded-lg p-6 border-2 border-pink-200 mb-6">
+                <div className="flex items-start mb-4">
+                  <span className="text-4xl mr-4">{userDesireInfo.icon}</span>
+                  <div>
+                    <h4 className="text-lg font-semibold text-pink-800 mb-2">
+                      {userDesireInfo.name}
+                    </h4>
+                    <p className="text-pink-900 font-medium mb-3">
+                      <strong>Basisønske:</strong> {userDesireInfo.desire}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg p-4 border border-pink-200">
+                  <p className="text-gray-700">
+                    <strong>Dynamikken:</strong> {userDesireInfo.dynamic}
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-yellow-50 rounded-lg p-5 border-2 border-yellow-200">
+                <h5 className="font-semibold text-yellow-800 mb-2 flex items-center">
+                  <span className="mr-2">🌀</span>
+                  Den psykologiske fælde
+                </h5>
+                <p className="text-yellow-800 text-sm">
+                  {basicDesiresInfo.dynamicExplanation}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Triader Section */}
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
         <button

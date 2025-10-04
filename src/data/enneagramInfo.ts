@@ -171,6 +171,133 @@ export const stressGrowthLines = {
   }
 };
 
+export const basicFearsInfo = {
+  title: "Basisfrygter - Hvad driver din type?",
+  description: "Hver Enneagramtype har en dybtliggende basisfrygt, der former deres verdenssyn og adfærd. At forstå denne frygt er nøglen til personlig udvikling.",
+  source: "The Wisdom of the Enneagram - Don Richard Riso & Russ Hudson",
+
+  fears: {
+    "Type 1": {
+      icon: "🔢",
+      name: "Perfektionisten",
+      fear: "At være dårlig, korrupt, ond eller defekt.",
+      description: "Perfektionisten frygter dybt at være moralsk forkert eller ufuldkommen. For at kompensere forsøger de at være dydige, ansvarlige og etiske. De projicerer ofte deres frygt udad ved at påpege fejl hos andre og insistere på høje standarder."
+    },
+    "Type 2": {
+      icon: "💞",
+      name: "Hjælperen",
+      fear: "At være uelsket eller uønsket.",
+      description: "Hjælperen frygter, at de ikke er værd at elske, medmindre de gør sig uundværlige. De forsøger derfor at opnå kærlighed gennem at opfylde andres behov, men kan ende med at gøre andre afhængige af dem og føle sig bitre, hvis de ikke får den ønskede kærlighed tilbage."
+    },
+    "Type 3": {
+      icon: "🏆",
+      name: "Udretteren",
+      fear: "At være værdiløs eller uden iboende værdi.",
+      description: "Udretteren frygter, at de kun er noget værd, hvis de præsterer og opnår succes. De søger derfor konstant anerkendelse og beundring, men risikerer at miste kontakten til deres autentiske selv og føle sig tomme bag facaden."
+    },
+    "Type 4": {
+      icon: "🎭",
+      name: "Individualisten",
+      fear: "At være uden identitet eller personlig betydning.",
+      description: "Individualisten frygter at være almindelig eller usynlig. De søger derfor at være unikke og autentiske, men kan samtidig føle sig misforståede og isolerede. De kan komme til at nedgøre andre for at hævde deres egen særegenhed."
+    },
+    "Type 5": {
+      icon: "🧠",
+      name: "Iagttageren",
+      fear: "At være ubrugelig, inkompetent eller hjælpeløs.",
+      description: "Iagttageren frygter at blive overvældet af verden og trækker sig derfor tilbage for at bevare kontrol. De søger viden og forståelse som en måde at føle sig kompetente på, men kan virke følelsesmæssigt distancerede."
+    },
+    "Type 6": {
+      icon: "🛡️",
+      name: "Skeptikeren",
+      fear: "At være uden støtte og vejledning.",
+      description: "Skeptikeren frygter at stå alene og uden sikkerhed. De søger tryghed gennem loyalitet og forberedelse, men kan blive mistroiske og overafhængige af autoriteter. Ironisk nok kan deres søgen efter sikkerhed føre til det modsatte."
+    },
+    "Type 7": {
+      icon: "🎉",
+      name: "Eventyreren",
+      fear: "At blive fanget i smerte eller afsavn.",
+      description: "Eventyreren frygter følelsesmæssig smerte og kedsomhed. De søger konstant nye oplevelser og glæder for at undgå ubehag. Dette kan føre til overfladiskhed og manglende evne til at forpligte sig, hvilket i sidste ende kan skabe den tomhed, de forsøger at undgå."
+    },
+    "Type 8": {
+      icon: "💪",
+      name: "Frontkæmperen",
+      fear: "At blive kontrolleret eller såret af andre.",
+      description: "Frontkæmperen frygter sårbarhed og svaghed. De søger magt og kontrol for at beskytte sig selv, men kan fremstå dominerende og skræmmende. Deres frygt for at blive kontrolleret kan få dem til at kontrollere andre."
+    },
+    "Type 9": {
+      icon: "☮️",
+      name: "Fredselskeren",
+      fear: "At miste forbindelse eller blive fragmenteret.",
+      description: "Fredselskeren frygter konflikt og adskillelse. De søger harmoni og undgår konfrontation, men kan miste sig selv i forsøget på at bevare freden. Deres strategi med at 'tjekke ud' kan få andre til at føle sig overset eller afvist."
+    }
+  }
+};
+
+export const basicDesiresInfo = {
+  title: "Basisønsker - Hvad søger din type?",
+  description: "Basisønskerne opstår som en kompensation for basisfrygten. De fungerer som en indre drivkraft, men at forfølge ønsket gennem egoets strategier kan paradoksalt nok forstærke frygten.",
+
+  dynamicExplanation: "Jo mere vi prøver at opnå vores basisønske gennem egoets strategier, jo mere aktiverer vi vores frygt - fordi disse strategier ikke kan tilfredsstille vores dybeste behov.",
+
+  desires: {
+    "Type 1": {
+      icon: "🔢",
+      name: "Perfektionisten",
+      desire: "At være god, dydig og i orden – at være moralsk korrekt og integreret.",
+      dynamic: "Søger perfektion for at undgå skyld og skam"
+    },
+    "Type 2": {
+      icon: "💞",
+      name: "Hjælperen",
+      desire: "At føle sig elsket – at være ønsket og værdsat for den, man er.",
+      dynamic: "Giver for at blive elsket, men kan miste sig selv"
+    },
+    "Type 3": {
+      icon: "🏆",
+      name: "Udretteren",
+      desire: "At føle sig værdifuld – at være succesfuld og anerkendt.",
+      dynamic: "Præsterer for at føle sig værdifuld, men mister autenticitet"
+    },
+    "Type 4": {
+      icon: "🎭",
+      name: "Individualisten",
+      desire: "At finde sig selv og sin betydning – at være unik og autentisk.",
+      dynamic: "Søger særpræg, men føler sig ofte misforstået"
+    },
+    "Type 5": {
+      icon: "🧠",
+      name: "Iagttageren",
+      desire: "At være kompetent og i stand – at forstå og mestre verden.",
+      dynamic: "Trækker sig tilbage for at bevare kontrol og viden"
+    },
+    "Type 6": {
+      icon: "🛡️",
+      name: "Skeptikeren",
+      desire: "At føle sig tryg og støttet – at have sikkerhed og vejledning.",
+      dynamic: "Søger sikkerhed, men skaber ofte usikkerhed"
+    },
+    "Type 7": {
+      icon: "🎉",
+      name: "Eventyreren",
+      desire: "At være tilfreds og lykkelig – at opleve glæde og undgå smerte.",
+      dynamic: "Undgår smerte gennem distraktion og overfladiskhed"
+    },
+    "Type 8": {
+      icon: "💪",
+      name: "Frontkæmperen",
+      desire: "At være selvstændig og i kontrol – at beskytte sig selv og sine egne.",
+      dynamic: "Dominerer for at undgå sårbarhed"
+    },
+    "Type 9": {
+      icon: "☮️",
+      name: "Fredselskeren",
+      desire: "At have indre stabilitet og fred i sindet – at føle sig forbundet.",
+      dynamic: "Undgår konflikt, men mister sig selv"
+    }
+  }
+};
+
 export const getTriadForType = (type: string): keyof typeof triadInfo.triads | null => {
   if (["Type 8", "Type 9", "Type 1"].includes(type)) return "body";
   if (["Type 2", "Type 3", "Type 4"].includes(type)) return "heart";

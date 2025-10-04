@@ -667,30 +667,27 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
           </div>
         </div>
 
-        {/*<div className="grid md:grid-cols-2 gap-6 mb-8 print:grid-cols-1 print:gap-2">*/}
+        {/* Enneagram Info Sections - Basic Fears, Desires, Triads and Stress/Growth */}
+        <EnneagramInfoSection primaryType={topResult.type} />
+
+        {/* Not to be confused with section */}
         <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
-        
-          <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
-            <h3 className="text-xl font-semibold text-gray-800 mb-6">
-              {topResult.type}: {typeInfo.title} - Ikke at forveksle med
-            </h3>
-            <div className="space-y-4">
-              {typeDetails[topResult.type].notToBeConfusedWith.map((confusion, index) => (
-                <div key={index} className="bg-yellow-50 rounded-lg p-4 border-l-4 border-yellow-400">
-                  <h4 className="font-semibold text-yellow-800 mb-2">
-                    {confusion.type}
-                  </h4>
-                  <p className="text-yellow-700 text-sm">
-                    <strong>Forskellen:</strong> {confusion.difference}
-                  </p>
-                </div>
-              ))}
-            </div>
+          <h3 className="text-xl font-semibold text-gray-800 mb-6">
+            {topResult.type}: {typeInfo.title} - Ikke at forveksle med
+          </h3>
+          <div className="space-y-4">
+            {typeDetails[topResult.type].notToBeConfusedWith.map((confusion, index) => (
+              <div key={index} className="bg-yellow-50 rounded-lg p-4 border-l-4 border-yellow-400">
+                <h4 className="font-semibold text-yellow-800 mb-2">
+                  {confusion.type}
+                </h4>
+                <p className="text-yellow-700 text-sm">
+                  <strong>Forskellen:</strong> {confusion.difference}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
-
-        {/* Enneagram Info Sections - Triads and Stress/Growth */}
-        <EnneagramInfoSection primaryType={topResult.type} />
 
         {/* Learn more about your type */}
         <div className="bg-white rounded-xl shadow-lg p-8 mb-8 print-hide-detailed">
