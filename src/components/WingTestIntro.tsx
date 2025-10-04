@@ -29,8 +29,14 @@ const WingTestIntro: React.FC<WingTestIntroProps> = ({ primaryType, onStart, onS
             <h2 className="text-xl font-semibold text-indigo-800 mb-4">Hvad er Enneagram-vinger?</h2>
             <div className="space-y-4 text-indigo-700">
               <p>
-                Din <strong>{primaryType}</strong> har to "naboer" på Enneagram-cirklen, som kaldes <strong>vinger</strong>. 
-                Disse vinger blander sig med din grundtype og skaber unikke variationer af din personlighed.
+                I Enneagrammet har hver type to nabotyper – kaldet <strong>vinger</strong>. Din vinge er <strong>ikke en ekstra type</strong>,
+                du også er, men en <strong>nuance</strong>, der farver din grundtype. De fleste mennesker har én dominerende vinge, men vi har
+                adgang til begge vinger.
+              </p>
+              <p>
+                Den ene vinge kan være mere udviklet end den anden, men med bevidsthed og personlig udvikling kan vi integrere kvaliteter
+                fra begge sider. Derfor handler det ikke om at 'finde sin vinge' som noget fast, men om at <strong>opdage, hvordan dine vinger
+                påvirker din personlighed</strong> – og hvordan du kan arbejde med dem.
               </p>
               
               <div className="bg-white rounded-lg p-4 border border-indigo-200">
@@ -72,7 +78,7 @@ const WingTestIntro: React.FC<WingTestIntroProps> = ({ primaryType, onStart, onS
               onClick={onStart}
               className="inline-flex items-center justify-center px-8 py-4 bg-indigo-600 text-white font-semibold text-lg rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-lg hover:shadow-xl"
             >
-              Ja, lad os finde mine vinger!
+              Ja, lad os opdage mine vinger!
               <ArrowRight className="w-6 h-6 ml-2" />
             </button>
             

@@ -109,7 +109,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
     window.print();
   };
 
-  const handleShare = async () => {
+  const handleSaveUrl = async () => {
     // Create URL that goes directly to results page with current data
     const params = new URLSearchParams();
     if (responses && responses.length > 0) {
@@ -124,16 +124,16 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
       params.set('wingResponses', btoa(JSON.stringify(wingResponses)));
     }
     const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
-    
+
     // Log test completion med alle detaljer
     const logger = TestLogger.getInstance();
     const wingResponses = wingResults ? wingResults.testData.questions.map((_, index) => ({
       questionIndex: index,
       selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
     })) : undefined;
-    
+
     await logger.logTestCompletion(
-      'shared-user@example.com', // Email for shared results
+      'url-saved-user@example.com', // Email placeholder for URL-saved results
       results,
       responses || [],
       enneagramQuestions,
@@ -141,7 +141,32 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
       wingResponses,
       wingResults?.testData.questions
     );
-    
+
+    // Copy URL to clipboard
+    try {
+      await navigator.clipboard.writeText(url);
+      alert('✅ Din personlige URL er nu kopieret!\n\nGem denne URL et sikkert sted - den indeholder alle dine svar.\n\nDu kan altid vende tilbage til dine resultater ved at åbne dette link.');
+    } catch (error) {
+      // Fallback if clipboard access fails
+      prompt('Kopiér denne URL og gem den et sikkert sted:', url);
+    }
+  };
+
+  const handleShare = async () => {
+    // Create URL for sharing
+    const params = new URLSearchParams();
+    if (responses && responses.length > 0) {
+      params.set('responses', btoa(JSON.stringify(responses)));
+    }
+    if (wingResults) {
+      const wingResponses = wingResults.testData.questions.map((_, index) => ({
+        questionIndex: index,
+        selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
+      }));
+      params.set('wingResponses', btoa(JSON.stringify(wingResponses)));
+    }
+    const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+
     if (navigator.share && navigator.canShare) {
       const shareData = {
         title: 'Mine Enneagram Resultater',
@@ -152,13 +177,13 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
       try {
         await navigator.share(shareData);
       } catch (error) {
-        // Fallback to clipboard if sharing fails
-        await navigator.clipboard.writeText(window.location.href);
-        alert('Link kopieret til udklipsholder!');
+        // User cancelled share or it failed
+        console.log('Share cancelled or failed');
       }
     } else {
-      navigator.clipboard.writeText(url);
-      alert('Link kopieret til clipboard!');
+      // Fallback: copy to clipboard
+      await navigator.clipboard.writeText(url);
+      alert('Link kopieret til udklipsholder!');
     }
   };
 
@@ -690,50 +715,23 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
         </div>
 
         {/* Learn more about your type */}
-        <div className="bg-white rounded-xl shadow-lg p-8 mb-8 print-hide-detailed">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">
-            {wingResults ? 'Få dine komplette resultater på email' : 'Vil du vide mere om din type?'}
-          </h3>
-          
-          {wingResults ? (
-            <div>
-              <p className="text-gray-700 mb-6">
-                Du har nu gennemført både hovedtesten og vinge-testen. Få dine komplette resultater 
-                med detaljerede beskrivelser sendt til din email.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button
-                  onClick={() => {
-                    sendCompleteResultsEmail(userEmail || 'test@example.com', results, wingResults);
-                  }}
-                  className="inline-flex items-center justify-center px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors duration-200"
-                >
-                  📧 Send komplette resultater til email
-                </button>
-                <button
-                  onClick={() => {
-                    setSelectedType(topResult.type);
-                    setShowDetailPage(true);
-                  }}
-                  className="inline-flex items-center justify-center px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors duration-200"
-                >
-                  Lær mere om din {topResult.type}: {typeInfo.title}{wingResults ? ' med dine vinger' : ''}
-                  <span className="ml-2">→</span>
-                </button>
-              </div>
-            </div>
-          ) : (
+        {!wingResults && (
+          <div className="bg-white rounded-xl shadow-lg p-8 mb-8 print-hide-detailed">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+              Vil du vide mere om din type?
+            </h3>
+
             <div>
               <div className="mb-6">
                 <p className="text-gray-700 mb-4">
-                  Få en dybdegående forståelse af hvordan din personlighedstype påvirker dit arbejdsliv, 
+                  Få en dybdegående forståelse af hvordan din personlighedstype påvirker dit arbejdsliv,
                   dine relationer og din personlige udvikling.
                 </p>
-                
+
                 <div className="bg-blue-50 rounded-lg p-4 mb-4">
                   <h4 className="font-semibold text-blue-800 mb-2">🪶 Hvad er Enneagram-vinger?</h4>
                   <p className="text-blue-700 text-sm mb-3">
-                    Din {topResult.type} har to "naboer" på Enneagram-cirklen, som kaldes <strong>vinger</strong>. 
+                    Din {topResult.type} har to "naboer" på Enneagram-cirklen, som kaldes <strong>vinger</strong>.
                     Disse vinger blander sig med din grundtype og skaber en mere nuanceret og præcis beskrivelse af din personlighed.
                   </p>
                   <p className="text-blue-700 text-sm">
@@ -749,10 +747,10 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                   }}
                   className="inline-flex items-center justify-center px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors duration-200"
                 >
-                  Lær mere om din {topResult.type}: {typeInfo.title}{wingResults ? ' med dine vinger' : ''}
+                  Lær mere om din {topResult.type}: {typeInfo.title}
                   <span className="ml-2">→</span>
                 </button>
-            
+
                 <button
                   onClick={() => setShowWingTestIntro(true)}
                   className="inline-flex items-center justify-center px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors duration-200"
@@ -762,10 +760,27 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                 </button>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         <div className="text-center">
+          <div className="bg-yellow-50 rounded-lg p-6 mb-6 border-2 border-yellow-200 no-print">
+            <h3 className="font-semibold text-yellow-800 mb-3 text-lg">💾 Gem dine resultater</h3>
+            <p className="text-yellow-700 mb-4 text-sm">
+              Vi gemmer ikke dine svar i en database. I stedet kan du gemme en personlig URL
+              der indeholder alle dine svar. På den måde kan du altid vende tilbage til dine resultater!
+            </p>
+            <button
+              onClick={handleSaveUrl}
+              className="inline-flex items-center px-8 py-3 bg-yellow-600 text-white font-semibold text-lg rounded-lg hover:bg-yellow-700 transition-colors duration-200 shadow-lg"
+            >
+              💾 Gem min personlige URL
+            </button>
+            <p className="text-yellow-600 text-xs mt-3">
+              URL'en kopieres automatisk - gem den et sikkert sted (f.eks. i dine bogmærker)
+            </p>
+          </div>
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
             <button
               onClick={handlePrint}
@@ -774,7 +789,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
               <Printer className="w-5 h-5 mr-2" />
               Print / Gem som PDF
             </button>
-            
+
             <button
               onClick={handleShare}
               className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200 no-print"
