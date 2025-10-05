@@ -238,7 +238,7 @@ export const basicDesiresInfo = {
   title: "Basisønsker - Hvad søger din type?",
   description: "Basisønskerne opstår som en kompensation for basisfrygten. De fungerer som en indre drivkraft, men at forfølge ønsket gennem egoets strategier kan paradoksalt nok forstærke frygten.",
 
-  dynamicExplanation: "Jo mere vi prøver at opnå vores basisønske gennem egoets strategier, jo mere aktiverer vi vores frygt - fordi disse strategier ikke kan tilfredsstille vores dybeste behov.</ br></ br>Eller sagt på en anden måde: Når vi prøver at få det, vi længes efter – som f.eks. at blive elsket eller føle os værdifulde – ved at spille en rolle eller gøre os umage på en bestemt måde, så bliver vi faktisk mere bange. For dybt inde ved vi godt, at det ikke helt virker.",
+  dynamicExplanation: "Jo mere vi prøver at opnå vores basisønske gennem egoets strategier, jo mere aktiverer vi vores frygt - fordi disse strategier ikke kan tilfredsstille vores dybeste behov.",
 
   desires: {
     "Type 1": {
