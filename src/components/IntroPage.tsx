@@ -106,7 +106,7 @@ const IntroPage: React.FC<IntroPageProps> = ({ onStart }) => {
             </button>
             <p className="text-gray-500 text-sm mt-4">Testen tager cirka 10-15 minutter at gennemføre</p>
             
-            {/* Secret debug link */}
+            {/* Secret debug link 
             <div className="mt-8">
               <button 
                 onClick={() => {
@@ -123,7 +123,7 @@ const IntroPage: React.FC<IntroPageProps> = ({ onStart }) => {
               >
                 🔧
               </button>
-            </div>
+            </div>*/}
           </div>
         </div>
       </div>
