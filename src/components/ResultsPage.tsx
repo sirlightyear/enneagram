@@ -263,6 +263,13 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
     });
   };
 
+  // Recalculate results when edited responses change
+  React.useEffect(() => {
+    if (editedResponses.length === enneagramQuestions.length) {
+      recalculateResults();
+    }
+  }, [editedResponses, recalculateResults]);
+
   // Update URL when edited responses change
   React.useEffect(() => {
     if (showReviewAnswers && editedResponses.length > 0) {
@@ -279,7 +286,6 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
         params.set('selfType', selfIdentifiedType);
       }
       window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
-      recalculateResults();
     }
   }, [editedResponses, showReviewAnswers, wingResults, selfIdentifiedType]);
 
@@ -906,7 +912,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
           </div>
           
           <div className="space-y-4">
-            {results.map((result, index) => {
+            {currentResults.map((result, index) => {
               const info = typeDescriptions[result.type];
               const ResultIcon = typeIcons[result.type];
               return (
@@ -944,7 +950,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
               Det er helt normalt – testen giver en indikation, men kun du kan virkelig vide, hvilken type der passer bedst.
             </p>
             <div className="flex flex-wrap gap-2">
-              {results.slice(0, 5).map((result) => (
+              {currentResults.slice(0, 5).map((result) => (
                 <button
                   key={result.type}
                   onClick={() => {
