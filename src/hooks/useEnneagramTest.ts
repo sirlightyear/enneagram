@@ -89,10 +89,12 @@ export const useEnneagramTest = () => {
     });
   }, [currentQuestionIndex, totalQuestions]);
 
-  // Update URL when responses change
+  // Update URL when responses change - but only if test is complete
   useEffect(() => {
-    updateURL(responses);
-  }, [responses]);
+    if (isComplete && responses.length === enneagramQuestions.length) {
+      updateURL(responses);
+    }
+  }, [responses, isComplete]);
 
   const goToNextQuestion = useCallback(() => {
     if (currentQuestionIndex < totalQuestions - 1) {

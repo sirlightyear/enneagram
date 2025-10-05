@@ -502,7 +502,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                       <span className="text-sm font-semibold text-indigo-600">
                         Spørgsmål {index + 1} af {enneagramQuestions.length}
                       </span>
-                      <h3 className="text-lg font-semibold text-gray-800 mt-1">{question.text}</h3>
+                      <h3 className="text-lg font-semibold text-gray-800 mt-1">{question.question}</h3>
                     </div>
 
                     <div className="flex gap-2">

@@ -117,8 +117,8 @@ function App() {
     );
   }*/
 
-  // Show results directly when test is complete OR if we have URL results
-  if (isComplete || isDebugMode || hasUrlResults) {
+  // Show results directly when test is complete OR if we have URL results (from sharing)
+  if (isComplete || isDebugMode) {
     const results = isDebugMode ? getDebugResults() : calculateResults();
     return <ResultsPage results={results} onRestart={restartComplete} responses={responses} />;
   }
