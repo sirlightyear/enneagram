@@ -1106,7 +1106,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
             Tag testen igen
           </button>*/}
           
-          {/* Debug links - only visible in development */}
+          {/* Debug links - only visible in development 
           <div className="mt-8 text-center space-x-4 no-print">
             <span
               onClick={showDebugResults}
@@ -1129,7 +1129,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
             >
               📊
             </span>
-          </div>
+          </div>*/}
         </div>
 
         {/* Print-only URL section */}
