@@ -249,46 +249,6 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
     }
   }, []);
 
-  // Handle answer editing
-  const handleEditAnswer = (questionIndex: number, newRating: number) => {
-    setEditedResponses(prev => {
-      const updated = [...prev];
-      const existingIndex = updated.findIndex(r => r.questionIndex === questionIndex);
-      if (existingIndex >= 0) {
-        updated[existingIndex] = { questionIndex, rating: newRating };
-      } else {
-        updated.push({ questionIndex, rating: newRating });
-      }
-      return updated;
-    });
-  };
-
-  // Recalculate results when edited responses change
-  React.useEffect(() => {
-    if (editedResponses.length === enneagramQuestions.length) {
-      recalculateResults();
-    }
-  }, [editedResponses, recalculateResults]);
-
-  // Update URL when edited responses change
-  React.useEffect(() => {
-    if (showReviewAnswers && editedResponses.length > 0) {
-      const params = new URLSearchParams();
-      params.set('responses', btoa(JSON.stringify(editedResponses)));
-      if (wingResults) {
-        const wingResponses = wingResults.testData.questions.map((_, index) => ({
-          questionIndex: index,
-          selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
-        }));
-        params.set('wingResponses', btoa(JSON.stringify(wingResponses)));
-      }
-      if (selfIdentifiedType) {
-        params.set('selfType', selfIdentifiedType);
-      }
-      window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
-    }
-  }, [editedResponses, showReviewAnswers, wingResults, selfIdentifiedType]);
-
   // Recalculate results when responses change
   const recalculateResults = React.useCallback(() => {
     const typeScores: Record<string, number> = {};
@@ -333,6 +293,46 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
 
     setCurrentResults(newResults.sort((a, b) => b.percentage - a.percentage));
   }, [editedResponses]);
+
+  // Handle answer editing
+  const handleEditAnswer = (questionIndex: number, newRating: number) => {
+    setEditedResponses(prev => {
+      const updated = [...prev];
+      const existingIndex = updated.findIndex(r => r.questionIndex === questionIndex);
+      if (existingIndex >= 0) {
+        updated[existingIndex] = { questionIndex, rating: newRating };
+      } else {
+        updated.push({ questionIndex, rating: newRating });
+      }
+      return updated;
+    });
+  };
+
+  // Recalculate results when edited responses change
+  React.useEffect(() => {
+    if (editedResponses.length === enneagramQuestions.length) {
+      recalculateResults();
+    }
+  }, [editedResponses, recalculateResults]);
+
+  // Update URL when edited responses change
+  React.useEffect(() => {
+    if (showReviewAnswers && editedResponses.length > 0) {
+      const params = new URLSearchParams();
+      params.set('responses', btoa(JSON.stringify(editedResponses)));
+      if (wingResults) {
+        const wingResponses = wingResults.testData.questions.map((_, index) => ({
+          questionIndex: index,
+          selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
+        }));
+        params.set('wingResponses', btoa(JSON.stringify(wingResponses)));
+      }
+      if (selfIdentifiedType) {
+        params.set('selfType', selfIdentifiedType);
+      }
+      window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
+    }
+  }, [editedResponses, showReviewAnswers, wingResults, selfIdentifiedType]);
 
   // Handle wing test completion
   React.useEffect(() => {
