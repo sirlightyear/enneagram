@@ -15,7 +15,7 @@ import { type6WingQuestions } from '../data/wingQuestions/wingQuestions6';
 import { type7WingQuestions } from '../data/wingQuestions/wingQuestions7';
 import { type8WingQuestions } from '../data/wingQuestions/wingQuestions8';
 import { type9WingQuestions } from '../data/wingQuestions/wingQuestions9';
-import { Award, BarChart3, RefreshCw, Users, Heart, Target, Palette, Search, Shield, Zap, Crown, Compass, Feather, Sparkles, Ambulance as Balance, HandHeart, Lightbulb, Flame, Mountain, TreePine, Waves, Printer, Share2, Brain, MessageCircle, TrendingUp, AlertTriangle } from 'lucide-react';
+import { Award, BarChart3, RefreshCw, Users, Heart, Target, Palette, Search, Shield, Zap, Crown, Compass, Feather, Sparkles, Ambulance as Balance, HandHeart, Lightbulb, Flame, Mountain, TreePine, Waves, Printer, Share2 } from 'lucide-react';
 import EnneagramChart from './EnneagramChart';
 import WingQuestionCard from './WingQuestionCard';
 import { enneagramQuestions } from '../data/questions';
@@ -108,7 +108,6 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   const displayType = selfIdentifiedType || topResult.type;
   const typeInfo = typeDescriptions[displayType];
   const TypeIcon = typeIcons[displayType];
-  const typeDetailForTop = typeDetails[displayType];
   
   // Print/PDF functionality
   const handlePrint = () => {
@@ -750,99 +749,27 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
           </div>
         )}
 
-        {/* Full details of top result - all information from TypeDetailPage */}
-        <div className="space-y-6 mb-8">
-          {/* Verdenssyn */}
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            <div className="flex items-center mb-4">
-              <Brain className="w-6 h-6 text-indigo-600 mr-3" />
-              <h2 className="text-xl font-semibold text-gray-800">Verdenssyn</h2>
-            </div>
-            <p className="text-gray-700 leading-relaxed">{typeDetailForTop.worldview}</p>
-          </div>
-
-          {/* Grundlæggende information */}
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <div className="flex items-center mb-4">
-                <Target className="w-5 h-5 text-red-600 mr-2" />
-                <h3 className="text-lg font-semibold text-gray-800">Basisfrygt</h3>
+        {/* Detailed description of top result */}
+        <div className="bg-white rounded-xl shadow-lg p-8 mb-8 print:shadow-none print:border print-hide-detailed">
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Text content */}
+            <div className="flex-1">
+              <h3 className="text-xl font-semibold text-gray-800 mb-4">
+            Udførlig beskrivelse af {topResult.type}: {typeInfo.title}
+              </h3>
+              <div className="prose prose-gray max-w-none">
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  {getDetailedDescription(topResult.type)}
+                </p>
               </div>
-              <p className="text-gray-700">{typeDetailForTop.basicFear}</p>
             </div>
 
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <div className="flex items-center mb-4">
-                <Heart className="w-5 h-5 text-green-600 mr-2" />
-                <h3 className="text-lg font-semibold text-gray-800">Basisønske</h3>
+            {/* Circular chart */}
+            <div className="flex-shrink-0 lg:w-80 no-print">
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h4 className="text-lg font-semibold text-gray-800 mb-4 text-center">Dine resultater</h4>
+                <EnneagramChart results={results} />
               </div>
-              <p className="text-gray-700">{typeDetailForTop.basicDesire}</p>
-            </div>
-          </div>
-
-          {/* Fokus og indre dialog */}
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <div className="flex items-center mb-4">
-                <Zap className="w-5 h-5 text-yellow-600 mr-2" />
-                <h3 className="text-lg font-semibold text-gray-800">Fokus</h3>
-              </div>
-              <p className="text-gray-700">{typeDetailForTop.focus}</p>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <div className="flex items-center mb-4">
-                <MessageCircle className="w-5 h-5 text-blue-600 mr-2" />
-                <h3 className="text-lg font-semibold text-gray-800">Indre dialog</h3>
-              </div>
-              <p className="text-gray-700 italic">"{typeDetailForTop.innerDialogue}"</p>
-            </div>
-          </div>
-
-          {/* Kvaliteter og styrker */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <div className="flex items-center mb-4">
-              <TrendingUp className="w-5 h-5 text-green-600 mr-2" />
-              <h3 className="text-lg font-semibold text-gray-800">Kvaliteter og styrker</h3>
-            </div>
-            <ul className="list-disc list-inside space-y-2 text-gray-700">
-              {typeDetailForTop.qualities.map((quality, index) => (
-                <li key={index}>{quality}</li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Personlige styrker */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <div className="flex items-center mb-4">
-              <Shield className="w-5 h-5 text-blue-600 mr-2" />
-              <h3 className="text-lg font-semibold text-gray-800">Personlige styrker</h3>
-            </div>
-            <ul className="list-disc list-inside space-y-2 text-gray-700">
-              {typeDetailForTop.personalStrengths.map((strength, index) => (
-                <li key={index}>{strength}</li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Blinde vinkler */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <div className="flex items-center mb-4">
-              <AlertTriangle className="w-5 h-5 text-orange-600 mr-2" />
-              <h3 className="text-lg font-semibold text-gray-800">Blinde vinkler</h3>
-            </div>
-            <ul className="list-disc list-inside space-y-2 text-gray-700">
-              {typeDetailForTop.blindSpots.map((spot, index) => (
-                <li key={index}>{spot}</li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Circular chart - flyttet til bunden */}
-          <div className="bg-gray-50 rounded-lg p-6 no-print">
-            <h4 className="text-lg font-semibold text-gray-800 mb-4 text-center">Dine resultater</h4>
-            <div className="max-w-md mx-auto">
-              <EnneagramChart results={results} />
             </div>
           </div>
         </div>
@@ -995,7 +922,6 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                   info={info}
                   index={index}
                   icon={ResultIcon}
-                  isTopResult={index === 0}
                   onSelectTypeForDetail={(type) => {
                     setSelectedType(type);
                     setShowDetailPage(true);
@@ -1260,10 +1186,9 @@ interface TypeResultCardProps {
   index: number;
   icon: React.ComponentType<any>;
   onSelectTypeForDetail: (type: string) => void;
-  isTopResult?: boolean;
 }
 
-const TypeResultCard: React.FC<TypeResultCardProps> = ({ result, info, index, icon: Icon, onSelectTypeForDetail, isTopResult = false }) => {
+const TypeResultCard: React.FC<TypeResultCardProps> = ({ result, info, index, icon: Icon, onSelectTypeForDetail }) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
 
   const handleLearnMore = (e: React.MouseEvent) => {
@@ -1316,19 +1241,17 @@ const TypeResultCard: React.FC<TypeResultCardProps> = ({ result, info, index, ic
                 </span>
               ))}
             </div>
-            {!isTopResult && (
-              <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-                <p className="text-sm text-blue-800">
-                  {getDetailedDescription(result.type)}
-                </p>
-                <button
-                  onClick={handleLearnMore}
-                  className="mt-3 text-sm text-blue-600 hover:text-blue-800 font-medium"
-                >
-                  Lær mere om {result.type} →
-                </button>
-              </div>
-            )}
+            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+              <p className="text-sm text-blue-800">
+                {getDetailedDescription(result.type)}
+              </p>
+              <button
+                onClick={handleLearnMore}
+                className="mt-3 text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                Lær mere om {result.type} →
+              </button>
+            </div>
           </div>
         </div>
       )}
