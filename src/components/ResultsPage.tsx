@@ -598,7 +598,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
             </p>
             <p>
               Enneagrammet handler om selverkendelse, og det kan tage tid at finde frem til den type,
-              der virkelig matcher dine dybeste mønstre. Som Riso og Hudson skriver:
+              der virkelig matcher dine dybeste mønstre.
             </p>
             <blockquote className="border-l-2 border-amber-400 pl-4 italic text-amber-800">
               "Selvopdagelse er en proces – og den slutter ikke med at finde sin type.
