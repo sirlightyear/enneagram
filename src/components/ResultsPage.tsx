@@ -587,7 +587,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
           <div className="flex items-start mb-3">
             <span className="text-2xl mr-3">🧭</span>
             <h3 className="text-xl font-semibold text-amber-900">
-              Din test er et pejlemærke – ikke en endelig dom
+              Din test er et pejlemærke – ikke en endelig dom ;-)
             </h3>
           </div>
           <div className="space-y-3 text-amber-900">
