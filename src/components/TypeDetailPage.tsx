@@ -52,7 +52,7 @@ const TypeDetailPage: React.FC<TypeDetailPageProps> = ({ typeDetail, onBack, onS
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             {typeDetail.type}: {typeDetail.title}
           </h1>
-          <p className="text-gray-600 text-lg">Udførlig beskrivelse af din personlighedstype</p>
+          <p className="text-gray-600 text-lg">Udførlig beskrivelse af personlighedstypen</p>
         </div>
 
         {/* Verdenssyn */}
@@ -363,7 +363,7 @@ const TypeDetailPage: React.FC<TypeDetailPageProps> = ({ typeDetail, onBack, onS
                 <>
                   <p className="text-blue-700 text-sm mb-4">
                     {typeDetail.type} har, som de andre typer, to "naboer" på Enneagram-cirklen, som kaldes <strong>vinger</strong>.
-                    Disse vinger blander sig med grundtypen og skaber en mere nuanceret og præcis beskrivelse af typens personlighed. Hvis du mistænker at du kunne være {typeDetail.type} kan du udfylde 10 specifikke spørgsmål for denne type.
+                    Disse vinger blander sig med grundtypen og skaber en mere nuanceret og præcis beskrivelse af typens personlighed. Hvis du mistænker at du kunne være en {typeDetail.type} kan du udfylde 10 specifikke spørgsmål for denne type.
                   </p>
                   <p className="text-blue-700 text-sm mb-4">
                     {getWingExplanationForType(typeDetail.type)}
@@ -386,7 +386,7 @@ const TypeDetailPage: React.FC<TypeDetailPageProps> = ({ typeDetail, onBack, onS
                 onClick={onStartWingTest}
                 className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-semibold text-lg rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-lg hover:shadow-xl"
               >
-                Ja, opdag mine Enneagram-vinger!
+                Ja, opdag Enneagram-vingerne for {typeDetail.type}!
                 <span className="ml-2">✨</span>
               </button>
             </div>
