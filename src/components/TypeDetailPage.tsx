@@ -327,7 +327,7 @@ const TypeDetailPage: React.FC<TypeDetailPageProps> = ({ typeDetail, onBack, onS
         </div>
 
         {/* Wing test invitation if no wing results */}
-        {!wingResult && onStartWingTest && (
+        !wingResult && onStartWingTest && (
           <div className="bg-blue-50 rounded-xl shadow-lg p-8 mb-8 border border-blue-200">
             <div className="text-center mb-6">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
