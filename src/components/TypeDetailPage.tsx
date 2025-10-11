@@ -362,8 +362,8 @@ const TypeDetailPage: React.FC<TypeDetailPageProps> = ({ typeDetail, onBack, onS
               {showExamples && (
                 <>
                   <p className="text-blue-700 text-sm mb-4">
-                    Din {typeDetail.type} har to "naboer" på Enneagram-cirklen, som kaldes <strong>vinger</strong>.
-                    Disse vinger blander sig med din grundtype og skaber en mere nuanceret og præcis beskrivelse af din personlighed.
+                    {typeDetail.type} har, som de andre typer, to "naboer" på Enneagram-cirklen, som kaldes <strong>vinger</strong>.
+                    Disse vinger blander sig med grundtypen og skaber en mere nuanceret og præcis beskrivelse af typens personlighed. Hvis du mistænker at du kunne være {typeDetail.type} kan du udfylde 10 specifikke spørgsmål for denne type.
                   </p>
                   <p className="text-blue-700 text-sm mb-4">
                     {getWingExplanationForType(typeDetail.type)}
@@ -371,9 +371,9 @@ const TypeDetailPage: React.FC<TypeDetailPageProps> = ({ typeDetail, onBack, onS
                   <div className="bg-blue-50 rounded-lg p-4">
                     <h5 className="font-semibold text-blue-800 mb-2">Hvad kan du forvente?</h5>
                     <ul className="space-y-1 text-sm text-blue-700">
-                      <li>• 10 spørgsmål der sammenligner hvordan du bruger dine to vinger</li>
-                      <li>• En detaljeret beskrivelse af din dominerende vinge</li>
-                      <li>• Forståelse af hvordan vingerne nuancerer din {typeDetail.type} personlighed</li>
+                      <li>• 10 specifikke spørgsmål for {typeDetail.type} der sammenligner hvordan typen bruger de to vinger</li>
+                      <li>• En detaljeret beskrivelse af den dominerende vinge</li>
+                      <li>• Forståelse af hvordan vingerne nuancerer {typeDetail.type}'ens personlighed</li>
                       <li>• Tager kun 3-5 minutter at gennemføre</li>
                     </ul>
                   </div>
