@@ -342,7 +342,7 @@ const TypeDetailPage: React.FC<TypeDetailPageProps> = ({ typeDetail, onBack, onS
                 Vil du vide endnu mere om {typeDetail.type}?
               </h3>
               <p className="text-blue-700">
-                Hvis du tror at du er denne type kan du udforske dine Enneagram-vinger for en endnu mere præcis personlighedsprofil
+                Hvis du tror at du er denne type, kan du udforske dine Enneagram-vinger for en endnu mere præcis personlighedsprofil
               </p>
             </div>
             
