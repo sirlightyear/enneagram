@@ -4,12 +4,12 @@ import { enneagramQuestions } from '../data/questions';
 
 // URL state management functions
 const encodeResponses = (responses: UserResponse[]): string => {
-  return btoa(JSON.stringify(responses));
+  return JSON.stringify(responses);
 };
 
 const decodeResponses = (encoded: string): UserResponse[] => {
   try {
-    return JSON.parse(atob(encoded));
+    return JSON.parse(encoded);
   } catch {
     return [];
   }
@@ -18,10 +18,10 @@ const decodeResponses = (encoded: string): UserResponse[] => {
 const updateURL = (responses: UserResponse[], wingResponses?: any[]) => {
   const params = new URLSearchParams();
   if (responses.length > 0) {
-    params.set('responses', encodeResponses(responses));
+    params.set('r', encodeResponses(responses));
   }
   if (wingResponses && wingResponses.length > 0) {
-    params.set('wingResponses', btoa(JSON.stringify(wingResponses)));
+    params.set('w', JSON.stringify(wingResponses));
   }
   const newURL = `${window.location.pathname}${params.toString() ? '?' + params.toString() : ''}`;
   window.history.replaceState({}, '', newURL);
@@ -29,13 +29,37 @@ const updateURL = (responses: UserResponse[], wingResponses?: any[]) => {
 
 const loadFromURL = () => {
   const params = new URLSearchParams(window.location.search);
-  const responsesParam = params.get('responses');
-  const wingResponsesParam = params.get('wingResponses');
-  
-  return {
-    responses: responsesParam ? decodeResponses(responsesParam) : [],
-    wingResponses: wingResponsesParam ? JSON.parse(atob(wingResponsesParam)) : []
-  };
+  const responsesParam = params.get('r') || params.get('responses');
+  const wingResponsesParam = params.get('w') || params.get('wingResponses');
+
+  let responses: UserResponse[] = [];
+  let wingResponses: any[] = [];
+
+  if (responsesParam) {
+    try {
+      responses = JSON.parse(responsesParam);
+    } catch {
+      try {
+        responses = JSON.parse(atob(responsesParam));
+      } catch {
+        responses = [];
+      }
+    }
+  }
+
+  if (wingResponsesParam) {
+    try {
+      wingResponses = JSON.parse(wingResponsesParam);
+    } catch {
+      try {
+        wingResponses = JSON.parse(atob(wingResponsesParam));
+      } catch {
+        wingResponses = [];
+      }
+    }
+  }
+
+  return { responses, wingResponses };
 };
 
 export const useEnneagramTest = () => {

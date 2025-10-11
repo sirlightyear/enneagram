@@ -52,7 +52,7 @@ function App() {
   // Use useMemo so it recalculates on every render based on current URL
   const hasUrlResults = React.useMemo(() => {
     const params = new URLSearchParams(window.location.search);
-    return params.has('responses');
+    return params.has('r') || params.has('responses');
   }, [window.location.search]);
 
   React.useEffect(() => {

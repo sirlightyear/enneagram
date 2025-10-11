@@ -24,6 +24,11 @@ interface TypeDetailPageProps {
 
 const TypeDetailPage: React.FC<TypeDetailPageProps> = ({ typeDetail, onBack, onStartWingTest, wingResult }) => {
   const [showExamples, setShowExamples] = useState(false);
+
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-8 px-4">
       <div className="max-w-4xl mx-auto">

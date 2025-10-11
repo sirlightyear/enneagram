@@ -118,7 +118,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
     // Create URL that goes directly to results page with current data
     const params = new URLSearchParams();
     if (responses && responses.length > 0) {
-      params.set('responses', btoa(JSON.stringify(responses)));
+      params.set('r', JSON.stringify(responses));
     }
     if (wingResults) {
       // Add wing results to URL
@@ -126,10 +126,10 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
         questionIndex: index,
         selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
       }));
-      params.set('wingResponses', btoa(JSON.stringify(wingResponses)));
+      params.set('w', JSON.stringify(wingResponses));
     }
     if (selfIdentifiedType) {
-      params.set('selfType', selfIdentifiedType);
+      params.set('s', selfIdentifiedType);
     }
     const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
 
@@ -164,17 +164,17 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
     // Create URL for sharing
     const params = new URLSearchParams();
     if (responses && responses.length > 0) {
-      params.set('responses', btoa(JSON.stringify(responses)));
+      params.set('r', JSON.stringify(responses));
     }
     if (wingResults) {
       const wingResponses = wingResults.testData.questions.map((_, index) => ({
         questionIndex: index,
         selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
       }));
-      params.set('wingResponses', btoa(JSON.stringify(wingResponses)));
+      params.set('w', JSON.stringify(wingResponses));
     }
     if (selfIdentifiedType) {
-      params.set('selfType', selfIdentifiedType);
+      params.set('s', selfIdentifiedType);
     }
     const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
 
@@ -319,16 +319,16 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   React.useEffect(() => {
     if (showReviewAnswers && editedResponses.length > 0) {
       const params = new URLSearchParams();
-      params.set('responses', btoa(JSON.stringify(editedResponses)));
+      params.set('r', JSON.stringify(editedResponses));
       if (wingResults) {
         const wingResponses = wingResults.testData.questions.map((_, index) => ({
           questionIndex: index,
           selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
         }));
-        params.set('wingResponses', btoa(JSON.stringify(wingResponses)));
+        params.set('w', JSON.stringify(wingResponses));
       }
       if (selfIdentifiedType) {
-        params.set('selfType', selfIdentifiedType);
+        params.set('s', selfIdentifiedType);
       }
       window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
     }
@@ -1142,17 +1142,17 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
             {(() => {
               const params = new URLSearchParams();
               if (responses && responses.length > 0) {
-                params.set('responses', btoa(JSON.stringify(responses)));
+                params.set('r', JSON.stringify(responses));
               }
               if (wingResults) {
                 const wingResponses = wingResults.testData.questions.map((_, index) => ({
                   questionIndex: index,
                   selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
                 }));
-                params.set('wingResponses', btoa(JSON.stringify(wingResponses)));
+                params.set('w', JSON.stringify(wingResponses));
               }
               if (selfIdentifiedType) {
-                params.set('selfType', selfIdentifiedType);
+                params.set('s', selfIdentifiedType);
               }
               return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
             })()}

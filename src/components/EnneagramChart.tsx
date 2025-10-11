@@ -5,6 +5,18 @@ interface EnneagramChartProps {
   results: TestResult[];
 }
 
+const typeDescriptions: Record<string, { title: string }> = {
+  'Type 1': { title: 'Perfektionisten' },
+  'Type 2': { title: 'Hjælperen' },
+  'Type 3': { title: 'Præstationsorienterede' },
+  'Type 4': { title: 'Individualisten' },
+  'Type 5': { title: 'Undersøgeren' },
+  'Type 6': { title: 'Loyalisten' },
+  'Type 7': { title: 'Entusiasten' },
+  'Type 8': { title: 'Udfordreren' },
+  'Type 9': { title: 'Fredsmageren' }
+};
+
 const EnneagramChart: React.FC<EnneagramChartProps> = ({ results }) => {
   // Sort results by type number for consistent positioning
   const sortedResults = [...results].sort((a, b) => {
@@ -123,18 +135,26 @@ const EnneagramChart: React.FC<EnneagramChartProps> = ({ results }) => {
       </svg>
       
       {/* Legend */}
-      <div className="grid grid-cols-3 gap-2 text-xs">
-        {sortedResults.slice(0, 9).map((result, index) => (
-          <div key={result.type} className="flex items-center">
-            <div 
-              className="w-3 h-3 rounded-full mr-2 flex-shrink-0"
-              style={{ backgroundColor: typeColors[index] }}
-            />
-            <span className="text-gray-700">
-              {result.type.replace('Type ', '')}: {result.percentage}%
-            </span>
-          </div>
-        ))}
+      <div className="grid grid-cols-1 gap-2 text-xs max-w-md">
+        {sortedResults.slice(0, 9).map((result, index) => {
+          const typeInfo = typeDescriptions[result.type];
+          return (
+            <div key={result.type} className="flex items-center justify-between">
+              <div className="flex items-center flex-1 min-w-0">
+                <div
+                  className="w-3 h-3 rounded-full mr-2 flex-shrink-0"
+                  style={{ backgroundColor: typeColors[index] }}
+                />
+                <span className="text-gray-700 truncate">
+                  {result.type.replace('Type ', '')} {typeInfo.title}
+                </span>
+              </div>
+              <span className="text-gray-600 ml-2 flex-shrink-0">
+                {result.percentage}%
+              </span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
