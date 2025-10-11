@@ -326,7 +326,7 @@ const TypeDetailPage: React.FC<TypeDetailPageProps> = ({ typeDetail, onBack, onS
           <p className="text-gray-700">{typeDetail.relationships.developmentChallenge}</p>
         </div>
 
-        {/* Wing test invitation if no wing results */}
+        {/* Wing test invitation if no wing results }
         {!wingResult && onStartWingTest && (
           <div className="bg-blue-50 rounded-xl shadow-lg p-8 mb-8 border border-blue-200">
             <div className="text-center mb-6">
@@ -334,7 +334,7 @@ const TypeDetailPage: React.FC<TypeDetailPageProps> = ({ typeDetail, onBack, onS
                 <span className="text-2xl">🪶</span>
               </div>
               <h3 className="text-xl font-semibold text-blue-800 mb-2">
-                Vil du vide endnu mere om din {typeDetail.type}?
+                Vil du vide endnu mere om {typeDetail.type}?
               </h3>
               <p className="text-blue-700">
                 Opdag dine Enneagram-vinger for en endnu mere præcis personlighedsprofil
@@ -387,7 +387,7 @@ const TypeDetailPage: React.FC<TypeDetailPageProps> = ({ typeDetail, onBack, onS
             </div>
           </div>
         )}
-
+*/
         {/* Back button */}
         <div className="text-center">
           <button
