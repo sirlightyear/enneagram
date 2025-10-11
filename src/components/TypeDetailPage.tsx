@@ -385,9 +385,9 @@ const TypeDetailPage: React.FC<TypeDetailPageProps> = ({ typeDetail, onBack, onS
                 <span className="ml-2">✨</span>
               </button>
             </div>
-          </div>
+          </div>*/
         )}
-*/
+
         {/* Back button */}
         <div className="text-center">
           <button
