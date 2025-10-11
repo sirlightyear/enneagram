@@ -373,7 +373,7 @@ const TypeDetailPage: React.FC<TypeDetailPageProps> = ({ typeDetail, onBack, onS
                     </ul>
                   </div>
                 </>
-              )*}
+              )}
             </div>
             
             <div className="text-center">
