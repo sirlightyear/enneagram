@@ -7,7 +7,6 @@ interface IntroPageProps {
 
 const IntroPage: React.FC<IntroPageProps> = ({ onStart }) => {
   const [showKrusoDetails, setShowKrusoDetails] = useState(false);
-  const [showEnneagramDetails, setShowEnneagramDetails] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
@@ -26,7 +25,7 @@ const IntroPage: React.FC<IntroPageProps> = ({ onStart }) => {
             <p className="text-xl md:text-2xl text-gray-600 mb-6">
               Forstå dig selv og dine kolleger bedre
             </p>
-            <div className="flex items-center justify-center gap-2 text-gray-600">
+            <div className="flex flex-wrap items-center justify-center gap-2 text-sm md:text-base text-gray-600">
               <CheckCircle2 className="w-5 h-5 text-green-500" />
               <span>10-15 minutter</span>
               <span className="text-gray-400">•</span>
@@ -36,23 +35,6 @@ const IntroPage: React.FC<IntroPageProps> = ({ onStart }) => {
               <CheckCircle2 className="w-5 h-5 text-green-500" />
               <span>Detaljeret analyse</span>
             </div>
-          </div>
-
-          {/* Quick Start CTA */}
-          <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl shadow-2xl p-8 mb-6 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-              Klar til at opdage din personlighedstype?
-            </h2>
-            <p className="text-indigo-100 mb-6 text-lg">
-              Tag testen nu og få indsigt i hvad der driver dig
-            </p>
-            <button
-              onClick={onStart}
-              className="inline-flex items-center px-8 py-4 bg-white text-indigo-600 font-bold text-lg rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-            >
-              Start testen nu
-              <ArrowRight className="w-6 h-6 ml-2" />
-            </button>
           </div>
 
           {/* Kruso intro - Collapsible */}
@@ -98,65 +80,50 @@ const IntroPage: React.FC<IntroPageProps> = ({ onStart }) => {
             )}
           </div>
 
-          {/* Enneagram intro - Collapsible */}
-          <div className="bg-white rounded-xl shadow-lg mb-6 overflow-hidden">
-            <button
-              onClick={() => setShowEnneagramDetails(!showEnneagramDetails)}
-              className="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors"
-            >
-              <div className="flex items-center">
-                <Brain className="w-6 h-6 text-indigo-600 mr-3" />
-                <h2 className="text-xl font-bold text-gray-800">Om Enneagram og sådan tager du testen</h2>
-              </div>
-              {showEnneagramDetails ? (
-                <ChevronUp className="w-5 h-5 text-gray-400" />
-              ) : (
-                <ChevronDown className="w-5 h-5 text-gray-400" />
-              )}
-            </button>
+          {/* Enneagram intro - Always visible */}
+          <div className="bg-white rounded-xl shadow-lg mb-6 p-6">
+            <div className="flex items-center mb-4">
+              <Brain className="w-6 h-6 text-indigo-600 mr-3" />
+              <h2 className="text-xl font-bold text-gray-800">Om Enneagram</h2>
+            </div>
+            <p className="text-gray-700 mb-4">
+              Enneagrammet er et kraftfuldt system til at forstå personlighed og motivation. Det beskriver
+              ni forskellige personlighedstyper, hver med deres unikke måde at se verden på, deres drivkraft
+              og deres udfordringer.
+            </p>
 
-            {showEnneagramDetails && (
-              <div className="px-6 pb-6 text-gray-700 space-y-4 border-t border-gray-100 pt-4">
-                <p>
-                  Enneagrammet er et kraftfuldt system til at forstå personlighed og motivation. Det beskriver
-                  ni forskellige personlighedstyper, hver med deres unikke måde at se verden på, deres drivkraft
-                  og deres udfordringer.
-                </p>
-
-                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
-                  <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
-                    <CheckCircle2 className="w-5 h-5 text-yellow-600 mr-2" />
-                    Sådan tager du testen:
-                  </h3>
-                  <ul className="space-y-2 text-sm">
-                    <li className="flex items-start">
-                      <span className="w-2 h-2 bg-yellow-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                      <span><strong>Læs og svar på testen selv</strong> – uden at spørge andre om råd</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="w-2 h-2 bg-yellow-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                      <span><strong>Overvej ikke for længe</strong> – lyt til din umiddelbare mavefornemmelse</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="w-2 h-2 bg-yellow-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                      <span><strong>Svar på hvordan du ER</strong> – ikke hvem du måtte ønske at være. Man kan ikke svare forkert</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="w-2 h-2 bg-yellow-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                      <span><strong>Tænk på dit liv som helhed</strong> – ikke kun din arbejdskontekst. Du er både dit arbejds- og privatliv</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="w-2 h-2 bg-yellow-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                      <span><strong>Vær ærlig</strong> og tænk på hvordan du er/har været det meste af dit liv – også hvis du har været igennem selvudvikling</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="w-2 h-2 bg-yellow-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                      <span><strong>Vælg et tidspunkt</strong> hvor du uforstyrret kan gennemføre testen</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            )}
+            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
+              <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
+                <CheckCircle2 className="w-5 h-5 text-yellow-600 mr-2" />
+                Sådan tager du testen:
+              </h3>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-start">
+                  <span className="w-2 h-2 bg-yellow-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                  <span><strong>Læs og svar på testen selv</strong> – uden at spørge andre om råd</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="w-2 h-2 bg-yellow-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                  <span><strong>Overvej ikke for længe</strong> – lyt til din umiddelbare mavefornemmelse</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="w-2 h-2 bg-yellow-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                  <span><strong>Svar på hvordan du ER</strong> – ikke hvem du måtte ønske at være. Man kan ikke svare forkert</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="w-2 h-2 bg-yellow-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                  <span><strong>Tænk på dit liv som helhed</strong> – ikke kun din arbejdskontekst. Du er både dit arbejds- og privatliv</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="w-2 h-2 bg-yellow-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                  <span><strong>Vær ærlig</strong> og tænk på hvordan du er/har været det meste af dit liv – også hvis du har været igennem selvudvikling</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="w-2 h-2 bg-yellow-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                  <span><strong>Vælg et tidspunkt</strong> hvor du uforstyrret kan gennemføre testen</span>
+                </li>
+              </ul>
+            </div>
           </div>
 
           {/* Bottom CTA */}
