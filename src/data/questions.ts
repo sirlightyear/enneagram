@@ -78,7 +78,14 @@ const baseQuestions: EnneagramQuestion[] = [
 { type: "Type 2", question: "Jeg bliver påvirket, når min hjælp ikke bliver værdsat.", example1: "Du trækker dig, når folk tager dig for givet.", example2: "Du bliver frustreret, når din indsats ikke bliver bemærket.", example3: "Du føler dig usynlig, når ingen reagerer på din støtte." },
 { type: "Type 1", question: "Jeg lægger mærke til, når noget kunne forbedres – også når andre ikke gør.", example1: "Du bemærker små fejl i præsentationer, som andre overser.", example2: "Du retter op på uorden, selv når det ikke er dit ansvar.", example3: "Du ser straks, når noget ikke lever op til dine standarder." },
 { type: "Type 9", question: "Jeg har svært ved at udtrykke vrede direkte.", example1: "Du trækker dig tilbage, når du er irriteret.", example2: "Du lader frustrationen bygge op indeni.", example3: "Du udtrykker utilfredshed indirekte eller passivt." },
-{ type: "Type 8", question: "Jeg er konkurrencepræget og vil gerne vinde – også i små ting.", example1: "Du giver ikke op, før du har nået dit mål.", example2: "Du ser udfordringer som noget, der skal overkommes.", example3: "Du trives i konkurrencesituationer og vil være den bedste." },
+
+{
+  type: "Type 8",
+  question: "Jeg føler mig mest levende, når jeg overvinder modstand og tager styringen.",
+  example1: "Du opsøger udfordringer, hvor du kan vise styrke og handlekraft.",
+  example2: "Du har svært ved at acceptere at blive kontrolleret eller sat i skyggen."
+}
+
 { type: "Type 5", question: "Jeg trækker mig, når kravene fra omgivelserne bliver for store.", example1: "Du bliver træt, hvis for mange henvender sig på én gang.", example2: "Du har brug for pauser efter intense møder.", example3: "Du lukker af, når du føler dig overvældet." },
 { type: "Type 9", question: "Jeg har en tendens til at gå på autopilot og følge vaner.", example1: "Du følger dine rutiner uden at tænke over det.", example2: "Du mister overblikket over tiden, når du laver det samme.", example3: "Du falder ind i komfortable mønstre og vaner." },
 { type: "Type 5", question: "Jeg observerer ofte mere, end jeg deltager.", example1: "Du lytter mere end du taler i grupper.", example2: "Du studerer sociale dynamikker fra sidelinjen.", example3: "Du analyserer situationer, før du engagerer dig." },
