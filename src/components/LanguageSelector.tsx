@@ -10,7 +10,7 @@ const languages = [
   { code: 'da', name: 'Dansk', flag: '🇩🇰' },
   { code: 'en', name: 'English', flag: '🇬🇧' },
   { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
-  { code: 'sv', name: 'Svenska', flag: '🇸🇪' },
+  { code: 'se', name: 'Svenska', flag: '🇸🇪' },
   { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
   { code: 'uk', name: 'Українська', flag: '🇺🇦' }
 ];

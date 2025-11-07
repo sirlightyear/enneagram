@@ -1,6 +1,11 @@
 import { useState, useCallback, useEffect } from 'react';
 import { UserResponse, TestResult } from '../types/enneagram';
 import { enneagramQuestions } from '../data/questions';
+import { enneagramQuestions as enneagramQuestions_en } from '../data/questions_en';
+import { enneagramQuestions as enneagramQuestions_de } from '../data/questions_de';
+import { enneagramQuestions as enneagramQuestions_se } from '../data/questions_se';
+import { enneagramQuestions as enneagramQuestions_nl } from '../data/questions_nl';
+import { enneagramQuestions as enneagramQuestions_uk } from '../data/questions_uk';
 
 // URL state management functions
 const encodeResponses = (responses: UserResponse[]): string => {
@@ -62,7 +67,19 @@ const loadFromURL = () => {
   return { responses, wingResponses };
 };
 
-export const useEnneagramTest = () => {
+const getQuestionsForLanguage = (language: string) => {
+  switch (language) {
+    case 'en': return enneagramQuestions_en;
+    case 'de': return enneagramQuestions_de;
+    case 'se': return enneagramQuestions_se;
+    case 'nl': return enneagramQuestions_nl;
+    case 'uk': return enneagramQuestions_uk;
+    default: return enneagramQuestions;
+  }
+};
+
+export const useEnneagramTest = (language: string = 'da') => {
+  const questions = getQuestionsForLanguage(language);
   const [showIntro, setShowIntro] = useState(true);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [responses, setResponses] = useState<UserResponse[]>(() => {
@@ -79,12 +96,12 @@ export const useEnneagramTest = () => {
       setResponses(urlData.responses);
       
       // If all questions are answered, mark as complete
-      if (urlData.responses.length === enneagramQuestions.length) {
+      if (urlData.responses.length === questions.length) {
         setIsComplete(true);
       } else {
         // Set current question to first unanswered
         const answeredQuestions = urlData.responses.map(r => r.questionIndex);
-        const firstUnanswered = Array.from({length: enneagramQuestions.length}, (_, i) => i)
+        const firstUnanswered = Array.from({length: questions.length}, (_, i) => i)
           .find(i => !answeredQuestions.includes(i));
         if (firstUnanswered !== undefined) {
           setCurrentQuestionIndex(firstUnanswered);
@@ -93,8 +110,8 @@ export const useEnneagramTest = () => {
     }
   }, []);
 
-  const currentQuestion = enneagramQuestions[currentQuestionIndex];
-  const totalQuestions = enneagramQuestions.length;
+  const currentQuestion = questions[currentQuestionIndex];
+  const totalQuestions = questions.length;
 
   const answerQuestion = useCallback((rating: number) => {
     const newResponse: UserResponse = {
@@ -115,7 +132,7 @@ export const useEnneagramTest = () => {
 
   // Update URL when responses change - but only if test is complete
   useEffect(() => {
-    if (isComplete && responses.length === enneagramQuestions.length) {
+    if (isComplete && responses.length === questions.length) {
       updateURL(responses);
     }
   }, [responses, isComplete]);
@@ -139,7 +156,7 @@ export const useEnneagramTest = () => {
     const typeCounts: Record<string, number> = {};
 
     // Initialize scores
-    enneagramQuestions.forEach(q => {
+    questions.forEach(q => {
      if (!q) return; // Skip undefined questions
       if (!typeScores[q.type]) {
         typeScores[q.type] = 0;
@@ -161,7 +178,7 @@ export const useEnneagramTest = () => {
 
     // Calculate scores
     responses.forEach(response => {
-      const question = enneagramQuestions[response.questionIndex];
+      const question = questions[response.questionIndex];
      if (!question) return; // Skip if question is undefined
       typeScores[question.type] += getPointsForRating(response.rating);
       typeCounts[question.type]++;
@@ -193,8 +210,8 @@ export const useEnneagramTest = () => {
   const startTest = useCallback(() => {
     setShowIntro(false);
     // Store questions for debug purposes
-    localStorage.setItem('enneagram_questions', JSON.stringify(enneagramQuestions));
-  }, []);
+    localStorage.setItem('enneagram_questions', JSON.stringify(questions));
+  }, [questions]);
 
   const getCurrentRating = useCallback(() => {
     const response = responses.find(r => r.questionIndex === currentQuestionIndex);

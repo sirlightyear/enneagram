@@ -12,6 +12,11 @@ import { useEnneagramTest } from './hooks/useEnneagramTest';
 import LanguageSelector from './components/LanguageSelector';
 
 function App() {
+  const [language, setLanguage] = React.useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('lang') || 'da';
+  });
+
   // All hooks must be called at the top level, before any conditional returns
   const {
     showIntro,
@@ -29,15 +34,11 @@ function App() {
     restart,
     getCurrentRating,
     responses
-  } = useEnneagramTest();
+  } = useEnneagramTest(language);
 
   const [showEmailCapture, setShowEmailCapture] = React.useState(false);
   const [userEmail, setUserEmail] = React.useState('');
   const [isDebugMode, setIsDebugMode] = React.useState(false);
-  const [language, setLanguage] = React.useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('lang') || 'da';
-  });
 
   // Listen for debug mode event
   React.useEffect(() => {
@@ -184,6 +185,7 @@ function App() {
       canGoNext={canGoNext}
       canGoPrevious={canGoPrevious}
       currentRating={getCurrentRating()}
+      language={language}
     />
   );
 }

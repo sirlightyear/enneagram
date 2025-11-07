@@ -12,6 +12,7 @@ interface QuestionCardProps {
   canGoNext: boolean;
   canGoPrevious: boolean;
   currentRating?: number;
+  language?: string;
 }
 
 const QuestionCard: React.FC<QuestionCardProps> = ({
@@ -23,7 +24,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   onPrevious,
   canGoNext,
   canGoPrevious,
-  currentRating
+  currentRating,
+  language = 'da'
 }) => {
   const [showExamples, setShowExamples] = React.useState(false);
 
@@ -41,13 +43,127 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
     };
   }, [canGoNext, onNext]);
 
-  const ratings = [
-    { value: 1, label: 'Passer slet ikke' },
-    { value: 2, label: 'Passer ikke særlig godt' },
-    { value: 3, label: 'Passer nogenlunde' },
-    { value: 4, label: 'Passer godt' },
-    { value: 5, label: 'Passer meget godt' }
-  ];
+  const getRatings = () => {
+    switch (language) {
+      case 'en':
+        return [
+          { value: 1, label: 'Does not fit at all' },
+          { value: 2, label: 'Does not fit very well' },
+          { value: 3, label: 'Fits somewhat' },
+          { value: 4, label: 'Fits well' },
+          { value: 5, label: 'Fits very well' }
+        ];
+      case 'de':
+        return [
+          { value: 1, label: 'Passt überhaupt nicht' },
+          { value: 2, label: 'Passt nicht besonders gut' },
+          { value: 3, label: 'Passt einigermaßen' },
+          { value: 4, label: 'Passt gut' },
+          { value: 5, label: 'Passt sehr gut' }
+        ];
+      case 'se':
+        return [
+          { value: 1, label: 'Stämmer inte alls' },
+          { value: 2, label: 'Stämmer inte särskilt bra' },
+          { value: 3, label: 'Stämmer ganska bra' },
+          { value: 4, label: 'Stämmer bra' },
+          { value: 5, label: 'Stämmer mycket bra' }
+        ];
+      case 'nl':
+        return [
+          { value: 1, label: 'Past helemaal niet' },
+          { value: 2, label: 'Past niet erg goed' },
+          { value: 3, label: 'Past enigszins' },
+          { value: 4, label: 'Past goed' },
+          { value: 5, label: 'Past heel goed' }
+        ];
+      case 'uk':
+        return [
+          { value: 1, label: 'Зовсім не підходить' },
+          { value: 2, label: 'Не дуже підходить' },
+          { value: 3, label: 'Підходить більш-менш' },
+          { value: 4, label: 'Підходить добре' },
+          { value: 5, label: 'Підходить дуже добре' }
+        ];
+      default:
+        return [
+          { value: 1, label: 'Passer slet ikke' },
+          { value: 2, label: 'Passer ikke særlig godt' },
+          { value: 3, label: 'Passer nogenlunde' },
+          { value: 4, label: 'Passer godt' },
+          { value: 5, label: 'Passer meget godt' }
+        ];
+    }
+  };
+
+  const ratings = getRatings();
+
+  const getTexts = () => {
+    switch (language) {
+      case 'en':
+        return {
+          questionOf: 'Question',
+          of: 'of',
+          showExamples: 'Show examples',
+          hideExamples: 'Hide examples',
+          previous: 'Previous',
+          next: 'Next',
+          finish: 'Finish'
+        };
+      case 'de':
+        return {
+          questionOf: 'Frage',
+          of: 'von',
+          showExamples: 'Beispiele anzeigen',
+          hideExamples: 'Beispiele ausblenden',
+          previous: 'Zurück',
+          next: 'Weiter',
+          finish: 'Fertig'
+        };
+      case 'se':
+        return {
+          questionOf: 'Fråga',
+          of: 'av',
+          showExamples: 'Visa exempel',
+          hideExamples: 'Dölj exempel',
+          previous: 'Föregående',
+          next: 'Nästa',
+          finish: 'Klar'
+        };
+      case 'nl':
+        return {
+          questionOf: 'Vraag',
+          of: 'van',
+          showExamples: 'Toon voorbeelden',
+          hideExamples: 'Verberg voorbeelden',
+          previous: 'Vorige',
+          next: 'Volgende',
+          finish: 'Voltooien'
+        };
+      case 'uk':
+        return {
+          questionOf: 'Питання',
+          of: 'з',
+          showExamples: 'Показати приклади',
+          hideExamples: 'Сховати приклади',
+          previous: 'Назад',
+          next: 'Далі',
+          finish: 'Завершити'
+        };
+      default:
+        return {
+          questionOf: 'Spørgsmål',
+          of: 'af',
+          showExamples: 'Se eksempler på hvad der menes',
+          hideExamples: 'Skjul eksempler',
+          previous: 'Forrige',
+          next: 'Næste',
+          finish: 'Afslut'
+        };
+    }
+  };
+
+  const texts = getTexts();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-4 px-4">
@@ -62,7 +178,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
       <div className="mb-6">
         <div className="flex justify-between items-center mb-4">
           <span className="text-sm font-medium text-indigo-600">
-            Spørgsmål {questionNumber} af {totalQuestions}
+            {texts.questionOf} {questionNumber} {texts.of} {totalQuestions}
           </span>
           <div className="w-32 bg-gray-200 rounded-full h-2">
             <div 
@@ -81,7 +197,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           className="inline-flex items-center text-sm text-indigo-600 hover:text-indigo-800 mb-4"
         >
           <HelpCircle className="w-4 h-4 mr-1" />
-          {showExamples ? 'Skjul eksempler' : 'Se eksempler på hvad der menes'}
+          {showExamples ? texts.hideExamples : texts.showExamples}
         </button>
         
         {showExamples && (
@@ -146,7 +262,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           }`}
         >
           <ChevronLeft className="w-4 h-4 mr-1" />
-          Forrige
+          {texts.previous}
         </button>
 
         <button
@@ -158,7 +274,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >
-          {questionNumber === totalQuestions ? 'Afslut test' : 'Næste'}
+          {questionNumber === totalQuestions ? texts.finish : texts.next}
           <ChevronRight className="w-4 h-4 ml-1" />
         </button>
       </div>
