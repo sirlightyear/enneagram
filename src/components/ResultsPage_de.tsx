@@ -452,6 +452,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   if (showWingTestIntro) {
     return (
       <WingTestIntro_de primaryType={topResult.type}
+        language={language}
         onStart={() => {
           setShowWingTestIntro(false);
           setShowWingTest(true);
@@ -477,6 +478,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
         canGoPrevious={canGoPreviousWing}
         currentResponse={getCurrentWingResponse()}
         primaryType={topResult.type}
+        language={language}
       />
     );
   }
@@ -772,7 +774,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
             <div className="flex-shrink-0 lg:w-80 no-print">
               <div className="bg-gray-50 rounded-lg p-6">
                 <h4 className="text-lg font-semibold text-gray-800 mb-4 text-center">Ihre Ergebnisse</h4>
-                <EnneagramChart results={results} />
+                <EnneagramChart results={results} language={language} />
               </div>
             </div>
           </div>

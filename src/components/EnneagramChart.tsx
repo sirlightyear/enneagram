@@ -3,21 +3,88 @@ import { TestResult } from '../types/enneagram';
 
 interface EnneagramChartProps {
   results: TestResult[];
+  language?: string;
 }
 
-const typeDescriptions: Record<string, { title: string }> = {
-  'Type 1': { title: 'Perfektionisten' },
-  'Type 2': { title: 'Hjælperen' },
-  'Type 3': { title: 'Præstationsorienterede' },
-  'Type 4': { title: 'Individualisten' },
-  'Type 5': { title: 'Undersøgeren' },
-  'Type 6': { title: 'Loyalisten' },
-  'Type 7': { title: 'Entusiasten' },
-  'Type 8': { title: 'Udfordreren' },
-  'Type 9': { title: 'Fredsmageren' }
+const getTypeDescriptions = (language: string = 'da'): Record<string, { title: string }> => {
+  switch (language) {
+    case 'en':
+      return {
+        'Type 1': { title: 'The Perfectionist' },
+        'Type 2': { title: 'The Helper' },
+        'Type 3': { title: 'The Achiever' },
+        'Type 4': { title: 'The Individualist' },
+        'Type 5': { title: 'The Investigator' },
+        'Type 6': { title: 'The Loyalist' },
+        'Type 7': { title: 'The Enthusiast' },
+        'Type 8': { title: 'The Challenger' },
+        'Type 9': { title: 'The Peacemaker' }
+      };
+    case 'de':
+      return {
+        'Type 1': { title: 'Der Perfektionist' },
+        'Type 2': { title: 'Der Helfer' },
+        'Type 3': { title: 'Der Leistungsträger' },
+        'Type 4': { title: 'Der Individualist' },
+        'Type 5': { title: 'Der Forscher' },
+        'Type 6': { title: 'Der Loyalist' },
+        'Type 7': { title: 'Der Enthusiast' },
+        'Type 8': { title: 'Der Herausforderer' },
+        'Type 9': { title: 'Der Friedensstifter' }
+      };
+    case 'se':
+      return {
+        'Type 1': { title: 'Perfektionisten' },
+        'Type 2': { title: 'Hjälparen' },
+        'Type 3': { title: 'Prestationsinriktade' },
+        'Type 4': { title: 'Individualisten' },
+        'Type 5': { title: 'Forskaren' },
+        'Type 6': { title: 'Lojala' },
+        'Type 7': { title: 'Entusiasten' },
+        'Type 8': { title: 'Utmanaren' },
+        'Type 9': { title: 'Fredsskaparen' }
+      };
+    case 'nl':
+      return {
+        'Type 1': { title: 'De Perfectionist' },
+        'Type 2': { title: 'De Helper' },
+        'Type 3': { title: 'De Presteerder' },
+        'Type 4': { title: 'De Individualist' },
+        'Type 5': { title: 'De Onderzoeker' },
+        'Type 6': { title: 'De Loyalist' },
+        'Type 7': { title: 'De Enthousiasteling' },
+        'Type 8': { title: 'De Uitdager' },
+        'Type 9': { title: 'De Vredestichter' }
+      };
+    case 'uk':
+      return {
+        'Type 1': { title: 'Перфекціоніст' },
+        'Type 2': { title: 'Помічник' },
+        'Type 3': { title: 'Досягач' },
+        'Type 4': { title: 'Індивідуаліст' },
+        'Type 5': { title: 'Дослідник' },
+        'Type 6': { title: 'Лояліст' },
+        'Type 7': { title: 'Ентузіаст' },
+        'Type 8': { title: 'Кидач виклику' },
+        'Type 9': { title: 'Миротворець' }
+      };
+    default:
+      return {
+        'Type 1': { title: 'Perfektionisten' },
+        'Type 2': { title: 'Hjælperen' },
+        'Type 3': { title: 'Præstationsorienterede' },
+        'Type 4': { title: 'Individualisten' },
+        'Type 5': { title: 'Undersøgeren' },
+        'Type 6': { title: 'Loyalisten' },
+        'Type 7': { title: 'Entusiasten' },
+        'Type 8': { title: 'Udfordreren' },
+        'Type 9': { title: 'Fredsmageren' }
+      };
+  }
 };
 
-const EnneagramChart: React.FC<EnneagramChartProps> = ({ results }) => {
+const EnneagramChart: React.FC<EnneagramChartProps> = ({ results, language = 'da' }) => {
+  const typeDescriptions = getTypeDescriptions(language);
   // Sort results by type number for consistent positioning
   const sortedResults = [...results].sort((a, b) => {
     const getTypeNumber = (type: string) => parseInt(type.replace('Type ', ''));

@@ -773,7 +773,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
             <div className="flex-shrink-0 lg:w-80 no-print">
               <div className="bg-gray-50 rounded-lg p-6">
                 <h4 className="text-lg font-semibold text-gray-800 mb-4 text-center">Dine resultater</h4>
-                <EnneagramChart results={results} />
+                <EnneagramChart results={results} language={language} />
               </div>
             </div>
           </div>

@@ -13,6 +13,7 @@ interface WingQuestionCardProps {
   canGoPrevious: boolean;
   currentResponse?: string;
   primaryType: string;
+  language?: string;
 }
 
 const WingQuestionCard: React.FC<WingQuestionCardProps> = ({
@@ -25,8 +26,69 @@ const WingQuestionCard: React.FC<WingQuestionCardProps> = ({
   canGoNext,
   canGoPrevious,
   currentResponse,
-  primaryType
+  primaryType,
+  language = 'da'
 }) => {
+  const getTexts = () => {
+    switch (language) {
+      case 'en':
+        return {
+          wingQuestion: 'Wing question',
+          of: 'of',
+          for: 'for',
+          previous: 'Previous',
+          next: 'Next',
+          finish: 'See my wings'
+        };
+      case 'de':
+        return {
+          wingQuestion: 'Flügel-Frage',
+          of: 'von',
+          for: 'für',
+          previous: 'Zurück',
+          next: 'Weiter',
+          finish: 'Meine Flügel sehen'
+        };
+      case 'se':
+        return {
+          wingQuestion: 'Vingfråga',
+          of: 'av',
+          for: 'för',
+          previous: 'Föregående',
+          next: 'Nästa',
+          finish: 'Se mina vingar'
+        };
+      case 'nl':
+        return {
+          wingQuestion: 'Vleugelvraag',
+          of: 'van',
+          for: 'voor',
+          previous: 'Vorige',
+          next: 'Volgende',
+          finish: 'Bekijk mijn vleugels'
+        };
+      case 'uk':
+        return {
+          wingQuestion: 'Питання про крило',
+          of: 'з',
+          for: 'для',
+          previous: 'Назад',
+          next: 'Далі',
+          finish: 'Побачити мої крила'
+        };
+      default:
+        return {
+          wingQuestion: 'Vinge-spørgsmål',
+          of: 'af',
+          for: 'for',
+          previous: 'Forrige',
+          next: 'Næste',
+          finish: 'Se mine vinger'
+        };
+    }
+  };
+
+  const texts = getTexts();
   // Handle Enter key press
   React.useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -54,7 +116,7 @@ const WingQuestionCard: React.FC<WingQuestionCardProps> = ({
         <div className="mb-6">
           <div className="flex justify-between items-center mb-4">
             <span className="text-sm font-medium text-indigo-600">
-              Vinge-spørgsmål {questionNumber} af {totalQuestions} for {primaryType}
+              {texts.wingQuestion} {questionNumber} {texts.of} {totalQuestions} {texts.for} {primaryType}
             </span>
             <div className="w-32 bg-gray-200 rounded-full h-2">
               <div 
@@ -133,7 +195,7 @@ const WingQuestionCard: React.FC<WingQuestionCardProps> = ({
             }`}
           >
             <ChevronLeft className="w-4 h-4 mr-1" />
-            Forrige
+            {texts.previous}
           </button>
 
           <button
@@ -145,7 +207,7 @@ const WingQuestionCard: React.FC<WingQuestionCardProps> = ({
                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             }`}
           >
-            {questionNumber === totalQuestions ? 'Se mine vinger' : 'Næste'}
+            {questionNumber === totalQuestions ? texts.finish : texts.next}
             <ChevronRight className="w-4 h-4 ml-1" />
           </button>
         </div>
