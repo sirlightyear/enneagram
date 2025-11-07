@@ -107,7 +107,7 @@ const WingResultsPage: React.FC<WingResultsPageProps> = ({
   const resultDescription = getResultDescription();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-cyan-50 to-purple-100 py-8 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Kruso Logo */}
         <div className="flex justify-end mb-2">

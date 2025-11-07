@@ -104,7 +104,7 @@ const WingQuestionCard: React.FC<WingQuestionCardProps> = ({
   }, [canGoNext, onNext]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-4 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-cyan-50 to-purple-100 py-4 px-4">
       {/* Kruso Logo */}
       <div className="pb-4">
         <div className="flex justify-center">
