@@ -1,9 +1,15 @@
 import React from 'react';
 import IntroPage from './components/IntroPage';
+import IntroPage_en from './components/IntroPage_en';
+import IntroPage_de from './components/IntroPage_de';
+import IntroPage_se from './components/IntroPage_se';
+import IntroPage_nl from './components/IntroPage_nl';
+import IntroPage_uk from './components/IntroPage_uk';
 import QuestionCard from './components/QuestionCard';
 import EmailCapture from './components/EmailCapture';
 import ResultsPage, { saveResults } from './components/ResultsPage';
 import { useEnneagramTest } from './hooks/useEnneagramTest';
+import LanguageSelector from './components/LanguageSelector';
 
 function App() {
   // All hooks must be called at the top level, before any conditional returns
@@ -28,6 +34,10 @@ function App() {
   const [showEmailCapture, setShowEmailCapture] = React.useState(false);
   const [userEmail, setUserEmail] = React.useState('');
   const [isDebugMode, setIsDebugMode] = React.useState(false);
+  const [language, setLanguage] = React.useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('lang') || 'da';
+  });
 
   // Listen for debug mode event
   React.useEffect(() => {
@@ -95,8 +105,36 @@ function App() {
     return results;
   };
 
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (language) {
+      params.set('lang', language);
+    }
+    const newURL = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, '', newURL);
+  }, [language]);
+
+  const handleLanguageChange = (newLanguage: string) => {
+    setLanguage(newLanguage);
+    const params = new URLSearchParams(window.location.search);
+    params.set('lang', newLanguage);
+    window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
+  };
+
+  const getIntroPage = () => {
+    const props = { onStart: startTest, language, onLanguageChange: handleLanguageChange };
+    switch (language) {
+      case 'en': return <IntroPage_en {...props} />;
+      case 'de': return <IntroPage_de {...props} />;
+      case 'se': return <IntroPage_se {...props} />;
+      case 'nl': return <IntroPage_nl {...props} />;
+      case 'uk': return <IntroPage_uk {...props} />;
+      default: return <IntroPage {...props} />;
+    }
+  };
+
   if (showIntro) {
-    return <IntroPage onStart={startTest} />;
+    return getIntroPage();
   }
 
   // Email capture commented out - using URL-based saving
@@ -120,7 +158,7 @@ function App() {
   // Show results directly when test is complete OR if we have URL results (from sharing)
   if (isComplete || isDebugMode) {
     const results = isDebugMode ? getDebugResults() : calculateResults();
-    return <ResultsPage results={results} onRestart={restartComplete} responses={responses} />;
+    return <ResultsPage results={results} onRestart={restartComplete} responses={responses} language={language} onLanguageChange={handleLanguageChange} />;
   }
 
   // Ensure currentQuestion exists before rendering QuestionCard

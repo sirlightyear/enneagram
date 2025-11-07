@@ -1,19 +1,27 @@
 import React, { useState } from 'react';
 import { Brain, Users, Heart, ArrowRight, ChevronDown, ChevronUp, CheckCircle2 } from 'lucide-react';
+import LanguageSelector from './LanguageSelector';
 
 interface IntroPageProps {
   onStart: () => void;
+  language: string;
+  onLanguageChange: (language: string) => void;
 }
 
-const IntroPage: React.FC<IntroPageProps> = ({ onStart }) => {
+const IntroPage: React.FC<IntroPageProps> = ({ onStart, language, onLanguageChange }) => {
   const [showKrusoDetails, setShowKrusoDetails] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
       <div className="py-6 px-4">
         <div className="max-w-4xl mx-auto">
+          {/* Language Selector */}
+          <div className="flex justify-end mb-4">
+            <LanguageSelector currentLanguage={language} onLanguageChange={onLanguageChange} />
+          </div>
+
           {/* Kruso Logo - diskret placeret */}
-          <div className="flex justify-center">         
+          <div className="flex justify-center">
             <img src="/KrusoPeople4.png" alt="Kruso Compass" className="w-15 h-auto" />
           </div>
           

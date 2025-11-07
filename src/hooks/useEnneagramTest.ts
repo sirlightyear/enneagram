@@ -16,7 +16,7 @@ const decodeResponses = (encoded: string): UserResponse[] => {
 };
 
 const updateURL = (responses: UserResponse[], wingResponses?: any[]) => {
-  const params = new URLSearchParams();
+  const params = new URLSearchParams(window.location.search);
   if (responses.length > 0) {
     params.set('r', encodeResponses(responses));
   }

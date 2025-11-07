@@ -1,5 +1,5 @@
 import React from 'react';
-// import { ArrowLeft, Award, BarChart3, Printer, Share2 } from 'lucide-react';
+import LanguageSelector from './LanguageSelector';
 import { typeDetails } from '../data/typeDetails';
 import TestLogger from '../utils/logger';
 import TypeDetailPage from './TypeDetailPage';
@@ -26,6 +26,8 @@ interface ResultsPageProps {
   onRestart: () => void;
   wingResult?: WingResult;
   responses?: any[];
+  language: string;
+  onLanguageChange: (language: string) => void;
 }
 
 interface WingResultState {
@@ -93,7 +95,7 @@ const typeDescriptions: Record<string, { title: string; description: string; tra
   }
 };
 
-const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResult, responses }) => {
+const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResult, responses, language, onLanguageChange }) => {
   const [showDetailPage, setShowDetailPage] = React.useState(false);
   const [selectedType, setSelectedType] = React.useState<string | null>(null);
   const [showWingTest, setShowWingTest] = React.useState(false);
@@ -117,6 +119,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   const handleSaveUrl = async () => {
     // Create URL that goes directly to results page with current data
     const params = new URLSearchParams();
+    params.set('lang', language);
     if (responses && responses.length > 0) {
       params.set('r', JSON.stringify(responses));
     }
@@ -163,6 +166,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   const handleShare = async () => {
     // Create URL for sharing
     const params = new URLSearchParams();
+    params.set('lang', language);
     if (responses && responses.length > 0) {
       params.set('r', JSON.stringify(responses));
     }
@@ -570,8 +574,9 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
           )}
         </div>
         
-        {/* Kruso Logo - diskret placeret */}
+        {/* Language Selector */}
         <div className="flex justify-end mb-2 no-print">
+          <LanguageSelector currentLanguage={language} onLanguageChange={onLanguageChange} />
         </div>
         
         <div className="text-center mb-8">
