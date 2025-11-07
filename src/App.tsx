@@ -8,6 +8,11 @@ import IntroPage_uk from './components/IntroPage_uk';
 import QuestionCard from './components/QuestionCard';
 import EmailCapture from './components/EmailCapture';
 import ResultsPage, { saveResults } from './components/ResultsPage';
+import ResultsPage_en from './components/ResultsPage_en';
+import ResultsPage_de from './components/ResultsPage_de';
+import ResultsPage_se from './components/ResultsPage_se';
+import ResultsPage_nl from './components/ResultsPage_nl';
+import ResultsPage_uk from './components/ResultsPage_uk';
 import { useEnneagramTest } from './hooks/useEnneagramTest';
 import LanguageSelector from './components/LanguageSelector';
 
@@ -156,10 +161,22 @@ function App() {
     );
   }*/
 
+  const getResultsPage = () => {
+    const results = isDebugMode ? getDebugResults() : calculateResults();
+    const props = { results, onRestart: restartComplete, responses, language, onLanguageChange: handleLanguageChange };
+    switch (language) {
+      case 'en': return <ResultsPage_en {...props} />;
+      case 'de': return <ResultsPage_de {...props} />;
+      case 'se': return <ResultsPage_se {...props} />;
+      case 'nl': return <ResultsPage_nl {...props} />;
+      case 'uk': return <ResultsPage_uk {...props} />;
+      default: return <ResultsPage {...props} />;
+    }
+  };
+
   // Show results directly when test is complete OR if we have URL results (from sharing)
   if (isComplete || isDebugMode) {
-    const results = isDebugMode ? getDebugResults() : calculateResults();
-    return <ResultsPage results={results} onRestart={restartComplete} responses={responses} language={language} onLanguageChange={handleLanguageChange} />;
+    return getResultsPage();
   }
 
   // Ensure currentQuestion exists before rendering QuestionCard

@@ -1,8 +1,11 @@
+import LanguageSelector from './LanguageSelector';
 import React from 'react';
 // import { ArrowLeft, Award, BarChart3, Printer, Share2 } from 'lucide-react';
 import { typeDetails } from '../data/typeDetails';
 import TestLogger from '../utils/logger';
 import TypeDetailPage from './TypeDetailPage';
+import TypeDetailPage_se from './TypeDetailPage_se';
+import WingTestIntro_se from './WingTestIntro_se';
 import WingTestIntro from './WingTestIntro';
 import WingResultsPage from './WingResultsPage';
 import { useWingTest } from '../hooks/useWingTest';
@@ -22,6 +25,8 @@ import { enneagramQuestions } from '../data/questions';
 import EnneagramInfoSection from './EnneagramInfoSection';
 
 interface ResultsPageProps {
+  language: string;
+  onLanguageChange: (language: string) => void;
   results: TestResult[];
   onRestart: () => void;
   wingResult?: WingResult;
@@ -93,7 +98,7 @@ const typeDescriptions: Record<string, { title: string; description: string; tra
   }
 };
 
-const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResult, responses }) => {
+const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResult, responses, language, onLanguageChange }) => {
   const [showDetailPage, setShowDetailPage] = React.useState(false);
   const [selectedType, setSelectedType] = React.useState<string | null>(null);
   const [showWingTest, setShowWingTest] = React.useState(false);
@@ -427,8 +432,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
     const typeDetail = typeDetails[selectedType];
     if (typeDetail) {
       return (
-        <TypeDetailPage 
-          typeDetail={typeDetail} 
+        <TypeDetailPage_se typeDetail={typeDetail} 
           onStartWingTest={() => {
             setShowDetailPage(false);
             setSelectedType(null);
@@ -447,8 +451,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   // Show wing test intro
   if (showWingTestIntro) {
     return (
-      <WingTestIntro
-        primaryType={topResult.type}
+      <WingTestIntro_se primaryType={topResult.type}
         onStart={() => {
           setShowWingTestIntro(false);
           setShowWingTest(true);
@@ -570,8 +573,9 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
           )}
         </div>
         
-        {/* Kruso Logo - diskret placeret */}
+                {/* Language Selector */}
         <div className="flex justify-end mb-2 no-print">
+          <LanguageSelector currentLanguage={language} onLanguageChange={onLanguageChange} />
         </div>
         
         <div className="text-center mb-8">

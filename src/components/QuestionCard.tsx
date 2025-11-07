@@ -104,6 +104,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         return {
           questionOf: 'Question',
           of: 'of',
+          howMuchFits: 'How much does this fit you?',
           showExamples: 'Show examples',
           hideExamples: 'Hide examples',
           previous: 'Previous',
@@ -114,6 +115,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         return {
           questionOf: 'Frage',
           of: 'von',
+          howMuchFits: 'Wie sehr passt das auf Sie?',
           showExamples: 'Beispiele anzeigen',
           hideExamples: 'Beispiele ausblenden',
           previous: 'Zurück',
@@ -124,6 +126,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         return {
           questionOf: 'Fråga',
           of: 'av',
+          howMuchFits: 'Hur mycket stämmer detta på dig?',
           showExamples: 'Visa exempel',
           hideExamples: 'Dölj exempel',
           previous: 'Föregående',
@@ -134,6 +137,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         return {
           questionOf: 'Vraag',
           of: 'van',
+          howMuchFits: 'Hoeveel past dit bij jou?',
           showExamples: 'Toon voorbeelden',
           hideExamples: 'Verberg voorbeelden',
           previous: 'Vorige',
@@ -144,6 +148,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         return {
           questionOf: 'Питання',
           of: 'з',
+          howMuchFits: 'Наскільки це підходить вам?',
           showExamples: 'Показати приклади',
           hideExamples: 'Сховати приклади',
           previous: 'Назад',
@@ -154,6 +159,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         return {
           questionOf: 'Spørgsmål',
           of: 'af',
+          howMuchFits: 'Hvor meget passer dette på dig?',
           showExamples: 'Se eksempler på hvad der menes',
           hideExamples: 'Skjul eksempler',
           previous: 'Forrige',
@@ -219,7 +225,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
 
       <div className="mb-8">
         <p className="text-sm font-medium text-gray-700 mb-6">
-          Hvor meget passer dette på dig?
+          {texts.howMuchFits}
         </p>
         
         <div className="space-y-3">
