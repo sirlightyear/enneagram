@@ -12,7 +12,7 @@ const IntroPage: React.FC<IntroPageProps> = ({ onStart, language, onLanguageChan
   const [showKrusoDetails, setShowKrusoDetails] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-cyan-50 to-purple-100">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-100 via-amber-50 to-fuchsia-200">
       <div className="py-6 px-4">
         <div className="max-w-4xl mx-auto">
           {/* Language Selector */}

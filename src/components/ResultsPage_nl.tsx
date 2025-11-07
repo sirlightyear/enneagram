@@ -486,7 +486,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   // Toon antwoorden bekijken/bewerken weergave
   if (showReviewAnswers) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-cyan-50 to-purple-100 py-12 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-100 via-amber-50 to-fuchsia-200 py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
             <div className="flex items-center justify-between mb-6">
@@ -558,7 +558,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-cyan-50 to-purple-100 py-4 md:py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-100 via-amber-50 to-fuchsia-200 py-4 md:py-12 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Alleen-print compacte header */}
         <div className="print-only hidden print-header">
