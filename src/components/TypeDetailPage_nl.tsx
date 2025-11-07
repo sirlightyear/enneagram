@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Heart, Brain, Users, AlertTriangle, Target, MessageCircle, Lightbulb, TrendingUp, Shield, Zap, ChevronDown, ChevronUp } from 'lucide-react';
-import { TypeDetail } from '../data/typeDetails';
+import { TypeDetail } from '../data/typeDetails_nl';
 import { WingResult } from '../types/wings';
 import { type1WingQuestions } from '../data/wingQuestions/wingQuestions1';
 import { type2WingQuestions } from '../data/wingQuestions/wingQuestions2';

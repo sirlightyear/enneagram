@@ -1,7 +1,7 @@
 import LanguageSelector from './LanguageSelector';
 import React from 'react';
 // import { ArrowLeft, Award, BarChart3, Printer, Share2 } from 'lucide-react';
-import { typeDetails } from '../data/typeDetails';
+import { typeDetails } from '../data/typeDetails_se';
 import TestLogger from '../utils/logger';
 import TypeDetailPage from './TypeDetailPage';
 import TypeDetailPage_se from './TypeDetailPage_se';
@@ -22,7 +22,7 @@ import { Award, BarChart3, RefreshCw, Users, Heart, Target, Palette, Search, Shi
 import EnneagramChart from './EnneagramChart';
 import WingQuestionCard from './WingQuestionCard';
 import { enneagramQuestions } from '../data/questions';
-import EnneagramInfoSection from './EnneagramInfoSection';
+import EnneagramInfoSection_se from './EnneagramInfoSection_se';
 
 interface ResultsPageProps {
   language: string;
@@ -988,7 +988,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
         </div>
 
         {/* Enneagram Info Sections - Basic Fears, Desires, Triads and Stress/Growth */}
-        <EnneagramInfoSection primaryType={topResult.type} />
+        <EnneagramInfoSection_se primaryType={topResult.type} />
 
         {/* Not to be confused with section */}
         <div className="bg-white rounded-xl shadow-lg p-8 mb-8">

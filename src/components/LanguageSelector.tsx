@@ -1,5 +1,4 @@
 import React from 'react';
-import { Globe } from 'lucide-react';
 
 interface LanguageSelectorProps {
   currentLanguage: string;
@@ -7,12 +6,12 @@ interface LanguageSelectorProps {
 }
 
 const languages = [
-  { code: 'da', name: 'Dansk', flag: '🇩🇰' },
-  { code: 'en', name: 'English', flag: '🇬🇧' },
-  { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
-  { code: 'se', name: 'Svenska', flag: '🇸🇪' },
-  { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
-  { code: 'uk', name: 'Українська', flag: '🇺🇦' }
+  { code: 'da', name: 'Dansk', flagCode: 'dk' },
+  { code: 'en', name: 'English', flagCode: 'gb' },
+  { code: 'de', name: 'Deutsch', flagCode: 'de' },
+  { code: 'se', name: 'Svenska', flagCode: 'se' },
+  { code: 'nl', name: 'Nederlands', flagCode: 'nl' },
+  { code: 'uk', name: 'Українська', flagCode: 'ua' }
 ];
 
 const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLanguage, onLanguageChange }) => {
@@ -25,8 +24,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLanguage, on
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 px-3 py-2 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
       >
-        <Globe className="w-4 h-4 text-gray-600" />
-        <span className="text-lg">{currentLang.flag}</span>
+        <span className={'fi fi-' + currentLang.flagCode} style={{ width: '24px', height: '18px', fontSize: '20px' }}></span>
         <span className="text-sm font-medium text-gray-700">{currentLang.name}</span>
       </button>
 
@@ -36,7 +34,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLanguage, on
             className="fixed inset-0 z-10"
             onClick={() => setIsOpen(false)}
           />
-          <div className="absolute top-full mt-2 right-0 bg-white rounded-lg shadow-xl border border-gray-200 py-2 min-w-[160px] z-20">
+          <div className="absolute top-full mt-2 right-0 bg-white rounded-lg shadow-xl border border-gray-200 py-2 min-w-[180px] z-20">
             {languages.map((lang) => (
               <button
                 key={lang.code}
@@ -44,11 +42,9 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLanguage, on
                   onLanguageChange(lang.code);
                   setIsOpen(false);
                 }}
-                className={`w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-3 ${
-                  currentLanguage === lang.code ? 'bg-blue-50' : ''
-                }`}
+                className={'w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-3 ' + (currentLanguage === lang.code ? 'bg-blue-50' : '')}
               >
-                <span className="text-lg">{lang.flag}</span>
+                <span className={'fi fi-' + lang.flagCode} style={{ width: '24px', height: '18px', fontSize: '20px' }}></span>
                 <span className="text-sm font-medium text-gray-700">{lang.name}</span>
               </button>
             ))}
