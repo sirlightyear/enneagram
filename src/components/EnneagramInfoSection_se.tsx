@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, BookOpen, TrendingUp, TrendingDown, AlertCircle, Heart } from 'lucide-react';
-import { triadInfo, stressGrowthLines, getTriadForType, basicFearsInfo, basicDesiresInfo } from '../data/enneagramInfo';
+import { triadInfo, stressGrowthLines, getTriadForType, basicFearsInfo, basicDesiresInfo } from '../data/enneagramInfo_se';
 
 interface EnneagramInfoSectionProps {
   primaryType: string;
