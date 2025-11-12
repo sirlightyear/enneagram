@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Email Function</title>
+</head>
+<body>
+    <h1>Test Email Function</h1>
+    <button onclick="testEmail()">Send Test Email</button>
+    <div id="result"></div>
+
+    <script>
+        async function testEmail() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Sender...';
+
+            try {
+                const response = await fetch('https://dbwyfopgyohaioamqtlj.supabase.co/functions/v1/send-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRid3lmb3BneW9oYWlvYW1xdGxqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTMwOTEsImV4cCI6MjA3ODUyOTA5MX0.qU-SGlVZUwiFzwzlcaNlYJf80Jw1afwV5FOWob1urG0'
+                    },
+                    body: JSON.stringify({
+                        type: 'user',
+                        to: 'sirlightyear@gmail.com',
+                        resultUrl: 'https://example.com/test',
+                        results: [{type: 'Type 1', percentage: 85, score: 72}],
+                        wingResults: null,
+                        responses: [],
+                        questions: [],
+                        wingQuestions: [],
+                        userAgent: navigator.userAgent,
+                        ipAddress: 'test'
+                    })
+                });
+
+                const data = await response.json();
+                resultDiv.innerHTML = 'Response: ' + JSON.stringify(data, null, 2);
+
+                if (!response.ok) {
+                    resultDiv.innerHTML += '<br><br>Error Status: ' + response.status;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
