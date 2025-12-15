@@ -65,8 +65,7 @@ const IntroPage: React.FC<IntroPageProps> = ({ onStart, language, onLanguageChan
             {showKrusoDetails && (
               <div className="px-6 pb-6 text-gray-700 space-y-4 border-t border-gray-100 pt-4">
                 <p>
-                  At Kruso, we pride ourselves on excellent collaboration – both internally among colleagues and in our
-                  partnerships with clients. We know that when we understand each other better, it binds us together as
+                  At Kruso, we really appreciate good collaboration – both internally between colleagues and in our partnerships with clients. We know that when we understand each other better, it binds us together as
                   a stronger team.
                 </p>
 
