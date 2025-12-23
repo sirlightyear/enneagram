@@ -203,14 +203,16 @@ const EnneagramChart: React.FC<EnneagramChartProps> = ({ results, language = 'da
       
       {/* Legend */}
       <div className="grid grid-cols-1 gap-2 text-xs max-w-md">
-        {sortedResults.slice(0, 9).map((result, index) => {
+        {[...results].sort((a, b) => b.percentage - a.percentage).slice(0, 9).map((result) => {
           const typeInfo = typeDescriptions[result.type];
+          const typeNumber = parseInt(result.type.replace('Type ', ''));
+          const colorIndex = typeNumber - 1;
           return (
             <div key={result.type} className="flex items-center justify-between">
               <div className="flex items-center flex-1 min-w-0">
                 <div
                   className="w-3 h-3 rounded-full mr-2 flex-shrink-0"
-                  style={{ backgroundColor: typeColors[index] }}
+                  style={{ backgroundColor: typeColors[colorIndex] }}
                 />
                 <span className="text-gray-700 truncate">
                   {result.type.replace('Type ', '')} {typeInfo.title}

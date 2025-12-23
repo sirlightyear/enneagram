@@ -110,7 +110,11 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   const [isSendingEmail, setIsSendingEmail] = React.useState(false);
   const [emailSent, setEmailSent] = React.useState(false);
 
-  const topResult = currentResults[0];
+  const sortedResults = React.useMemo(() => {
+    return [...currentResults].sort((a, b) => b.percentage - a.percentage);
+  }, [currentResults]);
+
+  const topResult = sortedResults[0];
   const displayType = selfIdentifiedType || topResult.type;
   const typeInfo = typeDescriptions[displayType];
   const TypeIcon = typeIcons[displayType];
@@ -833,7 +837,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
             <div className="flex-shrink-0 lg:w-80 no-print">
               <div className="bg-gray-50 rounded-lg p-6">
                 <h4 className="text-lg font-semibold text-gray-800 mb-4 text-center">Dine resultater</h4>
-                <EnneagramChart results={results} language={language} />
+                <EnneagramChart results={sortedResults} language={language} />
               </div>
             </div>
           </div>
@@ -977,7 +981,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
           </div>
           
           <div className="space-y-4">
-            {currentResults.map((result, index) => {
+            {sortedResults.map((result, index) => {
               const info = typeDescriptions[result.type];
               const ResultIcon = typeIcons[result.type];
               return (
@@ -1015,7 +1019,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
               Det er helt normalt – testen giver en indikation, men kun du kan virkelig vide, hvilken type der passer bedst.
             </p>
             <div className="flex flex-wrap gap-2">
-              {currentResults.slice(0, 5).map((result) => (
+              {sortedResults.slice(0, 5).map((result) => (
                 <button
                   key={result.type}
                   onClick={() => {
