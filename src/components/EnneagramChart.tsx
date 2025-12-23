@@ -140,7 +140,7 @@ const EnneagramChart: React.FC<EnneagramChartProps> = ({ results, language = 'da
     const labelX = centerX + labelRadius * Math.cos(midAngleRad);
     const labelY = centerY + labelRadius * Math.sin(midAngleRad);
 
-    const outerLabelRadius = maxRadius + 40;
+    const outerLabelRadius = maxRadius + 25;
     const outerLabelX = centerX + outerLabelRadius * Math.cos(midAngleRad);
     const outerLabelY = centerY + outerLabelRadius * Math.sin(midAngleRad);
 
@@ -194,10 +194,10 @@ const EnneagramChart: React.FC<EnneagramChartProps> = ({ results, language = 'da
               y={segment.outerLabelY}
               textAnchor="middle"
               dominantBaseline="middle"
-              className="text-base font-bold fill-gray-700"
+              className="fill-gray-700"
             >
-              <tspan x={segment.outerLabelX} dy="-0.3em">{segment.typeNumber}</tspan>
-              <tspan x={segment.outerLabelX} dy="1.2em" className="text-sm font-normal">{segment.typeTitle}</tspan>
+              <tspan x={segment.outerLabelX} dy="-0.4em" className="text-2xl font-bold">{segment.typeNumber}</tspan>
+              <tspan x={segment.outerLabelX} dy="1.4em" className="text-sm font-normal">{segment.typeTitle}</tspan>
             </text>
           </g>
         ))}
