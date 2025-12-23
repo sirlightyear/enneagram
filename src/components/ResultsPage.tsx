@@ -831,9 +831,9 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
         </div>
 
         {/* Radial Chart */}
-        <div className="bg-white rounded-xl shadow-lg p-8 mb-8 no-print">
-          <h3 className="text-xl font-semibold text-gray-800 mb-6 text-center">Dine Enneagram Resultater - Radial Oversigt</h3>
-          <div className="flex justify-center">
+        <div className="bg-white rounded-xl shadow-lg p-4 md:p-8 mb-8 no-print">
+          <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-6 text-center">Dine Enneagram Resultater - Radial Oversigt</h3>
+          <div className="flex justify-center w-full">
             <EnneagramChart results={sortedResults} language={language} />
           </div>
         </div>

@@ -163,8 +163,8 @@ const EnneagramChart: React.FC<EnneagramChartProps> = ({ results, language = 'da
   });
 
   return (
-    <div className="flex flex-col items-center w-full max-w-3xl mx-auto">
-      <svg width="100%" height="auto" viewBox="0 0 700 700" className="mb-6" style={{ maxWidth: '700px' }}>
+    <div className="flex flex-col items-center w-full mx-auto">
+      <svg width="100%" height="auto" viewBox="0 0 700 700" className="mb-6" style={{ maxWidth: '1000px' }}>
         {/* Chart segments */}
         {segments.map((segment, index) => (
           <g key={segment.type}>
@@ -182,8 +182,8 @@ const EnneagramChart: React.FC<EnneagramChartProps> = ({ results, language = 'da
                 y={segment.labelY}
                 textAnchor="middle"
                 dominantBaseline="middle"
-                className="text-lg font-bold fill-white"
-                style={{ textShadow: '0 1px 3px rgba(0,0,0,0.3)' }}
+                className="font-bold fill-white"
+                style={{ fontSize: '22px', textShadow: '0 1px 3px rgba(0,0,0,0.3)' }}
               >
                 {segment.percentage}%
               </text>
@@ -196,8 +196,8 @@ const EnneagramChart: React.FC<EnneagramChartProps> = ({ results, language = 'da
               dominantBaseline="middle"
               className="fill-gray-700"
             >
-              <tspan x={segment.outerLabelX} dy="-0.4em" className="text-2xl font-bold">{segment.typeNumber}</tspan>
-              <tspan x={segment.outerLabelX} dy="1.4em" className="text-sm font-normal">{segment.typeTitle}</tspan>
+              <tspan x={segment.outerLabelX} dy="-0.4em" className="font-bold" style={{ fontSize: '28px' }}>{segment.typeNumber}</tspan>
+              <tspan x={segment.outerLabelX} dy="1.4em" className="font-normal" style={{ fontSize: '16px' }}>{segment.typeTitle}</tspan>
             </text>
           </g>
         ))}
@@ -223,23 +223,23 @@ const EnneagramChart: React.FC<EnneagramChartProps> = ({ results, language = 'da
       </svg>
       
       {/* Legend */}
-      <div className="grid grid-cols-1 gap-2 text-sm max-w-md">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm w-full max-w-2xl">
         {[...results].sort((a, b) => b.percentage - a.percentage).slice(0, 9).map((result) => {
           const typeInfo = typeDescriptions[result.type];
           const typeNumber = parseInt(result.type.replace('Type ', ''));
           const colorIndex = typeNumber - 1;
           return (
-            <div key={result.type} className="flex items-center justify-between py-1">
+            <div key={result.type} className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg">
               <div className="flex items-center flex-1 min-w-0">
                 <div
-                  className="w-4 h-4 rounded-full mr-3 flex-shrink-0"
+                  className="w-5 h-5 rounded-full mr-3 flex-shrink-0"
                   style={{ backgroundColor: typeColors[colorIndex] }}
                 />
                 <span className="text-gray-800 font-medium truncate">
                   {result.type.replace('Type ', '')}: {typeInfo.title}
                 </span>
               </div>
-              <span className="text-gray-700 ml-3 flex-shrink-0 font-semibold">
+              <span className="text-gray-700 ml-3 flex-shrink-0 font-semibold text-base">
                 {result.percentage}%
               </span>
             </div>
