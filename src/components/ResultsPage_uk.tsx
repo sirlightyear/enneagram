@@ -757,26 +757,21 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
 
         {/* Detailed description of top result */}
         <div className="bg-white rounded-xl shadow-lg p-8 mb-8 print:shadow-none print:border print-hide-detailed">
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* Text content */}
-            <div className="flex-1">
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">
             Детальний опис {topResult.type}: {typeInfo.title}
-              </h3>
-              <div className="prose prose-gray max-w-none">
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  {getDetailedDescription(topResult.type)}
-                </p>
-              </div>
-            </div>
+          </h3>
+          <div className="prose prose-gray max-w-none">
+            <p className="text-gray-700 leading-relaxed mb-4">
+              {getDetailedDescription(topResult.type)}
+            </p>
+          </div>
+        </div>
 
-            {/* Circular chart */}
-            <div className="flex-shrink-0 lg:w-80 no-print">
-              <div className="bg-gray-50 rounded-lg p-6">
-                <h4 className="text-lg font-semibold text-gray-800 mb-4 text-center">Ваші результати</h4>
-                <EnneagramChart results={results} language={language} />
-              </div>
-            </div>
+        {/* Radial Chart */}
+        <div className="bg-white rounded-xl shadow-lg p-4 md:p-8 mb-8 no-print">
+          <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-6 text-center">Ваші результати Енеаграми - Радіальний огляд</h3>
+          <div className="flex justify-center w-full">
+            <EnneagramChart results={sortedResults} language={language} />
           </div>
         </div>
 

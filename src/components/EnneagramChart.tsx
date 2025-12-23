@@ -223,23 +223,23 @@ const EnneagramChart: React.FC<EnneagramChartProps> = ({ results, language = 'da
       </svg>
       
       {/* Legend */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm w-full max-w-2xl">
+      <div className="grid grid-cols-1 gap-3 w-full max-w-xl">
         {[...results].sort((a, b) => b.percentage - a.percentage).slice(0, 9).map((result) => {
           const typeInfo = typeDescriptions[result.type];
           const typeNumber = parseInt(result.type.replace('Type ', ''));
           const colorIndex = typeNumber - 1;
           return (
-            <div key={result.type} className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg">
+            <div key={result.type} className="flex items-center justify-between py-2 px-4 bg-gray-50 rounded-lg">
               <div className="flex items-center flex-1 min-w-0">
                 <div
-                  className="w-5 h-5 rounded-full mr-3 flex-shrink-0"
+                  className="w-5 h-5 rounded-full mr-4 flex-shrink-0"
                   style={{ backgroundColor: typeColors[colorIndex] }}
                 />
-                <span className="text-gray-800 font-medium truncate">
+                <span className="text-gray-800 font-medium truncate text-base">
                   {result.type.replace('Type ', '')}: {typeInfo.title}
                 </span>
               </div>
-              <span className="text-gray-700 ml-3 flex-shrink-0 font-semibold text-base">
+              <span className="text-gray-700 ml-4 flex-shrink-0 font-semibold text-lg">
                 {result.percentage}%
               </span>
             </div>
