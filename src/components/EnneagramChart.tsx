@@ -91,45 +91,41 @@ const EnneagramChart: React.FC<EnneagramChartProps> = ({ results, language = 'da
     return getTypeNumber(a.type) - getTypeNumber(b.type);
   });
 
-  // Colors for each type (matching the image style)
+  // Colors for each type (vibrant colors matching reference image)
   const typeColors = [
-    '#E8B4A0', // Type 1 - Light peach
-    '#D4A574', // Type 2 - Orange/brown
-    '#B8956A', // Type 3 - Brown
-    '#8B7BA8', // Type 4 - Purple
-    '#A8A8D4', // Type 5 - Light purple
-    '#7BA8B8', // Type 6 - Blue
-    '#A0D4D4', // Type 7 - Light blue/cyan
-    '#A8D4A8', // Type 8 - Light green
-    '#D4D4A8'  // Type 9 - Light yellow/green
+    '#FF9966', // Type 1 - Orange
+    '#FF6B8A', // Type 2 - Pink/Red
+    '#D946A6', // Type 3 - Magenta
+    '#9D7BC6', // Type 4 - Purple
+    '#7AA5D6', // Type 5 - Blue
+    '#5CB8C8', // Type 6 - Cyan
+    '#66C9C3', // Type 7 - Teal
+    '#99CC99', // Type 8 - Light Green
+    '#D4D966'  // Type 9 - Yellow/Green
   ];
 
-  // Calculate angles for each segment
-  const total = sortedResults.reduce((sum, result) => sum + result.percentage, 0);
-  let currentAngle = -90; // Start at top
+  const centerX = 350;
+  const centerY = 350;
+  const maxRadius = 280;
+  const degreesPerType = 360 / 9;
 
   const segments = sortedResults.map((result, index) => {
     const percentage = result.percentage;
-    const angle = (percentage / total) * 360;
-    const startAngle = currentAngle;
-    const endAngle = currentAngle + angle;
-    currentAngle = endAngle;
+    const radius = (percentage / 100) * maxRadius;
 
-    // Calculate path for SVG arc
-    const centerX = 150;
-    const centerY = 150;
-    const radius = 120;
-    
+    const startAngle = index * degreesPerType - 90;
+    const endAngle = (index + 1) * degreesPerType - 90;
+
     const startAngleRad = (startAngle * Math.PI) / 180;
     const endAngleRad = (endAngle * Math.PI) / 180;
-    
+
     const x1 = centerX + radius * Math.cos(startAngleRad);
     const y1 = centerY + radius * Math.sin(startAngleRad);
     const x2 = centerX + radius * Math.cos(endAngleRad);
     const y2 = centerY + radius * Math.sin(endAngleRad);
-    
-    const largeArcFlag = angle > 180 ? 1 : 0;
-    
+
+    const largeArcFlag = degreesPerType > 180 ? 1 : 0;
+
     const pathData = [
       `M ${centerX} ${centerY}`,
       `L ${x1} ${y1}`,
@@ -137,12 +133,19 @@ const EnneagramChart: React.FC<EnneagramChartProps> = ({ results, language = 'da
       'Z'
     ].join(' ');
 
-    // Calculate label position
-    const labelAngle = (startAngle + endAngle) / 2;
-    const labelAngleRad = (labelAngle * Math.PI) / 180;
-    const labelRadius = radius + 25;
-    const labelX = centerX + labelRadius * Math.cos(labelAngleRad);
-    const labelY = centerY + labelRadius * Math.sin(labelAngleRad);
+    const midAngle = (startAngle + endAngle) / 2;
+    const midAngleRad = (midAngle * Math.PI) / 180;
+
+    const labelRadius = radius * 0.75;
+    const labelX = centerX + labelRadius * Math.cos(midAngleRad);
+    const labelY = centerY + labelRadius * Math.sin(midAngleRad);
+
+    const outerLabelRadius = maxRadius + 40;
+    const outerLabelX = centerX + outerLabelRadius * Math.cos(midAngleRad);
+    const outerLabelY = centerY + outerLabelRadius * Math.sin(midAngleRad);
+
+    const typeNumber = result.type.replace('Type ', '');
+    const typeTitle = typeDescriptions[result.type].title;
 
     return {
       path: pathData,
@@ -151,13 +154,17 @@ const EnneagramChart: React.FC<EnneagramChartProps> = ({ results, language = 'da
       percentage: result.percentage,
       labelX,
       labelY,
-      typeNumber: result.type.replace('Type ', '')
+      outerLabelX,
+      outerLabelY,
+      typeNumber,
+      typeTitle,
+      midAngle
     };
   });
 
   return (
-    <div className="flex flex-col items-center">
-      <svg width="300" height="300" viewBox="0 0 300 300" className="mb-4">
+    <div className="flex flex-col items-center w-full max-w-3xl mx-auto">
+      <svg width="100%" height="auto" viewBox="0 0 700 700" className="mb-6" style={{ maxWidth: '700px' }}>
         {/* Chart segments */}
         {segments.map((segment, index) => (
           <g key={segment.type}>
@@ -165,60 +172,74 @@ const EnneagramChart: React.FC<EnneagramChartProps> = ({ results, language = 'da
               d={segment.path}
               fill={segment.color}
               stroke="white"
-              strokeWidth="2"
+              strokeWidth="3"
               className="hover:opacity-80 transition-opacity"
             />
-            {/* Type number labels */}
+            {/* Inner percentage label */}
+            {segment.percentage > 15 && (
+              <text
+                x={segment.labelX}
+                y={segment.labelY}
+                textAnchor="middle"
+                dominantBaseline="middle"
+                className="text-lg font-bold fill-white"
+                style={{ textShadow: '0 1px 3px rgba(0,0,0,0.3)' }}
+              >
+                {segment.percentage}%
+              </text>
+            )}
+            {/* Outer label with number and title */}
             <text
-              x={segment.labelX}
-              y={segment.labelY}
+              x={segment.outerLabelX}
+              y={segment.outerLabelY}
               textAnchor="middle"
               dominantBaseline="middle"
-              className="text-sm font-bold fill-gray-700"
+              className="text-base font-bold fill-gray-700"
             >
-              {segment.typeNumber}
+              <tspan x={segment.outerLabelX} dy="-0.3em">{segment.typeNumber}</tspan>
+              <tspan x={segment.outerLabelX} dy="1.2em" className="text-sm font-normal">{segment.typeTitle}</tspan>
             </text>
           </g>
         ))}
-        
+
         {/* Center circle */}
         <circle
-          cx="150"
-          cy="150"
-          r="30"
+          cx={centerX}
+          cy={centerY}
+          r="50"
           fill="white"
           stroke="#e5e7eb"
-          strokeWidth="2"
+          strokeWidth="3"
         />
-        {/* Logo will be placed here */}
+        {/* Logo */}
         <image
-          x="135"
-          y="135"
-          width="30"
-          height="30"
+          x={centerX - 25}
+          y={centerY - 25}
+          width="50"
+          height="50"
           href="/K - Colored(2).png"
           className="opacity-80"
         />
       </svg>
       
       {/* Legend */}
-      <div className="grid grid-cols-1 gap-2 text-xs max-w-md">
+      <div className="grid grid-cols-1 gap-2 text-sm max-w-md">
         {[...results].sort((a, b) => b.percentage - a.percentage).slice(0, 9).map((result) => {
           const typeInfo = typeDescriptions[result.type];
           const typeNumber = parseInt(result.type.replace('Type ', ''));
           const colorIndex = typeNumber - 1;
           return (
-            <div key={result.type} className="flex items-center justify-between">
+            <div key={result.type} className="flex items-center justify-between py-1">
               <div className="flex items-center flex-1 min-w-0">
                 <div
-                  className="w-3 h-3 rounded-full mr-2 flex-shrink-0"
+                  className="w-4 h-4 rounded-full mr-3 flex-shrink-0"
                   style={{ backgroundColor: typeColors[colorIndex] }}
                 />
-                <span className="text-gray-700 truncate">
-                  {result.type.replace('Type ', '')} {typeInfo.title}
+                <span className="text-gray-800 font-medium truncate">
+                  {result.type.replace('Type ', '')}: {typeInfo.title}
                 </span>
               </div>
-              <span className="text-gray-600 ml-2 flex-shrink-0">
+              <span className="text-gray-700 ml-3 flex-shrink-0 font-semibold">
                 {result.percentage}%
               </span>
             </div>
