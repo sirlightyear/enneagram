@@ -771,7 +771,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
         <div className="bg-white rounded-xl shadow-lg p-4 md:p-8 mb-8 no-print">
           <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-6 text-center">Ihre Enneagramm-Ergebnisse - Radiale Übersicht</h3>
           <div className="flex justify-center w-full">
-            <EnneagramChart results={sortedResults} language={language} />
+            <EnneagramChart results={results} language={language} />
           </div>
         </div>
 
