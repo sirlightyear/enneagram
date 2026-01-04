@@ -235,11 +235,11 @@ const EnneagramChart: React.FC<EnneagramChartProps> = ({ results, language = 'da
                   className="w-5 h-5 rounded-full mr-4 flex-shrink-0 self-start mt-0.5"
                   style={{ backgroundColor: typeColors[colorIndex] }}
                 />
-                <span className="text-gray-800 font-medium text-base line-clamp-2">
+                <span className="text-gray-800 font-medium text-sm leading-tight line-clamp-2">
                   {result.type.replace('Type ', '')}: {typeInfo.title}
                 </span>
               </div>
-              <span className="text-gray-700 ml-4 flex-shrink-0 font-semibold text-lg self-start">
+              <span className="text-gray-700 ml-4 flex-shrink-0 font-semibold text-base self-start">
                 {result.percentage}%
               </span>
             </div>
