@@ -72,7 +72,7 @@ const getTypeDescriptions = (language: string = 'da'): Record<string, { title: s
       return {
         'Type 1': { title: 'Perfektionisten' },
         'Type 2': { title: 'Hjælperen' },
-        'Type 3': { title: 'Præstations-orienterede' },
+        'Type 3': { title: 'Præstationsorienterede' },
         'Type 4': { title: 'Individualisten' },
         'Type 5': { title: 'Undersøgeren' },
         'Type 6': { title: 'Loyalisten' },
