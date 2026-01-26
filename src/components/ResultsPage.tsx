@@ -111,7 +111,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   const [emailSent, setEmailSent] = React.useState(false);
   const [showDisclaimerModal, setShowDisclaimerModal] = React.useState(false);
   const [showLearnMoreSection, setShowLearnMoreSection] = React.useState(false);
-  const [showAllResultsSection, setShowAllResultsSection] = React.useState(false);
+  const [showAllResultsSection, setShowAllResultsSection] = React.useState(true);
 
   const sortedResults = React.useMemo(() => {
     return [...currentResults].sort((a, b) => b.percentage - a.percentage);
