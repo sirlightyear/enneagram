@@ -18,7 +18,7 @@ import { type6WingQuestions } from '../data/wingQuestions/wingQuestions6_nl';
 import { type7WingQuestions } from '../data/wingQuestions/wingQuestions7_nl';
 import { type8WingQuestions } from '../data/wingQuestions/wingQuestions8_nl';
 import { type9WingQuestions } from '../data/wingQuestions/wingQuestions9_nl';
-import { Award, BarChart3, RefreshCw, Users, Heart, Target, Palette, Search, Shield, Zap, Crown, Compass, Feather, Sparkles, Ambulance as Balance, HandHeart, Lightbulb, Flame, Mountain, TreePine, Waves, Printer, Share2 } from 'lucide-react';
+import { Award, BarChart3, RefreshCw, Users, Heart, Target, Palette, Search, Shield, Zap, Crown, Compass, Feather, Sparkles, Ambulance as Balance, HandHeart, Lightbulb, Flame, Mountain, TreePine, Waves, Printer, Share2, Mail, X } from 'lucide-react';
 import EnneagramChart from './EnneagramChart';
 import WingQuestionCard from './WingQuestionCard';
 import { enneagramQuestions } from '../data/questions_nl';
@@ -108,8 +108,19 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   const [showReviewAnswers, setShowReviewAnswers] = React.useState(false);
   const [editedResponses, setEditedResponses] = React.useState(responses || []);
   const [currentResults, setCurrentResults] = React.useState(results);
+  const [showEmailDialog, setShowEmailDialog] = React.useState(false);
+  const [userEmail, setUserEmail] = React.useState('');
+  const [isSendingEmail, setIsSendingEmail] = React.useState(false);
+  const [emailSent, setEmailSent] = React.useState(false);
+  const [showDisclaimerModal, setShowDisclaimerModal] = React.useState(false);
+  const [showLearnMoreSection, setShowLearnMoreSection] = React.useState(false);
+  const [showAllResultsSection, setShowAllResultsSection] = React.useState(false);
 
-  const topResult = currentResults[0];
+  const sortedResults = React.useMemo(() => {
+    return [...currentResults].sort((a, b) => b.percentage - a.percentage);
+  }, [currentResults]);
+
+  const topResult = sortedResults[0];
   const displayType = selfIdentifiedType || topResult.type;
   const typeInfo = typeDescriptions[displayType];
   const TypeIcon = typeIcons[displayType];
@@ -117,6 +128,62 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   // Print/PDF functionaliteit
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleSendEmail = async () => {
+    if (!userEmail || !userEmail.includes('@')) {
+      alert('Voer alstublieft een geldig e-mailadres in');
+      return;
+    }
+
+    setIsSendingEmail(true);
+
+    try {
+      const params = new URLSearchParams();
+      params.set('lang', language);
+      if (responses && responses.length > 0) {
+        params.set('r', JSON.stringify(responses));
+      }
+      if (wingResults) {
+        const wingResponses = wingResults.testData.questions.map((_, index) => ({
+          questionIndex: index,
+          selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
+        }));
+        params.set('w', JSON.stringify(wingResponses));
+      }
+      if (selfIdentifiedType) {
+        params.set('s', selfIdentifiedType);
+      }
+      const resultUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+
+      const logger = TestLogger.getInstance();
+      const wingResponses = wingResults ? wingResults.testData.questions.map((_, index) => ({
+        questionIndex: index,
+        selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
+      })) : undefined;
+
+      await logger.logTestCompletion(
+        userEmail,
+        sortedResults,
+        responses || [],
+        enneagramQuestions,
+        wingResults,
+        wingResponses,
+        wingResults?.testData.questions
+      );
+
+      setEmailSent(true);
+      setTimeout(() => {
+        setShowEmailDialog(false);
+        setEmailSent(false);
+        setUserEmail('');
+      }, 3000);
+    } catch (error) {
+      console.error('Error sending email:', error);
+      alert('Er is een fout opgetreden bij het verzenden van de e-mail. Probeer het opnieuw.');
+    } finally {
+      setIsSendingEmail(false);
+    }
   };
 
   const handleSaveUrl = async () => {
@@ -771,7 +838,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
         <div className="bg-white rounded-xl shadow-lg p-4 md:p-8 mb-8 no-print">
           <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-6 text-center">Uw Enneagram-resultaten - Radiale weergave</h3>
           <div className="flex justify-center w-full">
-            <EnneagramChart results={results} language={language} />
+            <EnneagramChart results={sortedResults} language={language} />
           </div>
         </div>
 
@@ -1097,6 +1164,14 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
               <Share2 className="w-5 h-5 mr-2" />
               Delen via e-mail/SMS
             </button>
+
+            <button
+              onClick={() => setShowEmailDialog(true)}
+              className="inline-flex items-center px-6 py-3 bg-orange-600 text-white font-medium rounded-lg hover:bg-orange-700 transition-colors duration-200 no-print"
+            >
+              <Mail className="w-5 h-5 mr-2" />
+              Verstuur via e-mail
+            </button>
           </div>
           
            {/*<button
@@ -1176,6 +1251,156 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
             Dit zal al uw antwoorden permanent verwijderen
           </p>
         </div>
+
+        {/* Email Dialog */}
+        {showEmailDialog && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 relative">
+              <button
+                onClick={() => {
+                  setShowEmailDialog(false);
+                  setEmailSent(false);
+                  setUserEmail('');
+                }}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              {!emailSent ? (
+                <>
+                  <div className="mb-6">
+                    <Mail className="w-12 h-12 text-orange-600 mx-auto mb-4" />
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2 text-center">
+                      Verstuur via e-mail
+                    </h3>
+                    <p className="text-gray-600 text-center">
+                      Voer uw e-mailadres in zodat we uw testresultaten en een link naar deze pagina kunnen verzenden.
+                    </p>
+                  </div>
+
+                  <div className="mb-6">
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                      E-mailadres
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      value={userEmail}
+                      onChange={(e) => setUserEmail(e.target.value)}
+                      placeholder="uw@email.nl"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                      disabled={isSendingEmail}
+                    />
+                  </div>
+
+                  <button
+                    onClick={handleSendEmail}
+                    disabled={isSendingEmail || !userEmail}
+                    className="w-full inline-flex items-center justify-center px-6 py-3 bg-orange-600 text-white font-medium rounded-lg hover:bg-orange-700 transition-colors duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                  >
+                    {isSendingEmail ? (
+                      <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                        Verzenden...
+                      </>
+                    ) : (
+                      <>
+                        <Mail className="w-5 h-5 mr-2" />
+                        Verstuur e-mail
+                      </>
+                    )}
+                  </button>
+
+                  <p className="text-xs text-gray-500 mt-4 text-center">
+                    We slaan uw e-mail niet permanent op. Het wordt alleen gebruikt om uw resultaten te verzenden.
+                  </p>
+                </>
+              ) : (
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                    E-mail verzonden!
+                  </h3>
+                  <p className="text-gray-600">
+                    Controleer je inbox voor uw testresultaten.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Disclaimer Modal */}
+        {showDisclaimerModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6 md:p-8 relative max-h-[90vh] overflow-y-auto">
+              <button
+                onClick={() => setShowDisclaimerModal(false)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              <div className="bg-amber-50 border-l-4 border-amber-500 rounded-lg p-6">
+                <div className="flex items-start mb-3">
+                  <span className="text-2xl mr-3">🧭</span>
+                  <h3 className="text-xl font-semibold text-amber-900">
+                    Uw test is een richtlijn – geen definitief oordeel ;-)
+                  </h3>
+                </div>
+                <div className="space-y-3 text-amber-900">
+                  <p>
+                    U heeft nu een Enneagram-test gedaan, en deze heeft u een resultaat gegeven – een mogelijk type.
+                    Maar het is belangrijk te onthouden dat de test niet noodzakelijkerwijs uw uiteindelijke type onthult.
+                    Het is een instrument voor reflectie, geen antwoordenboek.
+                  </p>
+                  <p>
+                    Het Enneagram gaat over zelfkennis, en het kan tijd kosten om het type te vinden
+                    dat echt overeenkomt met uw diepste patronen.
+                  </p>
+                  <blockquote className="border-l-2 border-amber-400 pl-4 italic text-amber-800">
+                    "Zelfontdekking is een proces – en het eindigt niet met het vinden van uw type.
+                    Sterker nog, het is nog maar het begin."
+                  </blockquote>
+                  <p className="text-sm">
+                    <em>- The Wisdom of the Enneagram, Riso & Hudson</em>
+                  </p>
+                  <p>
+                    De test kan u een indicatie geven – misschien de 2-3 meest waarschijnlijke types – maar het is
+                    door zelfobservatie, reflectie en gesprekken met mensen die u goed kennen, dat
+                    u geleidelijk zult voelen welk type echt bij u past.
+                  </p>
+                  <div className="bg-white rounded-lg p-4 mt-4 border border-amber-200">
+                    <h4 className="font-semibold text-amber-900 mb-2 flex items-center">
+                      <Lightbulb className="w-5 h-5 mr-2" />
+                      Wat u nu kunt doen
+                    </h4>
+                    <ul className="space-y-1 text-sm text-amber-800">
+                      <li>• Lees over het type dat u heeft gekregen – en de nabijgelegen types</li>
+                      <li>• Wees nieuwsgierig: Wat resoneert? Wat voelt vreemd?</li>
+                      <li>• Praat met anderen over uw patronen en reacties</li>
+                      <li>• Onthoud: U heeft alle negen types in u – maar één is uw "thuisbasis"</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 text-center">
+                <button
+                  onClick={() => setShowDisclaimerModal(false)}
+                  className="px-6 py-3 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors duration-200"
+                >
+                  Sluiten
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

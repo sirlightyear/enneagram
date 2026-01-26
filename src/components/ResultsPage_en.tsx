@@ -18,7 +18,7 @@ import { type6WingQuestions } from '../data/wingQuestions/wingQuestions6_en';
 import { type7WingQuestions } from '../data/wingQuestions/wingQuestions7_en';
 import { type8WingQuestions } from '../data/wingQuestions/wingQuestions8_en';
 import { type9WingQuestions } from '../data/wingQuestions/wingQuestions9_en';
-import { Award, BarChart3, RefreshCw, Users, Heart, Target, Palette, Search, Shield, Zap, Crown, Compass, Feather, Sparkles, Ambulance as Balance, HandHeart, Lightbulb, Flame, Mountain, TreePine, Waves, Printer, Share2, X } from 'lucide-react';
+import { Award, BarChart3, RefreshCw, Users, Heart, Target, Palette, Search, Shield, Zap, Crown, Compass, Feather, Sparkles, Ambulance as Balance, HandHeart, Lightbulb, Flame, Mountain, TreePine, Waves, Printer, Share2, Mail, X } from 'lucide-react';
 import EnneagramChart from './EnneagramChart';
 import WingQuestionCard from './WingQuestionCard';
 import { enneagramQuestions } from '../data/questions_en';
@@ -108,18 +108,82 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   const [showReviewAnswers, setShowReviewAnswers] = React.useState(false);
   const [editedResponses, setEditedResponses] = React.useState(responses || []);
   const [currentResults, setCurrentResults] = React.useState(results);
+  const [showEmailDialog, setShowEmailDialog] = React.useState(false);
+  const [userEmail, setUserEmail] = React.useState('');
+  const [isSendingEmail, setIsSendingEmail] = React.useState(false);
+  const [emailSent, setEmailSent] = React.useState(false);
   const [showDisclaimerModal, setShowDisclaimerModal] = React.useState(false);
   const [showLearnMoreSection, setShowLearnMoreSection] = React.useState(false);
   const [showAllResultsSection, setShowAllResultsSection] = React.useState(false);
 
-  const topResult = currentResults[0];
+  const sortedResults = React.useMemo(() => {
+    return [...currentResults].sort((a, b) => b.percentage - a.percentage);
+  }, [currentResults]);
+
+  const topResult = sortedResults[0];
   const displayType = selfIdentifiedType || topResult.type;
   const typeInfo = typeDescriptions[displayType];
   const TypeIcon = typeIcons[displayType];
-  
+
   // Print/PDF functionality
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleSendEmail = async () => {
+    if (!userEmail || !userEmail.includes('@')) {
+      alert('Please enter a valid email address');
+      return;
+    }
+
+    setIsSendingEmail(true);
+
+    try {
+      const params = new URLSearchParams();
+      params.set('lang', language);
+      if (responses && responses.length > 0) {
+        params.set('r', JSON.stringify(responses));
+      }
+      if (wingResults) {
+        const wingResponses = wingResults.testData.questions.map((_, index) => ({
+          questionIndex: index,
+          selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
+        }));
+        params.set('w', JSON.stringify(wingResponses));
+      }
+      if (selfIdentifiedType) {
+        params.set('s', selfIdentifiedType);
+      }
+      const resultUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+
+      const logger = TestLogger.getInstance();
+      const wingResponses = wingResults ? wingResults.testData.questions.map((_, index) => ({
+        questionIndex: index,
+        selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
+      })) : undefined;
+
+      await logger.logTestCompletion(
+        userEmail,
+        sortedResults,
+        responses || [],
+        enneagramQuestions,
+        wingResults,
+        wingResponses,
+        wingResults?.testData.questions
+      );
+
+      setEmailSent(true);
+      setTimeout(() => {
+        setShowEmailDialog(false);
+        setEmailSent(false);
+        setUserEmail('');
+      }, 3000);
+    } catch (error) {
+      console.error('Error sending email:', error);
+      alert('An error occurred while sending the email. Please try again.');
+    } finally {
+      setIsSendingEmail(false);
+    }
   };
 
   const handleSaveUrl = async () => {
@@ -202,7 +266,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
     } else {
       // Fallback: copy to clipboard
       await navigator.clipboard.writeText(url);
-      alert('Link copied to clipboard!\n\nPaste this link in an email, text message, or chat to share your results.');
+      alert('✅ Link copied to clipboard!\n\nPaste this link in an email, text message, or chat to share your results.');
     }
   };
 
@@ -377,7 +441,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
     try {
       const responses = JSON.parse(sessionStorage.getItem('enneagram_responses') || localStorage.getItem('enneagram_responses') || '[]');
       const questions = JSON.parse(sessionStorage.getItem('enneagram_questions') || localStorage.getItem('enneagram_questions') || '[]');
-      
+
       if (responses.length === 0 || questions.length === 0) {
         // Try to get from current test state if available
         console.log('Checking for current test data...');
@@ -386,7 +450,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
         alert('No response data found. Take the test first to see response data.');
         return;
       }
-    
+
       let debugInfo = 'RESPONSES DEBUG:\n\n';
       responses.forEach((response: any, index: number) => {
         const question = questions[response.questionIndex];
@@ -396,7 +460,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
           debugInfo += `Response: ${response.rating}/5\n\n`;
         }
       });
-    
+
       // Create a new window to show debug info
       const debugWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes');
       if (debugWindow) {
@@ -428,14 +492,14 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   const showAllLogs = () => {
     const logger = TestLogger.getInstance();
     logger.showAllLogsInConsole();
-    logger.exportAllLogs(); // Download all logs as file
+    logger.exportAllLogs(); // Download alle logs som fil
   };
   // Show detail page if selected
   if (showDetailPage && selectedType) {
     const typeDetail = typeDetails[selectedType];
     if (typeDetail) {
       return (
-        <TypeDetailPage_en typeDetail={typeDetail} 
+        <TypeDetailPage_en typeDetail={typeDetail}
           onStartWingTest={() => {
             setShowDetailPage(false);
             setSelectedType(null);
@@ -445,7 +509,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
           onBack={() => {
             setShowDetailPage(false);
             setSelectedType(null);
-          }} 
+          }}
         />
       );
     }
@@ -577,12 +641,12 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
             </div>
           )}
         </div>
-        
+
                 {/* Language Selector */}
         <div className="flex justify-end mb-2 no-print">
           <LanguageSelector currentLanguage={language} onLanguageChange={onLanguageChange} />
         </div>
-        
+
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-100 rounded-full mb-4">
             <Award className="w-8 h-8 text-indigo-600" />
@@ -591,15 +655,49 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
           <p className="text-gray-600">Based on your responses, we have identified your primary personality type</p>
         </div>
 
-        {/* Disclaimer Button */}
-        <div className="flex justify-center mb-8">
-          <button
-            onClick={() => setShowDisclaimerModal(true)}
-            className="inline-flex items-center px-6 py-3 bg-amber-100 text-amber-900 font-medium rounded-lg border-2 border-amber-400 hover:bg-amber-200 transition-colors duration-200"
-          >
-            <span className="text-xl mr-2">🧭</span>
-            Note: This test is a marker! Read more
-          </button>
+        {/* Disclaimer about test accuracy */}
+        <div className="bg-amber-50 border-l-4 border-amber-500 rounded-lg p-6 mb-8">
+          <div className="flex items-start mb-3">
+            <span className="text-2xl mr-3">🧭</span>
+            <h3 className="text-xl font-semibold text-amber-900">
+              Your test is a marker – not a final verdict ;-)
+            </h3>
+          </div>
+          <div className="space-y-3 text-amber-900">
+            <p>
+              You have now taken an Enneagram test, and it has given you a result – a possible type.
+              But it is important to remember that the test does not necessarily reveal your final type.
+              It is a tool for reflection, not an answer key.
+            </p>
+            <p>
+              The Enneagram is about self-awareness, and it can take time to find the type
+              that truly matches your deepest patterns.
+            </p>
+            <blockquote className="border-l-2 border-amber-400 pl-4 italic text-amber-800">
+              "Self-discovery is a process – and it doesn't end with finding your type.
+              In fact, it's only the beginning."
+            </blockquote>
+            <p className="text-sm">
+              <em>- The Wisdom of the Enneagram, Riso & Hudson</em>
+            </p>
+            <p>
+              The test can give you an indication – maybe the 2-3 most likely types – but it is
+              through self-observation, reflection, and conversation with people who know you well that
+              you will gradually be able to feel which type truly fits.
+            </p>
+            <div className="bg-white rounded-lg p-4 mt-4 border border-amber-200">
+              <h4 className="font-semibold text-amber-900 mb-2 flex items-center">
+                <Lightbulb className="w-5 h-5 mr-2" />
+                What you can do now
+              </h4>
+              <ul className="space-y-1 text-sm text-amber-800">
+                <li>• Read about the type you got – and the neighboring types</li>
+                <li>• Be curious: What resonates? What feels foreign?</li>
+                <li>• Talk to others about your patterns and reactions</li>
+                <li>• Remember: You have all nine types within you – but one is your "home base"</li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
@@ -638,7 +736,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
             <p className="text-gray-700 text-lg leading-relaxed mb-4">
               {typeInfo.description}
             </p>
-            
+
             <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
               {typeInfo.traits.map((trait, index) => (
                 <span
@@ -659,7 +757,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
               <span className="text-2xl mr-3">🪶</span>
               <h2 className="text-2xl font-bold text-gray-800">Your Enneagram Wings</h2>
             </div>
-            
+
             <div className="bg-indigo-50 rounded-lg p-6 mb-6">
               <h3 className="text-xl font-semibold text-indigo-800 mb-3">
                 {wingResults.testData.descriptions[wingResults.result.isBalanced ? 'balanced' : wingResults.result.primaryWing]?.title}
@@ -667,7 +765,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
               <p className="text-indigo-700 mb-4">
                 {wingResults.testData.descriptions[wingResults.result.isBalanced ? 'balanced' : wingResults.result.primaryWing]?.description}
               </p>
-              
+
               {/* Wing Scores */}
               <div className="bg-white rounded-lg p-4 border border-indigo-200">
                 <h4 className="font-semibold text-indigo-800 mb-3">Your Wing Scores:</h4>
@@ -684,8 +782,8 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <div
                         className="bg-indigo-600 h-2 rounded-full transition-all duration-500"
-                        style={{ 
-                          width: `${(wingResults.result.primaryScore / (wingResults.result.primaryScore + wingResults.result.secondaryScore)) * 100}%` 
+                        style={{
+                          width: `${(wingResults.result.primaryScore / (wingResults.result.primaryScore + wingResults.result.secondaryScore)) * 100}%`
                         }}
                       />
                     </div>
@@ -703,8 +801,8 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <div
                         className="bg-gray-400 h-2 rounded-full transition-all duration-500"
-                        style={{ 
-                          width: `${(wingResults.result.secondaryScore / (wingResults.result.primaryScore + wingResults.result.secondaryScore)) * 100}%` 
+                        style={{
+                          width: `${(wingResults.result.secondaryScore / (wingResults.result.primaryScore + wingResults.result.secondaryScore)) * 100}%`
                         }}
                       />
                     </div>
@@ -714,7 +812,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                 {wingResults.result.isBalanced && (
                   <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                     <p className="text-yellow-800 text-sm">
-                      <strong>Balanced Wings:</strong> Your scores are very close, meaning 
+                      <strong>Balanced Wings:</strong> Your scores are very close, meaning
                       you use both wings flexibly depending on the situation.
                     </p>
                   </div>
@@ -738,8 +836,9 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
 
         {/* Radial Chart */}
         <div className="bg-white rounded-xl shadow-lg p-4 md:p-8 mb-8 no-print">
+          <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-6 text-center">Your Enneagram Results - Radial Overview</h3>
           <div className="flex justify-center w-full">
-            <EnneagramChart results={results} language={language} />
+            <EnneagramChart results={sortedResults} language={language} />
           </div>
         </div>
 
@@ -750,8 +849,8 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
               <Award className="w-6 h-6 text-green-600 mr-2" />
               <h3 className="text-xl font-semibold text-gray-800">🪶 Your Enneagram Wings</h3>
             </div>
-            
-            {/* Explanation of what wings mean for this specific type 
+
+            {/* Explanation of what wings mean for this specific type
             <div className="bg-blue-50 rounded-lg p-6 mb-6">
               <h4 className="text-lg font-semibold text-blue-800 mb-3">
                 What do wings mean for your {topResult.type}?
@@ -778,7 +877,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                 </div>
               </div>
             </div>*/}
-            
+
             <div className="bg-green-50 rounded-lg p-6 mb-6">
               {/* Wing Result Icon */}
               <div className="flex flex-col md:flex-row items-start gap-6 mb-6">
@@ -799,7 +898,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                     <strong>Your Personality Profile:</strong> {' '}
                     {wingResults.testData.descriptions[wingResults.result.isBalanced ? 'balanced' : wingResults.result.primaryWing]?.description}
                   </p>
-                  
+
                   {/* Wing Scores */}
                   <div className="grid md:grid-cols-2 gap-4 mb-4">
                     <div>
@@ -814,8 +913,8 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                       <div className="w-full bg-green-200 rounded-full h-2">
                         <div
                           className="bg-green-600 h-2 rounded-full transition-all duration-500"
-                          style={{ 
-                            width: `${(wingResults.result.primaryScore / (wingResults.result.primaryScore + wingResults.result.secondaryScore)) * 100}%` 
+                          style={{
+                            width: `${(wingResults.result.primaryScore / (wingResults.result.primaryScore + wingResults.result.secondaryScore)) * 100}%`
                           }}
                         />
                       </div>
@@ -833,8 +932,8 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                       <div className="w-full bg-green-200 rounded-full h-2">
                         <div
                           className="bg-green-400 h-2 rounded-full transition-all duration-500"
-                          style={{ 
-                            width: `${(wingResults.result.secondaryScore / (wingResults.result.primaryScore + wingResults.result.secondaryScore)) * 100}%` 
+                          style={{
+                            width: `${(wingResults.result.secondaryScore / (wingResults.result.primaryScore + wingResults.result.secondaryScore)) * 100}%`
                           }}
                         />
                       </div>
@@ -850,7 +949,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                   )}
                 </div>
               </div>
-              
+
               {/* Wing Characteristics */}
               <div>
                 <h5 className="font-semibold text-gray-800 mb-3 flex items-center">
@@ -993,7 +1092,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
             onClick={() => setShowLearnMoreSection(!showLearnMoreSection)}
           >
             <h3 className="text-xl font-semibold text-gray-800">
-              Want to know more about your type?
+              Want to learn more about your type?
             </h3>
             <div className={`transform transition-transform ${showLearnMoreSection ? 'rotate-180' : ''}`}>
               ▼
@@ -1071,7 +1170,7 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
               className="inline-flex items-center px-6 py-3 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors duration-200 no-print"
             >
               <Search className="w-5 h-5 mr-2" />
-              Review / Edit Responses
+              Review / Edit answers
             </button>
 
             <button
@@ -1087,10 +1186,18 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
               className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200 no-print"
             >
               <Share2 className="w-5 h-5 mr-2" />
-              Share via Email/SMS
+              Share via email/SMS
+            </button>
+
+            <button
+              onClick={() => setShowEmailDialog(true)}
+              className="inline-flex items-center px-6 py-3 bg-orange-600 text-white font-medium rounded-lg hover:bg-orange-700 transition-colors duration-200 no-print"
+            >
+              <Mail className="w-5 h-5 mr-2" />
+              Send via Email
             </button>
           </div>
-          
+
            {/*<button
             onClick={onRestart}
             className="inline-flex items-center px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors duration-200 no-print"
@@ -1098,8 +1205,8 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
             <RefreshCw className="w-5 h-5 mr-2" />
             Take the test again
           </button>*/}
-          
-          {/* Debug links - only visible in development 
+
+          {/* Debug links - only visible in development
           <div className="mt-8 text-center space-x-4 no-print">
             <span
               onClick={showDebugResults}
@@ -1168,6 +1275,89 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
             This will permanently delete all your responses
           </p>
         </div>
+
+        {/* Email Dialog */}
+        {showEmailDialog && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 relative">
+              <button
+                onClick={() => {
+                  setShowEmailDialog(false);
+                  setEmailSent(false);
+                  setUserEmail('');
+                }}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              {!emailSent ? (
+                <>
+                  <div className="mb-6">
+                    <Mail className="w-12 h-12 text-orange-600 mx-auto mb-4" />
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2 text-center">
+                      Send via Email
+                    </h3>
+                    <p className="text-gray-600 text-center">
+                      Enter your email address and we'll send your test results and a link to this page.
+                    </p>
+                  </div>
+
+                  <div className="mb-6">
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                      Email address
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      value={userEmail}
+                      onChange={(e) => setUserEmail(e.target.value)}
+                      placeholder="your@email.com"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                      disabled={isSendingEmail}
+                    />
+                  </div>
+
+                  <button
+                    onClick={handleSendEmail}
+                    disabled={isSendingEmail || !userEmail}
+                    className="w-full inline-flex items-center justify-center px-6 py-3 bg-orange-600 text-white font-medium rounded-lg hover:bg-orange-700 transition-colors duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                  >
+                    {isSendingEmail ? (
+                      <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Mail className="w-5 h-5 mr-2" />
+                        Send Email
+                      </>
+                    )}
+                  </button>
+
+                  <p className="text-xs text-gray-500 mt-4 text-center">
+                    We don't save your email permanently. It's only used to send your results.
+                  </p>
+                </>
+              ) : (
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                    Email sent!
+                  </h3>
+                  <p className="text-gray-600">
+                    Check your inbox for your test results.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Disclaimer Modal */}
         {showDisclaimerModal && (
@@ -1257,7 +1447,7 @@ const TypeResultCard: React.FC<TypeResultCardProps> = ({ result, info, index, ic
   };
   return (
     <div className="bg-gray-50 rounded-lg overflow-hidden">
-      <div 
+      <div
         className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-100 transition-colors"
         onClick={() => setIsExpanded(!isExpanded)}
       >
@@ -1286,7 +1476,7 @@ const TypeResultCard: React.FC<TypeResultCardProps> = ({ result, info, index, ic
           </div>
         </div>
       </div>
-      
+
       {isExpanded && (
         <div className="px-4 pb-4 border-t border-gray-200">
           <div className="pt-4">
@@ -1322,24 +1512,24 @@ const TypeResultCard: React.FC<TypeResultCardProps> = ({ result, info, index, ic
 const getDetailedDescription = (type: string): string => {
   const descriptions: Record<string, string> = {
     'Type 1': 'As a Perfectionist, you have a strong inner compass that guides you toward what is right and principled. You possess natural leadership qualities and an ability to see how things can be improved. Your critical sense is both a strength and a challenge—it helps you deliver high quality but can also lead to self-criticism and frustration. You thrive in structured environments where your high standards are valued, and you contribute integrity and reliable expertise to your team.',
-    
+
     'Type 2': 'As a Helper, you have an exceptional ability to sense the needs of others and a natural drive to support those around you. You create warm, trusting relationships and are often the person people turn to for advice and support. Your empathy and caring nature make you a valuable team player, but remember to also prioritize your own needs. You flourish in environments where your care is valued and where you can make a real difference to others.',
-    
+
     'Type 3': 'As the Achiever, you have a natural drive toward success and an ability to inspire others with your energy and optimism. You are goal-oriented, adaptable, and skilled at discerning what is needed to succeed in different situations. Your competitive instinct and focus on results make you a strong performer, but also remember to value the process and not just the end result. You thrive in dynamic environments where your achievements are recognized.',
-    
+
     'Type 4': 'As an Individualist, you bring creativity, depth, and authenticity to everything you do. You have a unique ability to see beauty and meaning in what others might overlook, and you contribute original perspectives and innovative solutions. Your sensitivity and intuition make you a valuable advisor and creative force. You thrive best in environments where your individuality is valued and where you have the freedom to express yourself authentically.',
-    
+
     'Type 5': 'As an Investigator, you bring depth, analysis, and independent thinking to your team. You have a natural ability to understand complex systems and provide thoughtful, objective solutions. Your research and expertise are invaluable, and you contribute stability and reliable knowledge. You thrive in environments where you have time to think deeply and where your expertise is respected and utilized constructively.',
-    
+
     'Type 6': 'As a Loyalist, you are a reliable and committed team player with a strong sense of responsibility and loyalty. You have a natural ability to anticipate problems and plan for various scenarios, making you a valuable risk assessor and problem-solver. Your loyalty and commitment create strong, lasting relationships, and you contribute stability and trustworthiness to your team.',
-    
+
     'Type 7': 'As an Enthusiast, you bring energy, creativity, and optimism to all situations. You have a natural ability to see opportunities and inspire others with your enthusiasm. Your versatility and adaptability make you a valuable innovator and problem-solver. You thrive in dynamic environments where you can explore new ideas and work on different projects simultaneously.',
-    
+
     'Type 8': 'As a Challenger, you bring strength, decisiveness, and protective leadership to your team. You have a natural ability to take control in difficult situations and fight for what you believe in. Your direct communication style and focus on justice make you a strong advocate and leader. You thrive in environments where you can take responsibility and make a real difference.',
-    
+
     'Type 9': 'As a Peacemaker, you bring stability, diplomacy, and a natural ability to see all sides of an issue. You have a special gift for creating harmony and helping others find common ground. Your calm presence and ability to listen make you a valuable mediator and team player. You thrive in supportive environments where your diplomatic approach is valued.'
   };
-  
+
   return descriptions[type] || 'Description not available.';
 };
 
