@@ -654,17 +654,6 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
           <p className="text-gray-600">Baseret på dine svar har vi identificeret din primære personlighedstype</p>
         </div>
 
-        {/* Disclaimer Button */}
-        <div className="flex justify-center mb-8">
-          <button
-            onClick={() => setShowDisclaimerModal(true)}
-            className="inline-flex items-center px-6 py-3 bg-amber-100 text-amber-900 font-medium rounded-lg border-2 border-amber-400 hover:bg-amber-200 transition-colors duration-200"
-          >
-            <span className="text-xl mr-2">🧭</span>
-            Obs: Den test er et pejlemærke! Læs mere
-          </button>
-        </div>
-
         <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
           <div className="text-center mb-6">
             {selfIdentifiedType && selfIdentifiedType !== topResult.type && (
@@ -690,19 +679,30 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                 <div className="text-4xl font-bold text-gray-800 mb-2">
                   {topResult.percentage}%
                 </div>
-                <p className="text-gray-600">match med denne type</p>
+                <p className="text-gray-600 mb-4">match med denne type</p>
               </>
             ) : (
-              <p className="text-gray-600">Din selv-identificerede type</p>
+              <p className="text-gray-600 mb-4">Din selv-identificerede type</p>
             )}
+
+            {/* Disclaimer Button */}
+            <div className="flex justify-center mb-4">
+              <button
+                onClick={() => setShowDisclaimerModal(true)}
+                className="inline-flex items-center px-6 py-3 bg-amber-100 text-amber-900 font-medium rounded-lg border-2 border-amber-400 hover:bg-amber-200 transition-colors duration-200"
+              >
+                <span className="text-xl mr-2">🧭</span>
+                Obs: Din test er et pejlemærke! Læs mere
+              </button>
+            </div>
           </div>
 
           <div className="mb-6">
             <p className="text-gray-700 text-lg leading-relaxed mb-4">
               {typeInfo.description}
             </p>
-            
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mb-6">
               {typeInfo.traits.map((trait, index) => (
                 <span
                   key={index}
@@ -711,6 +711,13 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                   {trait}
                 </span>
               ))}
+            </div>
+
+            {/* Detailed description */}
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <p className="text-gray-700 leading-relaxed">
+                {getDetailedDescription(topResult.type)}
+              </p>
             </div>
           </div>
         </div>
@@ -786,18 +793,6 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
             </div>
           </div>
         )}
-
-        {/* Detailed description of top result */}
-        <div className="bg-white rounded-xl shadow-lg p-8 mb-8 print:shadow-none print:border print-hide-detailed">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">
-            Udførlig beskrivelse af {topResult.type}: {typeInfo.title}
-          </h3>
-          <div className="prose prose-gray max-w-none">
-            <p className="text-gray-700 leading-relaxed mb-4">
-              {getDetailedDescription(topResult.type)}
-            </p>
-          </div>
-        </div>
 
         {/* Radial Chart */}
         <div className="bg-white rounded-xl shadow-lg p-4 md:p-8 mb-8 no-print">
@@ -1027,28 +1022,6 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
           )}
         </div>
 
-        {/* Enneagram Info Sections - Basic Fears, Desires, Triads and Stress/Growth */}
-        <EnneagramInfoSection primaryType={topResult.type} />
-
-        {/* Not to be confused with section */}
-        <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
-          <h3 className="text-xl font-semibold text-gray-800 mb-6">
-            {topResult.type}: {typeInfo.title} - Ikke at forveksle med
-          </h3>
-          <div className="space-y-4">
-            {typeDetails[topResult.type].notToBeConfusedWith.map((confusion, index) => (
-              <div key={index} className="bg-yellow-50 rounded-lg p-4 border-l-4 border-yellow-400">
-                <h4 className="font-semibold text-yellow-800 mb-2">
-                  {confusion.type}
-                </h4>
-                <p className="text-yellow-700 text-sm">
-                  <strong>Forskellen:</strong> {confusion.difference}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Learn more about your type - Collapsible Section */}
         <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
           <div
@@ -1105,6 +1078,30 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                     <span className="ml-2">✨</span>
                   </button>
                 )}
+              </div>
+
+              {/* Enneagram Info Sections - Basic Fears, Desires, Triads and Stress/Growth */}
+              <div className="mt-8">
+                <EnneagramInfoSection primaryType={topResult.type} />
+              </div>
+
+              {/* Not to be confused with section */}
+              <div className="mt-8 bg-gray-50 rounded-lg p-6">
+                <h3 className="text-xl font-semibold text-gray-800 mb-6">
+                  {topResult.type}: {typeInfo.title} - Ikke at forveksle med
+                </h3>
+                <div className="space-y-4">
+                  {typeDetails[topResult.type].notToBeConfusedWith.map((confusion, index) => (
+                    <div key={index} className="bg-yellow-50 rounded-lg p-4 border-l-4 border-yellow-400">
+                      <h4 className="font-semibold text-yellow-800 mb-2">
+                        {confusion.type}
+                      </h4>
+                      <p className="text-yellow-700 text-sm">
+                        <strong>Forskellen:</strong> {confusion.difference}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}
