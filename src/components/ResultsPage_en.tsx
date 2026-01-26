@@ -18,7 +18,7 @@ import { type6WingQuestions } from '../data/wingQuestions/wingQuestions6_en';
 import { type7WingQuestions } from '../data/wingQuestions/wingQuestions7_en';
 import { type8WingQuestions } from '../data/wingQuestions/wingQuestions8_en';
 import { type9WingQuestions } from '../data/wingQuestions/wingQuestions9_en';
-import { Award, BarChart3, RefreshCw, Users, Heart, Target, Palette, Search, Shield, Zap, Crown, Compass, Feather, Sparkles, Ambulance as Balance, HandHeart, Lightbulb, Flame, Mountain, TreePine, Waves, Printer, Share2 } from 'lucide-react';
+import { Award, BarChart3, RefreshCw, Users, Heart, Target, Palette, Search, Shield, Zap, Crown, Compass, Feather, Sparkles, Ambulance as Balance, HandHeart, Lightbulb, Flame, Mountain, TreePine, Waves, Printer, Share2, X } from 'lucide-react';
 import EnneagramChart from './EnneagramChart';
 import WingQuestionCard from './WingQuestionCard';
 import { enneagramQuestions } from '../data/questions_en';
@@ -53,47 +53,47 @@ const typeIcons: Record<string, React.ComponentType<any>> = {
 const typeDescriptions: Record<string, { title: string; description: string; traits: string[] }> = {
   'Type 1': {
     title: 'The Perfectionist',
-    description: 'You are principled, purposeful, and self-controlled. You strive to improve everything and have high standards for yourself and others.',
+    description: 'One is as Type 1 principled, purposeful, and self-controlled. One strives to improve everything and has high standards for oneself and others.',
     traits: ['Principled', 'Organized', 'Self-Disciplined', 'Critical', 'Idealistic']
   },
   'Type 2': {
     title: 'The Helper',
-    description: 'You are caring, interpersonal, and possessive. You want to feel loved and desired and express your feelings for others.',
+    description: 'One is as Type 2 caring, interpersonal, and possessive. One wants to feel loved and desired and expresses feelings for others.',
     traits: ['Caring', 'Empathetic', 'Generous', 'People-Oriented', 'Supportive']
   },
   'Type 3': {
     title: 'The Achiever',
-    description: 'You are ambitious, adaptable, and driven by success. You strive to be the best and seek recognition for your achievements.',
+    description: 'One is as Type 3 ambitious, adaptable, and driven by success. One strives to be the best and seeks recognition for achievements.',
     traits: ['Goal-Oriented', 'Energetic', 'Pragmatic', 'Self-Confident', 'Competitive']
   },
   'Type 4': {
     title: 'The Individualist',
-    description: 'You are creative, emotionally honest, and personal. You seek identity and meaning and express yourself through authenticity.',
+    description: 'One is as Type 4 creative, emotionally honest, and personal. One seeks identity and meaning and expresses oneself through authenticity.',
     traits: ['Creative', 'Sensitive', 'Introspective', 'Unique', 'Expressive']
   },
   'Type 5': {
     title: 'The Investigator',
-    description: 'You are intense, cerebral, and perceptive. You are independent and innovative, and you seek to understand the world around you.',
+    description: 'One is as Type 5 intense, cerebral, and perceptive. One is independent and innovative, and seeks to understand the world.',
     traits: ['Analytical', 'Independent', 'Curious', 'Objective', 'Private']
   },
   'Type 6': {
     title: 'The Loyalist',
-    description: 'You are committed, responsible, and trustworthy. You seek security and support and are loyal to systems and people.',
+    description: 'One is as Type 6 committed, responsible, and trustworthy. One seeks security and support and is loyal to systems and people.',
     traits: ['Loyal', 'Responsible', 'Cautious', 'Cooperative', 'Reliable']
   },
   'Type 7': {
     title: 'The Enthusiast',
-    description: 'You are spontaneous, versatile, and optimistic. You seek new experiences and opportunities and keep busy to avoid pain.',
+    description: 'One is as Type 7 spontaneous, versatile, and optimistic. One seeks new experiences and opportunities and keeps busy to avoid pain.',
     traits: ['Optimistic', 'Spontaneous', 'Versatile', 'Adventurous', 'Energetic']
   },
   'Type 8': {
     title: 'The Challenger',
-    description: 'You are self-confident, strong, and assertive. You protect yourself and control your environment, and you fight for justice.',
+    description: 'One is as Type 8 self-confident, strong, and assertive. One protects oneself and controls the environment, and fights for justice.',
     traits: ['Strong', 'Direct', 'Self-Confident', 'Protective', 'Just']
   },
   'Type 9': {
     title: 'The Peacemaker',
-    description: 'You are accepting, trusting, and stable. You desire internal and external peace and seek harmony in your relationships.',
+    description: 'One is as Type 9 accepting, trusting, and stable. One desires internal and external peace and seeks harmony in relationships.',
     traits: ['Peaceful', 'Supportive', 'Accepting', 'Diplomatic', 'Stable']
   }
 };
@@ -108,6 +108,9 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   const [showReviewAnswers, setShowReviewAnswers] = React.useState(false);
   const [editedResponses, setEditedResponses] = React.useState(responses || []);
   const [currentResults, setCurrentResults] = React.useState(results);
+  const [showDisclaimerModal, setShowDisclaimerModal] = React.useState(false);
+  const [showLearnMoreSection, setShowLearnMoreSection] = React.useState(false);
+  const [showAllResultsSection, setShowAllResultsSection] = React.useState(false);
 
   const topResult = currentResults[0];
   const displayType = selfIdentifiedType || topResult.type;
@@ -588,49 +591,15 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
           <p className="text-gray-600">Based on your responses, we have identified your primary personality type</p>
         </div>
 
-        {/* Disclaimer about test accuracy */}
-        <div className="bg-amber-50 border-l-4 border-amber-500 rounded-lg p-6 mb-8">
-          <div className="flex items-start mb-3">
-            <span className="text-2xl mr-3">🧭</span>
-            <h3 className="text-xl font-semibold text-amber-900">
-              Your test is a marker – not a final verdict ;-)
-            </h3>
-          </div>
-          <div className="space-y-3 text-amber-900">
-            <p>
-              You have now taken an Enneagram test, and it has given you a result – a possible type.
-              But it is important to remember that the test does not necessarily reveal your final type.
-              It is a tool for reflection, not an answer key.
-            </p>
-            <p>
-              The Enneagram is about self-awareness, and it can take time to find the type
-              that truly matches your deepest patterns.
-            </p>
-            <blockquote className="border-l-2 border-amber-400 pl-4 italic text-amber-800">
-              "Self-discovery is a process – and it doesn't end with finding your type.
-              In fact, it's only the beginning."
-            </blockquote>
-            <p className="text-sm">
-              <em>- The Wisdom of the Enneagram, Riso & Hudson</em>
-            </p>
-            <p>
-              The test can give you an indication – maybe the 2-3 most likely types – but it is
-              through self-observation, reflection, and conversation with people who know you well that
-              you will gradually be able to feel which type truly fits.
-            </p>
-            <div className="bg-white rounded-lg p-4 mt-4 border border-amber-200">
-              <h4 className="font-semibold text-amber-900 mb-2 flex items-center">
-                <Lightbulb className="w-5 h-5 mr-2" />
-                What you can do now
-              </h4>
-              <ul className="space-y-1 text-sm text-amber-800">
-                <li>• Read about the type you got – and the neighboring types</li>
-                <li>• Be curious: What resonates? What feels foreign?</li>
-                <li>• Talk to others about your patterns and reactions</li>
-                <li>• Remember: You have all nine types within you – but one is your "home base"</li>
-              </ul>
-            </div>
-          </div>
+        {/* Disclaimer Button */}
+        <div className="flex justify-center mb-8">
+          <button
+            onClick={() => setShowDisclaimerModal(true)}
+            className="inline-flex items-center px-6 py-3 bg-amber-100 text-amber-900 font-medium rounded-lg border-2 border-amber-400 hover:bg-amber-200 transition-colors duration-200"
+          >
+            <span className="text-xl mr-2">🧭</span>
+            Note: This test is a marker! Read more
+          </button>
         </div>
 
         <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
@@ -769,7 +738,6 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
 
         {/* Radial Chart */}
         <div className="bg-white rounded-xl shadow-lg p-4 md:p-8 mb-8 no-print">
-          <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-6 text-center">Your Enneagram Results - Radial Overview</h3>
           <div className="flex justify-center w-full">
             <EnneagramChart results={results} language={language} />
           </div>
@@ -903,85 +871,97 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
         )}
 
         <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
-          <div className="flex items-center mb-6">
-            <BarChart3 className="w-6 h-6 text-indigo-600 mr-2" />
-            <h3 className="text-xl font-semibold text-gray-800">All Results</h3>
-          </div>
-          
-          <div className="mb-4 text-sm text-gray-600">
-            <p>Click on each type to read more about it:</p>
-          </div>
-          
-          <div className="space-y-4">
-            {currentResults.map((result, index) => {
-              const info = typeDescriptions[result.type];
-              const ResultIcon = typeIcons[result.type];
-              return (
-                <TypeResultCard
-                  key={result.type}
-                  result={result}
-                  info={info}
-                  index={index}
-                  icon={ResultIcon}
-                  onSelectTypeForDetail={(type) => {
-                    setSelectedType(type);
-                    setShowDetailPage(true);
-                  }}
-                />
-              );
-            })}
+          <div
+            className="flex items-center justify-between cursor-pointer hover:bg-gray-50 -mx-8 px-8 py-4 rounded-t-xl transition-colors"
+            onClick={() => setShowAllResultsSection(!showAllResultsSection)}
+          >
+            <div className="flex items-center">
+              <BarChart3 className="w-6 h-6 text-indigo-600 mr-2" />
+              <h3 className="text-xl font-semibold text-gray-800">All Results</h3>
+            </div>
+            <div className={`transform transition-transform ${showAllResultsSection ? 'rotate-180' : ''}`}>
+              ▼
+            </div>
           </div>
 
-          {/* Self-identification section */}
-          {selfIdentifiedType && selfIdentifiedType !== topResult.type && (
-            <div className="mt-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-lg">
-              <p className="text-blue-800">
-                <strong>You have self-identified as {selfIdentifiedType}</strong> (even though the test result showed {topResult.type})
-              </p>
-            </div>
+          {showAllResultsSection && (
+            <>
+              <div className="mb-4 text-sm text-gray-600 mt-6">
+                <p>Click on each type to read more about it:</p>
+              </div>
+
+              <div className="space-y-4">
+                {currentResults.map((result, index) => {
+                  const info = typeDescriptions[result.type];
+                  const ResultIcon = typeIcons[result.type];
+                  return (
+                    <TypeResultCard
+                      key={result.type}
+                      result={result}
+                      info={info}
+                      index={index}
+                      icon={ResultIcon}
+                      onSelectTypeForDetail={(type) => {
+                        setSelectedType(type);
+                        setShowDetailPage(true);
+                      }}
+                    />
+                  );
+                })}
+              </div>
+
+              {/* Self-identification section */}
+              {selfIdentifiedType && selfIdentifiedType !== topResult.type && (
+                <div className="mt-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-lg">
+                  <p className="text-blue-800">
+                    <strong>You have self-identified as {selfIdentifiedType}</strong> (even though the test result showed {topResult.type})
+                  </p>
+                </div>
+              )}
+
+              <div className="mt-6 p-5 bg-gray-50 border border-gray-200 rounded-lg">
+                <h4 className="font-semibold text-gray-800 mb-3 flex items-center">
+                  <Compass className="w-5 h-5 mr-2" />
+                  Do you think another type fits better?
+                </h4>
+                <p className="text-sm text-gray-700 mb-4">
+                  After reading about the different types, you might identify more with another type.
+                  This is completely normal – the test gives an indication, but only you can truly know which type fits best.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {currentResults.slice(0, 5).map((result) => (
+                    <button
+                      key={result.type}
+                      onClick={() => {
+                        if (selfIdentifiedType === result.type) {
+                          setSelfIdentifiedType(null);
+                        } else {
+                          setSelfIdentifiedType(result.type);
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                      }}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                        selfIdentifiedType === result.type
+                          ? 'bg-blue-600 text-white'
+                          : result.type === topResult.type
+                          ? 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                      }`}
+                    >
+                      {result.type}
+                      {result.type === topResult.type && ' (test result)'}
+                      {selfIdentifiedType === result.type && ' ✓'}
+                    </button>
+                  ))}
+                </div>
+                {selfIdentifiedType && selfIdentifiedType !== topResult.type && (
+                  <p className="text-xs text-gray-600 mt-3">
+                    💡 Your selected type is automatically saved in your personal URL
+                  </p>
+                )}
+              </div>
+            </>
           )}
-
-          <div className="mt-6 p-5 bg-gray-50 border border-gray-200 rounded-lg">
-            <h4 className="font-semibold text-gray-800 mb-3 flex items-center">
-              <Compass className="w-5 h-5 mr-2" />
-              Do you think another type fits better?
-            </h4>
-            <p className="text-sm text-gray-700 mb-4">
-              After reading about the different types, you might identify more with another type.
-              This is completely normal – the test gives an indication, but only you can truly know which type fits best.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {currentResults.slice(0, 5).map((result) => (
-                <button
-                  key={result.type}
-                  onClick={() => {
-                    if (selfIdentifiedType === result.type) {
-                      setSelfIdentifiedType(null);
-                    } else {
-                      setSelfIdentifiedType(result.type);
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }
-                  }}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    selfIdentifiedType === result.type
-                      ? 'bg-blue-600 text-white'
-                      : result.type === topResult.type
-                      ? 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                      : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
-                  }`}
-                >
-                  {result.type}
-                  {result.type === topResult.type && ' (test result)'}
-                  {selfIdentifiedType === result.type && ' ✓'}
-                </button>
-              ))}
-            </div>
-            {selfIdentifiedType && selfIdentifiedType !== topResult.type && (
-              <p className="text-xs text-gray-600 mt-3">
-                💡 Your selected type is automatically saved in your personal URL
-              </p>
-            )}
-          </div>
         </div>
 
         {/* Enneagram Info Sections - Basic Fears, Desires, Triads and Stress/Growth */}
@@ -1006,30 +986,40 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
           </div>
         </div>
 
-        {/* Learn more about your type */}
-        {!wingResults && (
-          <div className="bg-white rounded-xl shadow-lg p-8 mb-8 print-hide-detailed">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+        {/* Learn more about your type - Collapsible Section */}
+        <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+          <div
+            className="flex items-center justify-between cursor-pointer hover:bg-gray-50 -mx-8 px-8 py-4 rounded-t-xl transition-colors"
+            onClick={() => setShowLearnMoreSection(!showLearnMoreSection)}
+          >
+            <h3 className="text-xl font-semibold text-gray-800">
               Want to know more about your type?
             </h3>
+            <div className={`transform transition-transform ${showLearnMoreSection ? 'rotate-180' : ''}`}>
+              ▼
+            </div>
+          </div>
 
-            <div>
+          {showLearnMoreSection && (
+            <div className="mt-6">
               <div className="mb-6">
                 <p className="text-gray-700 mb-4">
                   Get an in-depth understanding of how your personality type affects your work life,
                   your relationships and your personal development.
                 </p>
 
-                <div className="bg-blue-50 rounded-lg p-4 mb-4">
-                  <h4 className="font-semibold text-blue-800 mb-2">🪶 What are Enneagram Wings?</h4>
-                  <p className="text-blue-700 text-sm mb-3">
-                    Your {topResult.type} has two "neighbors" on the Enneagram circle, called <strong>wings</strong>.
-                    These wings blend with your core type and create a more nuanced and precise description of your personality.
-                  </p>
-                  <p className="text-blue-700 text-sm">
-                    {getWingExplanationForType(topResult.type)} The Wing test only takes 5 minutes and gives you an even more precise profile.
-                  </p>
-                </div>
+                {!wingResults && (
+                  <div className="bg-blue-50 rounded-lg p-4 mb-4">
+                    <h4 className="font-semibold text-blue-800 mb-2">🪶 What are Enneagram Wings?</h4>
+                    <p className="text-blue-700 text-sm mb-3">
+                      Your {topResult.type} has two "neighbors" on the Enneagram circle, called <strong>wings</strong>.
+                      These wings blend with your core type and create a more nuanced and precise description of your personality.
+                    </p>
+                    <p className="text-blue-700 text-sm">
+                      {getWingExplanationForType(topResult.type)} The Wing test only takes 5 minutes and gives you an even more precise profile.
+                    </p>
+                  </div>
+                )}
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
@@ -1043,17 +1033,19 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                   <span className="ml-2">→</span>
                 </button>
 
-                <button
-                  onClick={() => setShowWingTestIntro(true)}
-                  className="inline-flex items-center justify-center px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors duration-200"
-                >
-                  Discover Your Enneagram Wings
-                  <span className="ml-2">✨</span>
-                </button>
+                {!wingResults && (
+                  <button
+                    onClick={() => setShowWingTestIntro(true)}
+                    className="inline-flex items-center justify-center px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors duration-200"
+                  >
+                    Discover Your Enneagram Wings
+                    <span className="ml-2">✨</span>
+                  </button>
+                )}
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         <div className="text-center">
           <div className="bg-yellow-50 rounded-lg p-6 mb-6 border-2 border-yellow-200 no-print">
@@ -1176,6 +1168,73 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
             This will permanently delete all your responses
           </p>
         </div>
+
+        {/* Disclaimer Modal */}
+        {showDisclaimerModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6 md:p-8 relative max-h-[90vh] overflow-y-auto">
+              <button
+                onClick={() => setShowDisclaimerModal(false)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              <div className="bg-amber-50 border-l-4 border-amber-500 rounded-lg p-6">
+                <div className="flex items-start mb-3">
+                  <span className="text-2xl mr-3">🧭</span>
+                  <h3 className="text-xl font-semibold text-amber-900">
+                    Your test is a marker – not a final verdict ;-)
+                  </h3>
+                </div>
+                <div className="space-y-3 text-amber-900">
+                  <p>
+                    You have now taken an Enneagram test, and it has given you a result – a possible type.
+                    But it is important to remember that the test does not necessarily reveal your final type.
+                    It is a tool for reflection, not an answer key.
+                  </p>
+                  <p>
+                    The Enneagram is about self-awareness, and it can take time to find the type
+                    that truly matches your deepest patterns.
+                  </p>
+                  <blockquote className="border-l-2 border-amber-400 pl-4 italic text-amber-800">
+                    "Self-discovery is a process – and it doesn't end with finding your type.
+                    In fact, it's only the beginning."
+                  </blockquote>
+                  <p className="text-sm">
+                    <em>- The Wisdom of the Enneagram, Riso & Hudson</em>
+                  </p>
+                  <p>
+                    The test can give you an indication – maybe the 2-3 most likely types – but it is
+                    through self-observation, reflection, and conversation with people who know you well that
+                    you will gradually be able to feel which type truly fits.
+                  </p>
+                  <div className="bg-white rounded-lg p-4 mt-4 border border-amber-200">
+                    <h4 className="font-semibold text-amber-900 mb-2 flex items-center">
+                      <Lightbulb className="w-5 h-5 mr-2" />
+                      What you can do now
+                    </h4>
+                    <ul className="space-y-1 text-sm text-amber-800">
+                      <li>• Read about the type you got – and the neighboring types</li>
+                      <li>• Be curious: What resonates? What feels foreign?</li>
+                      <li>• Talk to others about your patterns and reactions</li>
+                      <li>• Remember: You have all nine types within you – but one is your "home base"</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 text-center">
+                <button
+                  onClick={() => setShowDisclaimerModal(false)}
+                  className="px-6 py-3 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors duration-200"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

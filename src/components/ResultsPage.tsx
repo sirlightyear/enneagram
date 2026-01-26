@@ -50,47 +50,47 @@ const typeIcons: Record<string, React.ComponentType<any>> = {
 const typeDescriptions: Record<string, { title: string; description: string; traits: string[] }> = {
   'Type 1': {
     title: 'Perfektionisten',
-    description: 'Du er principiel, målrettet og selvkontrolleret. Du stræber efter at forbedre alt og har høje standarder for dig selv og andre.',
+    description: 'Man er som type 1 principiel, målrettet og selvkontrolleret. Man stræber efter at forbedre alt og har høje standarder for sig selv og andre.',
     traits: ['Principiel', 'Organiseret', 'Selvdisciplineret', 'Kritisk', 'Idealistisk']
   },
   'Type 2': {
     title: 'Hjælperen',
-    description: 'Du er omsorgsfuld, interpersonel og besiddende. Du vil føle dig elsket og ønsket og udtrykker dine følelser for andre.',
+    description: 'Man er som type 2 omsorgsfuld, interpersonel og besiddende. Man vil føle sig elsket og ønsket og udtrykker sine følelser for andre.',
     traits: ['Omsorgsfuld', 'Empatisk', 'Generøs', 'Menneskeorienteret', 'Støttende']
   },
   'Type 3': {
     title: 'Præstationsorienterede',
-    description: 'Du er ambitiøs, tilpasningsdygtig og drevet af succes. Du stræber efter at være den bedste og ønsker anerkendelse for dine præstationer.',
+    description: 'Man er som type 3 ambitiøs, tilpasningsdygtig og drevet af succes. Man stræber efter at være den bedste og ønsker anerkendelse for sine præstationer.',
     traits: ['Målrettet', 'Energisk', 'Pragmatisk', 'Selvtillid', 'Konkurrencedygtig']
   },
   'Type 4': {
     title: 'Individualisten',
-    description: 'Du er kreativ, følelsesmæssigt ærlig og personlig. Du søger identitet og mening og udtrykker dig gennem autenticitet.',
+    description: 'Man er som type 4 kreativ, følelsesmæssigt ærlig og personlig. Man søger identitet og mening og udtrykker sig gennem autenticitet.',
     traits: ['Kreativ', 'Følsom', 'Introspektiv', 'Unik', 'Udtryksfuld']
   },
   'Type 5': {
     title: 'Undersøgeren',
-    description: 'Du er intens, cerebral og perceptiv. Du er selvstændig og innovativ, og du søger at forstå verden omkring dig.',
+    description: 'Man er som type 5 intens, cerebral og perceptiv. Man er selvstændig og innovativ, og man søger at forstå verden omkring sig.',
     traits: ['Analytisk', 'Selvstændig', 'Nysgerrig', 'Objektiv', 'Privat']
   },
   'Type 6': {
     title: 'Loyalisten',
-    description: 'Du er engageret, ansvarlig og troværdig. Du søger sikkerhed og støtte og er loyal over for systemer og mennesker.',
+    description: 'Man er som type 6 engageret, ansvarlig og troværdig. Man søger sikkerhed og støtte og er loyal over for systemer og mennesker.',
     traits: ['Loyal', 'Ansvarlig', 'Forsigtig', 'Samarbejdsvillig', 'Pålidelig']
   },
   'Type 7': {
     title: 'Entusiasten',
-    description: 'Du er spontan, alsidig og optimistisk. Du søger nye oplevelser og muligheder og holder dig i gang for at undgå smerte.',
+    description: 'Man er som type 7 spontan, alsidig og optimistisk. Man søger nye oplevelser og muligheder og holder sig i gang for at undgå smerte.',
     traits: ['Optimistisk', 'Spontan', 'Alsidig', 'Eventyrlysten', 'Energisk']
   },
   'Type 8': {
     title: 'Udfordreren',
-    description: 'Du er selvtillidsfuld, stærk og assertiv. Du beskytter dig selv og kontrollerer dit miljø, og du kæmper for retfærdighed.',
+    description: 'Man er som type 8 selvtillidsfuld, stærk og assertiv. Man beskytter sig selv og kontrollerer sit miljø, og man kæmper for retfærdighed.',
     traits: ['Stærk', 'Direkte', 'Selvtillidsfuld', 'Beskyttende', 'Retfærdig']
   },
   'Type 9': {
     title: 'Fredsmageren',
-    description: 'Du er accepterende, tillidsfuld og stabil. Du ønsker indre og ydre fred og søger harmoni i dine relationer.',
+    description: 'Man er som type 9 accepterende, tillidsfuld og stabil. Man ønsker indre og ydre fred og søger harmoni i sine relationer.',
     traits: ['Fredelig', 'Støttende', 'Accepterende', 'Diplomatisk', 'Stabil']
   }
 };
@@ -109,6 +109,9 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   const [userEmail, setUserEmail] = React.useState('');
   const [isSendingEmail, setIsSendingEmail] = React.useState(false);
   const [emailSent, setEmailSent] = React.useState(false);
+  const [showDisclaimerModal, setShowDisclaimerModal] = React.useState(false);
+  const [showLearnMoreSection, setShowLearnMoreSection] = React.useState(false);
+  const [showAllResultsSection, setShowAllResultsSection] = React.useState(false);
 
   const sortedResults = React.useMemo(() => {
     return [...currentResults].sort((a, b) => b.percentage - a.percentage);
@@ -651,49 +654,15 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
           <p className="text-gray-600">Baseret på dine svar har vi identificeret din primære personlighedstype</p>
         </div>
 
-        {/* Disclaimer about test accuracy */}
-        <div className="bg-amber-50 border-l-4 border-amber-500 rounded-lg p-6 mb-8">
-          <div className="flex items-start mb-3">
-            <span className="text-2xl mr-3">🧭</span>
-            <h3 className="text-xl font-semibold text-amber-900">
-              Din test er et pejlemærke – ikke en endelig dom ;-)
-            </h3>
-          </div>
-          <div className="space-y-3 text-amber-900">
-            <p>
-              Du har nu taget en Enneagram-test, og den har givet dig et resultat – en mulig type.
-              Men det er vigtigt at huske, at testen ikke nødvendigvis afslører din endelige type.
-              Den er et værktøj til refleksion, ikke en facitliste.
-            </p>
-            <p>
-              Enneagrammet handler om selverkendelse, og det kan tage tid at finde frem til den type,
-              der virkelig matcher dine dybeste mønstre.
-            </p>
-            <blockquote className="border-l-2 border-amber-400 pl-4 italic text-amber-800">
-              "Selvopdagelse er en proces – og den slutter ikke med at finde sin type.
-              Faktisk er det kun begyndelsen."
-            </blockquote>
-            <p className="text-sm">
-              <em>- The Wisdom of the Enneagram, Riso & Hudson</em>
-            </p>
-            <p>
-              Testen kan give dig en indikation – måske de 2-3 mest sandsynlige typer – men det er
-              gennem selvobservation, refleksion og samtale med mennesker, der kender dig godt, at
-              du gradvist vil kunne mærke, hvilken type der virkelig passer.
-            </p>
-            <div className="bg-white rounded-lg p-4 mt-4 border border-amber-200">
-              <h4 className="font-semibold text-amber-900 mb-2 flex items-center">
-                <Lightbulb className="w-5 h-5 mr-2" />
-                Hvad du kan gøre nu
-              </h4>
-              <ul className="space-y-1 text-sm text-amber-800">
-                <li>• Læs om den type, du har fået – og de nærliggende typer</li>
-                <li>• Vær nysgerrig: Hvad resonerer? Hvad føles fremmed?</li>
-                <li>• Tal med andre om dine mønstre og reaktioner</li>
-                <li>• Husk: Du har alle ni typer i dig – men én er dit "hjemmeområde"</li>
-              </ul>
-            </div>
-          </div>
+        {/* Disclaimer Button */}
+        <div className="flex justify-center mb-8">
+          <button
+            onClick={() => setShowDisclaimerModal(true)}
+            className="inline-flex items-center px-6 py-3 bg-amber-100 text-amber-900 font-medium rounded-lg border-2 border-amber-400 hover:bg-amber-200 transition-colors duration-200"
+          >
+            <span className="text-xl mr-2">🧭</span>
+            Obs: Den test er et pejlemærke! Læs mere
+          </button>
         </div>
 
         <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
@@ -832,7 +801,6 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
 
         {/* Radial Chart */}
         <div className="bg-white rounded-xl shadow-lg p-4 md:p-8 mb-8 no-print">
-          <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-6 text-center">Dine Enneagram Resultater - Radial Oversigt</h3>
           <div className="flex justify-center w-full">
             <EnneagramChart results={sortedResults} language={language} />
           </div>
@@ -966,85 +934,97 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
         )}
 
         <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
-          <div className="flex items-center mb-6">
-            <BarChart3 className="w-6 h-6 text-indigo-600 mr-2" />
-            <h3 className="text-xl font-semibold text-gray-800">Alle Resultater</h3>
-          </div>
-          
-          <div className="mb-4 text-sm text-gray-600">
-            <p>Tryk på hver type for at læse mere om den:</p>
-          </div>
-          
-          <div className="space-y-4">
-            {sortedResults.map((result, index) => {
-              const info = typeDescriptions[result.type];
-              const ResultIcon = typeIcons[result.type];
-              return (
-                <TypeResultCard
-                  key={result.type}
-                  result={result}
-                  info={info}
-                  index={index}
-                  icon={ResultIcon}
-                  onSelectTypeForDetail={(type) => {
-                    setSelectedType(type);
-                    setShowDetailPage(true);
-                  }}
-                />
-              );
-            })}
+          <div
+            className="flex items-center justify-between cursor-pointer hover:bg-gray-50 -mx-8 px-8 py-4 rounded-t-xl transition-colors"
+            onClick={() => setShowAllResultsSection(!showAllResultsSection)}
+          >
+            <div className="flex items-center">
+              <BarChart3 className="w-6 h-6 text-indigo-600 mr-2" />
+              <h3 className="text-xl font-semibold text-gray-800">Alle Resultater</h3>
+            </div>
+            <div className={`transform transition-transform ${showAllResultsSection ? 'rotate-180' : ''}`}>
+              ▼
+            </div>
           </div>
 
-          {/* Self-identification section */}
-          {selfIdentifiedType && selfIdentifiedType !== topResult.type && (
-            <div className="mt-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-lg">
-              <p className="text-blue-800">
-                <strong>Du har identificeret dig selv som {selfIdentifiedType}</strong> (selvom testresultatet viste {topResult.type})
-              </p>
-            </div>
+          {showAllResultsSection && (
+            <>
+              <div className="mb-4 text-sm text-gray-600 mt-6">
+                <p>Tryk på hver type for at læse mere om den:</p>
+              </div>
+
+              <div className="space-y-4">
+                {sortedResults.map((result, index) => {
+                  const info = typeDescriptions[result.type];
+                  const ResultIcon = typeIcons[result.type];
+                  return (
+                    <TypeResultCard
+                      key={result.type}
+                      result={result}
+                      info={info}
+                      index={index}
+                      icon={ResultIcon}
+                      onSelectTypeForDetail={(type) => {
+                        setSelectedType(type);
+                        setShowDetailPage(true);
+                      }}
+                    />
+                  );
+                })}
+              </div>
+
+              {/* Self-identification section */}
+              {selfIdentifiedType && selfIdentifiedType !== topResult.type && (
+                <div className="mt-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-lg">
+                  <p className="text-blue-800">
+                    <strong>Du har identificeret dig selv som {selfIdentifiedType}</strong> (selvom testresultatet viste {topResult.type})
+                  </p>
+                </div>
+              )}
+
+              <div className="mt-6 p-5 bg-gray-50 border border-gray-200 rounded-lg">
+                <h4 className="font-semibold text-gray-800 mb-3 flex items-center">
+                  <Compass className="w-5 h-5 mr-2" />
+                  Tror du, at en anden type passer bedre?
+                </h4>
+                <p className="text-sm text-gray-700 mb-4">
+                  Efter at have læst om de forskellige typer, identificerer du dig måske mere med en anden type.
+                  Det er helt normalt – testen giver en indikation, men kun du kan virkelig vide, hvilken type der passer bedst.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {sortedResults.slice(0, 5).map((result) => (
+                    <button
+                      key={result.type}
+                      onClick={() => {
+                        if (selfIdentifiedType === result.type) {
+                          setSelfIdentifiedType(null);
+                        } else {
+                          setSelfIdentifiedType(result.type);
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                      }}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                        selfIdentifiedType === result.type
+                          ? 'bg-blue-600 text-white'
+                          : result.type === topResult.type
+                          ? 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                      }`}
+                    >
+                      {result.type}
+                      {result.type === topResult.type && ' (testresultat)'}
+                      {selfIdentifiedType === result.type && ' ✓'}
+                    </button>
+                  ))}
+                </div>
+                {selfIdentifiedType && selfIdentifiedType !== topResult.type && (
+                  <p className="text-xs text-gray-600 mt-3">
+                    💡 Din valgte type gemmes automatisk i din personlige URL
+                  </p>
+                )}
+              </div>
+            </>
           )}
-
-          <div className="mt-6 p-5 bg-gray-50 border border-gray-200 rounded-lg">
-            <h4 className="font-semibold text-gray-800 mb-3 flex items-center">
-              <Compass className="w-5 h-5 mr-2" />
-              Tror du, at en anden type passer bedre?
-            </h4>
-            <p className="text-sm text-gray-700 mb-4">
-              Efter at have læst om de forskellige typer, identificerer du dig måske mere med en anden type.
-              Det er helt normalt – testen giver en indikation, men kun du kan virkelig vide, hvilken type der passer bedst.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {sortedResults.slice(0, 5).map((result) => (
-                <button
-                  key={result.type}
-                  onClick={() => {
-                    if (selfIdentifiedType === result.type) {
-                      setSelfIdentifiedType(null);
-                    } else {
-                      setSelfIdentifiedType(result.type);
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }
-                  }}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    selfIdentifiedType === result.type
-                      ? 'bg-blue-600 text-white'
-                      : result.type === topResult.type
-                      ? 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                      : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
-                  }`}
-                >
-                  {result.type}
-                  {result.type === topResult.type && ' (testresultat)'}
-                  {selfIdentifiedType === result.type && ' ✓'}
-                </button>
-              ))}
-            </div>
-            {selfIdentifiedType && selfIdentifiedType !== topResult.type && (
-              <p className="text-xs text-gray-600 mt-3">
-                💡 Din valgte type gemmes automatisk i din personlige URL
-              </p>
-            )}
-          </div>
         </div>
 
         {/* Enneagram Info Sections - Basic Fears, Desires, Triads and Stress/Growth */}
@@ -1069,30 +1049,40 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
           </div>
         </div>
 
-        {/* Learn more about your type */}
-        {!wingResults && (
-          <div className="bg-white rounded-xl shadow-lg p-8 mb-8 print-hide-detailed">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+        {/* Learn more about your type - Collapsible Section */}
+        <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+          <div
+            className="flex items-center justify-between cursor-pointer hover:bg-gray-50 -mx-8 px-8 py-4 rounded-t-xl transition-colors"
+            onClick={() => setShowLearnMoreSection(!showLearnMoreSection)}
+          >
+            <h3 className="text-xl font-semibold text-gray-800">
               Vil du vide mere om din type?
             </h3>
+            <div className={`transform transition-transform ${showLearnMoreSection ? 'rotate-180' : ''}`}>
+              ▼
+            </div>
+          </div>
 
-            <div>
+          {showLearnMoreSection && (
+            <div className="mt-6">
               <div className="mb-6">
                 <p className="text-gray-700 mb-4">
                   Få en dybdegående forståelse af hvordan din personlighedstype påvirker dit arbejdsliv,
                   dine relationer og din personlige udvikling.
                 </p>
 
-                <div className="bg-blue-50 rounded-lg p-4 mb-4">
-                  <h4 className="font-semibold text-blue-800 mb-2">🪶 Hvad er Enneagram-vinger?</h4>
-                  <p className="text-blue-700 text-sm mb-3">
-                    Din {topResult.type} har to "naboer" på Enneagram-cirklen, som kaldes <strong>vinger</strong>.
-                    Disse vinger blander sig med din grundtype og skaber en mere nuanceret og præcis beskrivelse af din personlighed.
-                  </p>
-                  <p className="text-blue-700 text-sm">
-                    {getWingExplanationForType(topResult.type)} Vinge-testen tager kun 5 minutter og giver dig en endnu mere præcis profil.
-                  </p>
-                </div>
+                {!wingResults && (
+                  <div className="bg-blue-50 rounded-lg p-4 mb-4">
+                    <h4 className="font-semibold text-blue-800 mb-2">🪶 Hvad er Enneagram-vinger?</h4>
+                    <p className="text-blue-700 text-sm mb-3">
+                      Din {topResult.type} har to "naboer" på Enneagram-cirklen, som kaldes <strong>vinger</strong>.
+                      Disse vinger blander sig med din grundtype og skaber en mere nuanceret og præcis beskrivelse af din personlighed.
+                    </p>
+                    <p className="text-blue-700 text-sm">
+                      {getWingExplanationForType(topResult.type)} Vinge-testen tager kun 5 minutter og giver dig en endnu mere præcis profil.
+                    </p>
+                  </div>
+                )}
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
@@ -1106,17 +1096,19 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                   <span className="ml-2">→</span>
                 </button>
 
-                <button
-                  onClick={() => setShowWingTestIntro(true)}
-                  className="inline-flex items-center justify-center px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors duration-200"
-                >
-                  Opdag dine Enneagram-vinger
-                  <span className="ml-2">✨</span>
-                </button>
+                {!wingResults && (
+                  <button
+                    onClick={() => setShowWingTestIntro(true)}
+                    className="inline-flex items-center justify-center px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors duration-200"
+                  >
+                    Opdag dine Enneagram-vinger
+                    <span className="ml-2">✨</span>
+                  </button>
+                )}
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         <div className="text-center">
           <div className="bg-yellow-50 rounded-lg p-6 mb-6 border-2 border-yellow-200 no-print">
@@ -1327,6 +1319,73 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
                   </p>
                 </div>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* Disclaimer Modal */}
+        {showDisclaimerModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6 md:p-8 relative max-h-[90vh] overflow-y-auto">
+              <button
+                onClick={() => setShowDisclaimerModal(false)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              <div className="bg-amber-50 border-l-4 border-amber-500 rounded-lg p-6">
+                <div className="flex items-start mb-3">
+                  <span className="text-2xl mr-3">🧭</span>
+                  <h3 className="text-xl font-semibold text-amber-900">
+                    Din test er et pejlemærke – ikke en endelig dom ;-)
+                  </h3>
+                </div>
+                <div className="space-y-3 text-amber-900">
+                  <p>
+                    Du har nu taget en Enneagram-test, og den har givet dig et resultat – en mulig type.
+                    Men det er vigtigt at huske, at testen ikke nødvendigvis afslører din endelige type.
+                    Den er et værktøj til refleksion, ikke en facitliste.
+                  </p>
+                  <p>
+                    Enneagrammet handler om selverkendelse, og det kan tage tid at finde frem til den type,
+                    der virkelig matcher dine dybeste mønstre.
+                  </p>
+                  <blockquote className="border-l-2 border-amber-400 pl-4 italic text-amber-800">
+                    "Selvopdagelse er en proces – og den slutter ikke med at finde sin type.
+                    Faktisk er det kun begyndelsen."
+                  </blockquote>
+                  <p className="text-sm">
+                    <em>- The Wisdom of the Enneagram, Riso & Hudson</em>
+                  </p>
+                  <p>
+                    Testen kan give dig en indikation – måske de 2-3 mest sandsynlige typer – men det er
+                    gennem selvobservation, refleksion og samtale med mennesker, der kender dig godt, at
+                    du gradvist vil kunne mærke, hvilken type der virkelig passer.
+                  </p>
+                  <div className="bg-white rounded-lg p-4 mt-4 border border-amber-200">
+                    <h4 className="font-semibold text-amber-900 mb-2 flex items-center">
+                      <Lightbulb className="w-5 h-5 mr-2" />
+                      Hvad du kan gøre nu
+                    </h4>
+                    <ul className="space-y-1 text-sm text-amber-800">
+                      <li>• Læs om den type, du har fået – og de nærliggende typer</li>
+                      <li>• Vær nysgerrig: Hvad resonerer? Hvad føles fremmed?</li>
+                      <li>• Tal med andre om dine mønstre og reaktioner</li>
+                      <li>• Husk: Du har alle ni typer i dig – men én er dit "hjemmeområde"</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 text-center">
+                <button
+                  onClick={() => setShowDisclaimerModal(false)}
+                  className="px-6 py-3 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors duration-200"
+                >
+                  Luk
+                </button>
+              </div>
             </div>
           </div>
         )}
