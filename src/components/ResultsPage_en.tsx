@@ -125,10 +125,6 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   const typeInfo = typeDescriptions[displayType];
   const TypeIcon = typeIcons[displayType];
 
-  // Print/PDF functionality
-  const handlePrint = () => {
-    window.print();
-  };
 
   const handleSendEmail = async () => {
     if (!userEmail || !userEmail.includes('@')) {
@@ -156,6 +152,31 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
       }
       const resultUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
 
+      // Call Supabase Edge Function
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-email`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({
+            to: userEmail,
+            subject: 'Your Enneagram Test Results',
+            resultUrl: resultUrl,
+            topType: topResult.type,
+            topPercentage: topResult.percentage,
+            language: language
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to send email');
+      }
+
+      // Log completion
       const logger = TestLogger.getInstance();
       const wingResponses = wingResults ? wingResults.testData.questions.map((_, index) => ({
         questionIndex: index,
@@ -232,43 +253,6 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
     }
   };
 
-  const handleShare = async () => {
-    // Create URL for sharing
-    const params = new URLSearchParams();
-    if (responses && responses.length > 0) {
-      params.set('r', JSON.stringify(responses));
-    }
-    if (wingResults) {
-      const wingResponses = wingResults.testData.questions.map((_, index) => ({
-        questionIndex: index,
-        selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
-      }));
-      params.set('w', JSON.stringify(wingResponses));
-    }
-    if (selfIdentifiedType) {
-      params.set('s', selfIdentifiedType);
-    }
-    const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
-
-    if (navigator.share && navigator.canShare) {
-      const shareData = {
-        title: 'My Enneagram Results',
-        text: `I am ${topResult.type}: ${typeInfo.title} (${topResult.percentage}% match)`,
-        url: url
-      };
-
-      try {
-        await navigator.share(shareData);
-      } catch (error) {
-        // User cancelled share or it failed
-        console.log('Share cancelled or failed');
-      }
-    } else {
-      // Fallback: copy to clipboard
-      await navigator.clipboard.writeText(url);
-      alert('✅ Link copied to clipboard!\n\nPaste this link in an email, text message, or chat to share your results.');
-    }
-  };
 
   // Get wing test data based on primary type
   const getWingTestData = () => {
@@ -1171,22 +1155,6 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
             >
               <Search className="w-5 h-5 mr-2" />
               Review / Edit answers
-            </button>
-
-            <button
-              onClick={handlePrint}
-              className="inline-flex items-center px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors duration-200 no-print"
-            >
-              <Printer className="w-5 h-5 mr-2" />
-              Print / Save as PDF
-            </button>
-
-            <button
-              onClick={handleShare}
-              className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200 no-print"
-            >
-              <Share2 className="w-5 h-5 mr-2" />
-              Share via email/SMS
             </button>
 
             <button
