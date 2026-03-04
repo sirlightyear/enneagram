@@ -108,10 +108,6 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   const [showReviewAnswers, setShowReviewAnswers] = React.useState(false);
   const [editedResponses, setEditedResponses] = React.useState(responses || []);
   const [currentResults, setCurrentResults] = React.useState(results);
-  const [showEmailDialog, setShowEmailDialog] = React.useState(false);
-  const [userEmail, setUserEmail] = React.useState('');
-  const [isSendingEmail, setIsSendingEmail] = React.useState(false);
-  const [emailSent, setEmailSent] = React.useState(false);
   const [showDisclaimerModal, setShowDisclaimerModal] = React.useState(false);
   const [showLearnMoreSection, setShowLearnMoreSection] = React.useState(false);
   const [showAllResultsSection, setShowAllResultsSection] = React.useState(false);
@@ -125,87 +121,6 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
   const typeInfo = typeDescriptions[displayType];
   const TypeIcon = typeIcons[displayType];
   
-
-  const handleSendEmail = async () => {
-    if (!userEmail || !userEmail.includes('@')) {
-      alert('Bitte geben Sie eine gültige E-Mail-Adresse ein');
-      return;
-    }
-
-    setIsSendingEmail(true);
-
-    try {
-      const params = new URLSearchParams();
-      params.set('lang', language);
-      if (responses && responses.length > 0) {
-        params.set('r', JSON.stringify(responses));
-      }
-      if (wingResults) {
-        const wingResponses = wingResults.testData.questions.map((_, index) => ({
-          questionIndex: index,
-          selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
-        }));
-        params.set('w', JSON.stringify(wingResponses));
-      }
-      if (selfIdentifiedType) {
-        params.set('s', selfIdentifiedType);
-      }
-      const resultUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
-
-      // Call Supabase Edge Function
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-email`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          },
-          body: JSON.stringify({
-            to: userEmail,
-            subject: 'Ihre Enneagramm-Test-Ergebnisse',
-            resultUrl: resultUrl,
-            topType: topResult.type,
-            topPercentage: topResult.percentage,
-            language: language
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Failed to send email');
-      }
-
-      // Log completion
-      const logger = TestLogger.getInstance();
-      const wingResponses = wingResults ? wingResults.testData.questions.map((_, index) => ({
-        questionIndex: index,
-        selectedWing: index < wingResults.result.primaryScore ? wingResults.result.primaryWing : wingResults.result.secondaryWing
-      })) : undefined;
-
-      await logger.logTestCompletion(
-        userEmail,
-        sortedResults,
-        responses || [],
-        enneagramQuestions,
-        wingResults,
-        wingResponses,
-        wingResults?.testData.questions
-      );
-
-      setEmailSent(true);
-      setTimeout(() => {
-        setShowEmailDialog(false);
-        setEmailSent(false);
-        setUserEmail('');
-      }, 3000);
-    } catch (error) {
-      console.error('Error sending email:', error);
-      alert('Beim Senden der E-Mail ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.');
-    } finally {
-      setIsSendingEmail(false);
-    }
-  };
 
   const handleSaveUrl = async () => {
     // Create URL that goes directly to results page with current data
@@ -1132,14 +1047,6 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
               <Search className="w-5 h-5 mr-2" />
               Antworten überprüfen / bearbeiten
             </button>
-
-            <button
-              onClick={() => setShowEmailDialog(true)}
-              className="inline-flex items-center px-6 py-3 bg-orange-600 text-white font-medium rounded-lg hover:bg-orange-700 transition-colors duration-200 no-print"
-            >
-              <Mail className="w-5 h-5 mr-2" />
-              Per E-Mail senden
-            </button>
           </div>
           
            {/*<button
@@ -1219,89 +1126,6 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
             Dies löscht alle Ihre Antworten dauerhaft
           </p>
         </div>
-
-        {/* Email Dialog */}
-        {showEmailDialog && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 relative">
-              <button
-                onClick={() => {
-                  setShowEmailDialog(false);
-                  setEmailSent(false);
-                  setUserEmail('');
-                }}
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-              >
-                <X className="w-6 h-6" />
-              </button>
-
-              {!emailSent ? (
-                <>
-                  <div className="mb-6">
-                    <Mail className="w-12 h-12 text-orange-600 mx-auto mb-4" />
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2 text-center">
-                      Per E-Mail senden
-                    </h3>
-                    <p className="text-gray-600 text-center">
-                      Geben Sie Ihre E-Mail-Adresse ein, damit wir Ihnen Ihre Testergebnisse und einen Link zu dieser Seite zusenden können.
-                    </p>
-                  </div>
-
-                  <div className="mb-6">
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                      E-Mail-Adresse
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      value={userEmail}
-                      onChange={(e) => setUserEmail(e.target.value)}
-                      placeholder="ihre@email.de"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                      disabled={isSendingEmail}
-                    />
-                  </div>
-
-                  <button
-                    onClick={handleSendEmail}
-                    disabled={isSendingEmail || !userEmail}
-                    className="w-full inline-flex items-center justify-center px-6 py-3 bg-orange-600 text-white font-medium rounded-lg hover:bg-orange-700 transition-colors duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed"
-                  >
-                    {isSendingEmail ? (
-                      <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                        Wird gesendet...
-                      </>
-                    ) : (
-                      <>
-                        <Mail className="w-5 h-5 mr-2" />
-                        E-Mail senden
-                      </>
-                    )}
-                  </button>
-
-                  <p className="text-xs text-gray-500 mt-4 text-center">
-                    Wir speichern Ihre E-Mail nicht dauerhaft. Sie wird nur zum Senden Ihrer Ergebnisse verwendet.
-                  </p>
-                </>
-              ) : (
-                <div className="text-center py-8">
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                    E-Mail gesendet!
-                  </h3>
-                  <p className="text-gray-600">
-                    Überprüfen Sie Ihren Posteingang für Ihre Testergebnisse.
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
 
         {/* Disclaimer Modal */}
         {showDisclaimerModal && (
