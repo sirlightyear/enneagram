@@ -174,10 +174,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-100 via-amber-50 to-fuchsia-200 py-4 px-4">
       {/* Kruso Logo */}
-      <div className="pb-4">
-        <div className="flex justify-center">
-            <img src="/KrusoPeople4.png" alt="Kruso Compass" className="w-15 h-auto" />
-        </div>
+      <div className="pb-4 flex justify-start max-w-3xl mx-auto">
+        <img src="/-K_-_Colored(2).png" alt="Kruso" className="h-10 w-auto" />
       </div>
 
       <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 max-w-3xl mx-auto">
@@ -284,6 +282,11 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           <ChevronRight className="w-4 h-4 ml-1" />
         </button>
       </div>
+    </div>
+
+    {/* Footer */}
+    <div className="text-center py-4 text-gray-600 text-sm max-w-3xl mx-auto">
+      Copyright 2026 - Kruso A/S - enneagram@kruso.dk
     </div>
     </div>
   );
