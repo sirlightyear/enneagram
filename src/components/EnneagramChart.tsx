@@ -217,7 +217,7 @@ const EnneagramChart: React.FC<EnneagramChartProps> = ({ results, language = 'da
           y={centerY - 25}
           width="50"
           height="50"
-          href="/K - Colored(2).png"
+          href="/-K_-_Colored(2).png"
           className="opacity-80"
         />
       </svg>
