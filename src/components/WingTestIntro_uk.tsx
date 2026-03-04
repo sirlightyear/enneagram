@@ -12,8 +12,8 @@ const WingTestIntro: React.FC<WingTestIntroProps> = ({ primaryType, onStart, onS
     <div className="min-h-screen bg-gradient-to-br from-emerald-100 via-amber-50 to-fuchsia-200 py-8 px-4">
       <div className="max-w-3xl mx-auto">
         {/* Kruso Logo */}
-        <div className="flex justify-end mb-2">
-        <img src="/KrusoPeople4.png" alt="Kruso Compass" className="w-15 h-auto" />
+        <div className="flex justify-start mb-4">
+          <img src="/-K_-_Colored(2).png" alt="Kruso" className="h-10 w-auto" />
         </div>
 
         <div className="bg-white rounded-xl shadow-lg p-8">
@@ -93,6 +93,11 @@ const WingTestIntro: React.FC<WingTestIntroProps> = ({ primaryType, onStart, onS
           <p className="text-center text-gray-500 text-sm mt-6">
             Ви завжди можете повернутися і пройти тест на крила пізніше
           </p>
+
+          {/* Footer */}
+          <div className="text-center mt-8 py-4 text-gray-600 text-sm">
+            Copyright 2026 - Kruso A/S - enneagram@kruso.dk
+          </div>
         </div>
       </div>
     </div>

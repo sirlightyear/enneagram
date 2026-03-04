@@ -15,16 +15,12 @@ const IntroPage: React.FC<IntroPageProps> = ({ onStart, language, onLanguageChan
     <div className="min-h-screen bg-gradient-to-br from-emerald-100 via-amber-50 to-fuchsia-200">
       <div className="py-6 px-4">
         <div className="max-w-4xl mx-auto">
-          {/* Language Selector */}
-          <div className="flex justify-end mb-4">
+          {/* Top bar with Logo and Language Selector */}
+          <div className="flex justify-between items-center mb-8">
+            <img src="/-K_-_Colored(2).png" alt="Kruso" className="h-12 w-auto" />
             <LanguageSelector currentLanguage={language} onLanguageChange={onLanguageChange} />
           </div>
 
-          {/* Kruso Logo - diskret placeret (dezent platziert) */}
-          <div className="flex justify-center">         
-            <img src="/KrusoPeople4.png" alt="Kruso Kompass" className="w-15 h-auto" />
-          </div>
-          
           {/* Hero Section */}
           <div className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
@@ -147,6 +143,11 @@ const IntroPage: React.FC<IntroPageProps> = ({ onStart, language, onLanguageChan
               <ArrowRight className="w-6 h-6 ml-2" />
             </button>
           </div>
+
+            {/* Footer */}
+            <div className="text-center mt-8 py-4 text-gray-600 text-sm">
+              Copyright 2026 - Kruso A/S - enneagram@kruso.dk
+            </div>
         </div>
       </div>
     </div>

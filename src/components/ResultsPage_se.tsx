@@ -1127,6 +1127,11 @@ const ResultsPage: React.FC<ResultsPageProps> = ({ results, onRestart, wingResul
           </p>
         </div>
 
+        {/* Footer */}
+        <div className="text-center mt-8 py-4 text-gray-600 text-sm no-print">
+          Copyright 2026 - Kruso A/S - enneagram@kruso.dk
+        </div>
+
         {/* Disclaimer Modal */}
         {showDisclaimerModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
