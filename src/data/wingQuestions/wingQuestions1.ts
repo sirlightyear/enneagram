@@ -136,7 +136,7 @@ export const type1WingQuestions: WingTestData = {
   ],
   descriptions: {
     w9: {
-      title: "Type 1w9 - Den Idealistiske Fredsmager",
+      title: "Type 1w9 - Den Idealistiske Fredsskaber",
       description: "Du kombinerer Type 1's principielle natur med Type 9's diplomatiske tilgang. Du stræber efter perfektion, men gør det på en rolig og harmonisk måde.",
       characteristics: [
         "arbejder stille og metodisk mod forbedringer",

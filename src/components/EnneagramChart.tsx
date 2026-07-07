@@ -10,7 +10,7 @@ const getTypeDescriptions = (language: string = 'da'): Record<string, { title: s
   switch (language) {
     case 'en':
       return {
-        'Type 1': { title: 'The Perfectionist' },
+        'Type 1': { title: 'The Reformer' },
         'Type 2': { title: 'The Helper' },
         'Type 3': { title: 'The Achiever' },
         'Type 4': { title: 'The Individualist' },
@@ -72,13 +72,13 @@ const getTypeDescriptions = (language: string = 'da'): Record<string, { title: s
       return {
         'Type 1': { title: 'Perfektionisten' },
         'Type 2': { title: 'Hjælperen' },
-        'Type 3': { title: 'Præstationsorienterede' },
+        'Type 3': { title: 'Udretteren' },
         'Type 4': { title: 'Individualisten' },
-        'Type 5': { title: 'Undersøgeren' },
+        'Type 5': { title: 'Iagttageren' },
         'Type 6': { title: 'Loyalisten' },
         'Type 7': { title: 'Entusiasten' },
         'Type 8': { title: 'Udfordreren' },
-        'Type 9': { title: 'Fredsmageren' }
+        'Type 9': { title: 'Fredsskaberen' }
       };
   }
 };

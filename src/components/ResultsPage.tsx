@@ -59,7 +59,7 @@ const typeDescriptions: Record<string, { title: string; description: string; tra
     traits: ['Omsorgsfuld', 'Empatisk', 'Generøs', 'Menneskeorienteret', 'Støttende']
   },
   'Type 3': {
-    title: 'Præstationsorienterede',
+    title: 'Udretteren',
     description: 'Man er som type 3 ambitiøs, tilpasningsdygtig og drevet af succes. Man stræber efter at være den bedste og ønsker anerkendelse for sine præstationer.',
     traits: ['Målrettet', 'Energisk', 'Pragmatisk', 'Selvtillid', 'Konkurrencedygtig']
   },
@@ -69,7 +69,7 @@ const typeDescriptions: Record<string, { title: string; description: string; tra
     traits: ['Kreativ', 'Følsom', 'Introspektiv', 'Unik', 'Udtryksfuld']
   },
   'Type 5': {
-    title: 'Undersøgeren',
+    title: 'Iagttageren',
     description: 'Man er som type 5 intens, cerebral og perceptiv. Man er selvstændig og innovativ, og man søger at forstå verden omkring sig.',
     traits: ['Analytisk', 'Selvstændig', 'Nysgerrig', 'Objektiv', 'Privat']
   },
@@ -89,7 +89,7 @@ const typeDescriptions: Record<string, { title: string; description: string; tra
     traits: ['Stærk', 'Direkte', 'Selvtillidsfuld', 'Beskyttende', 'Retfærdig']
   },
   'Type 9': {
-    title: 'Fredsmageren',
+    title: 'Fredsskaberen',
     description: 'Man er som type 9 accepterende, tillidsfuld og stabil. Man ønsker indre og ydre fred og søger harmoni i sine relationer.',
     traits: ['Fredelig', 'Støttende', 'Accepterende', 'Diplomatisk', 'Stabil']
   }
@@ -1270,7 +1270,7 @@ const getDetailedDescription = (type: string): string => {
     
     'Type 2': 'Som Hjælper har du en exceptionel evne til at mærke andres behov og en naturlig drivkraft til at støtte dem omkring dig. Du skaber varme, tillidsfulde relationer og er ofte den, folk kommer til for råd og støtte. Din empati og omsorgsfulde natur gør dig til en værdifuld teamspiller, men husk også at prioritere dine egne behov. Du blomstrer i miljøer hvor din omsorg bliver værdsat, og hvor du kan gøre en reel forskel for andre.',
     
-    'Type 3': 'Som den Præstationsorienterede har du en naturlig drivkraft mod succes og en evne til at inspirere andre med din energi og optimisme. Du er målrettet, tilpasningsdygtig og god til at læse, hvad der skal til for at lykkes i forskellige situationer. Din konkurrenceinstinkt og fokus på resultater gør dig til en stærk performer, men husk også at værdsætte processen og ikke kun slutresultatet. Du trives i dynamiske miljøer hvor dine præstationer bliver anerkendt.',
+    'Type 3': 'Som Udretteren har du en naturlig drivkraft mod succes og en evne til at inspirere andre med din energi og optimisme. Du er målrettet, tilpasningsdygtig og god til at læse, hvad der skal til for at lykkes i forskellige situationer. Din konkurrenceinstinkt og fokus på resultater gør dig til en stærk performer, men husk også at værdsætte processen og ikke kun slutresultatet. Du trives i dynamiske miljøer hvor dine præstationer bliver anerkendt.',
     
     'Type 4': 'Som Individualist bringer du kreativitet, dybde og autenticitet til alt, hvad du laver. Du har en unik evne til at se skønhed og mening i det, andre måske overser, og du bidrager med originale perspektiver og innovative løsninger. Din følsomhed og intuition gør dig til en værdifuld rådgiver og kreativ kraft. Du trives bedst i miljøer hvor din individualitet bliver værdsat, og hvor du har frihed til at udtrykke dig autentisk.',
     
@@ -1282,7 +1282,7 @@ const getDetailedDescription = (type: string): string => {
     
     'Type 8': 'Som Udfordrer bringer du styrke, beslutningskraft og beskyttende lederskab til dit team. Du har en naturlig evne til at tage kontrol i vanskelige situationer og kæmpe for det, du tror på. Din direkte kommunikationsstil og fokus på retfærdighed gør dig til en stærk advokat og leder. Du trives i miljøer hvor du kan tage ansvar og gøre en reel forskel.',
     
-    'Type 9': 'Som Fredsmager bringer du stabilitet, diplomati og en naturlig evne til at se alle sider af en sag. Du har en særlig gave til at skabe harmoni og hjælpe andre med at finde fælles fodslag. Din rolige tilstedeværelse og evne til at lytte gør dig til en værdifuld mægler og teamspiller. Du trives i støttende miljøer hvor din diplomatiske tilgang bliver værdsat.'
+    'Type 9': 'Som Fredsskaber bringer du stabilitet, diplomati og en naturlig evne til at se alle sider af en sag. Du har en særlig gave til at skabe harmoni og hjælpe andre med at finde fælles fodslag. Din rolige tilstedeværelse og evne til at lytte gør dig til en værdifuld mægler og teamspiller. Du trives i støttende miljøer hvor din diplomatiske tilgang bliver værdsat.'
   };
   
   return descriptions[type] || 'Beskrivelse ikke tilgængelig.';

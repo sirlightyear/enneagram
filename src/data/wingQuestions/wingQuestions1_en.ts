@@ -149,7 +149,7 @@ export const type1WingQuestions: WingTestData = {
       ]
     },
     w2: {
-      title: "Type 1w2 - The Helpful Perfectionist",
+      title: "Type 1w2 - The Helpful Reformer",
       description: "You combine Type 1's high standards with Type 2's caring nature. You strive to do things correctly to help and support others.",
       characteristics: [
         "uses your perfectionism to help others",

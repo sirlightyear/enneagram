@@ -136,7 +136,7 @@ export const type3WingQuestions: WingTestData = {
   ],
   descriptions: {
     w2: {
-      title: "Type 3w2 - Den Hjælpsomme Præstationsorienterede",
+      title: "Type 3w2 - Den Hjælpsomme Udretteren",
       description: "Du kombinerer Type 3's ambition med Type 2's omsorgsfulde natur. Du stræber efter succes gennem at hjælpe og inspirere andre.",
       characteristics: [
         "bruger din succes til at hjælpe og løfte andre",
@@ -147,7 +147,7 @@ export const type3WingQuestions: WingTestData = {
       ]
     },
     w4: {
-      title: "Type 3w4 - Den Autentiske Præstationsorienterede",
+      title: "Type 3w4 - Den Autentiske Udretteren",
       description: "Du kombinerer Type 3's fokus på succes med Type 4's søgen efter autenticitet og dybde. Du stræber efter meningsfulde præstationer.",
       characteristics: [
         "søger succes der afspejler din sande identitet",

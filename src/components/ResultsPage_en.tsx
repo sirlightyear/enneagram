@@ -52,7 +52,7 @@ const typeIcons: Record<string, React.ComponentType<any>> = {
 
 const typeDescriptions: Record<string, { title: string; description: string; traits: string[] }> = {
   'Type 1': {
-    title: 'The Perfectionist',
+    title: 'The Reformer',
     description: 'One is as Type 1 principled, purposeful, and self-controlled. One strives to improve everything and has high standards for oneself and others.',
     traits: ['Principled', 'Organized', 'Self-Disciplined', 'Critical', 'Idealistic']
   },
@@ -1308,7 +1308,7 @@ const TypeResultCard: React.FC<TypeResultCardProps> = ({ result, info, index, ic
 
 const getDetailedDescription = (type: string): string => {
   const descriptions: Record<string, string> = {
-    'Type 1': 'As a Perfectionist, you have a strong inner compass that guides you toward what is right and principled. You possess natural leadership qualities and an ability to see how things can be improved. Your critical sense is both a strength and a challenge—it helps you deliver high quality but can also lead to self-criticism and frustration. You thrive in structured environments where your high standards are valued, and you contribute integrity and reliable expertise to your team.',
+    'Type 1': 'As a Reformer, you have a strong inner compass that guides you toward what is right and principled. You possess natural leadership qualities and an ability to see how things can be improved. Your critical sense is both a strength and a challenge—it helps you deliver high quality but can also lead to self-criticism and frustration. You thrive in structured environments where your high standards are valued, and you contribute integrity and reliable expertise to your team.',
 
     'Type 2': 'As a Helper, you have an exceptional ability to sense the needs of others and a natural drive to support those around you. You create warm, trusting relationships and are often the person people turn to for advice and support. Your empathy and caring nature make you a valuable team player, but remember to also prioritize your own needs. You flourish in environments where your care is valued and where you can make a real difference to others.',
 

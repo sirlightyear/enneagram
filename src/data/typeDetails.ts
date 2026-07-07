@@ -218,7 +218,7 @@ movesToType: 'Type 4',
 
 'Type 3': {
   type: 'Type 3',
-  title: 'Præstationsorienterede',
+  title: 'Udretteren',
   worldview: 'Verden belønner dem, der lykkes og skaber resultater. Jeg føler mig værdifuld, når jeg opnår noget og bliver anerkendt for det.',
   focus: 'Fokuserer på mål, effektivitet og hvordan de fremstår. Vil gerne være den bedste og se godt ud, mens de gør det.',
   basicFear: 'At være uden værdi, hvis de ikke præsterer. Frygter at fejle og blive overset.',
@@ -390,7 +390,7 @@ movesToType: 'Type 6',
 
 'Type 5': {
   type: 'Type 5',
-  title: 'Undersøgeren',
+  title: 'Iagttageren',
   worldview: 'Verden kan være overvældende og krævende. Jeg har brug for at forstå tingene og beskytte min energi, før jeg engagerer mig.',
   focus: 'Fokuserer på at observere, analysere og bevare ressourcer – både mentalt og følelsesmæssigt.',
   basicFear: 'At blive invaderet, overvældet eller stå uden kompetence.',
@@ -553,7 +553,7 @@ movesToType: 'Type 6',
       difference: 'Begge er relationelle, men Type 2 søger følelsesmæssig nærhed, mens Type 6 søger stabilitet og loyalitet.'
     },
     {
-      type: 'Type 5 – Undersøgeren',
+      type: 'Type 5 – Iagttageren',
       difference: 'Begge kan være forsigtige og analyserende, men Type 5 trækker sig for at tænke, mens Type 6 søger støtte og afklaring.'
     }
   ]
@@ -630,7 +630,7 @@ movesToType: 'Type 6',
   },
   notToBeConfusedWith: [
     {
-      type: 'Type 3 – Præstationsorienterede',
+      type: 'Type 3 – Udretteren',
       difference: 'Begge er energiske og handlingsorienterede, men Type 3 søger anerkendelse og succes, mens Type 7 søger oplevelser og frihed.'
     },
     {
@@ -721,11 +721,11 @@ movesToType: 'Type 6',
       difference: 'Begge har stærke principper, men Type 1 handler ud fra indre etik og regler, mens Type 8 handler ud fra vilje og retfærdighed i det ydre.'
     },
     {
-      type: 'Type 3 – Præstationsorienterede',
+      type: 'Type 3 – Udretteren',
       difference: 'Begge er handlekraftige, men Type 3 søger anerkendelse og succes, mens Type 8 søger kontrol og indflydelse.'
     },
     {
-      type: 'Type 5 – Undersøgeren',
+      type: 'Type 5 – Iagttageren',
       difference: 'Begge kan være reserverede, men Type 5 trækker sig for at tænke, mens Type 8 trækker sig for at beskytte sig selv og bevare magten.'
     }
   ]
@@ -735,7 +735,7 @@ movesToType: 'Type 6',
 
 'Type 9': {
   type: 'Type 9',
-  title: 'Fredsmageren',
+  title: 'Fredsskaberen',
   worldview: 'Verden er bedst, når der er ro og harmoni. Jeg undgår konflikter og spændinger for at bevare freden – både indeni og omkring mig.',
   focus: 'Fokuserer på at undgå uro, skabe komfort og holde fred. Har en tendens til at tilpasse sig og undgå konfrontation.',
   basicFear: 'At miste forbindelsen til andre eller blive skubbet ud. Frygter separation og splid.',
@@ -808,7 +808,7 @@ movesToType: 'Type 6',
       difference: 'Begge er støttende og relationelle, men Type 2 søger følelsesmæssig nærhed, mens Type 9 søger ro og undgår følelsesmæssig intensitet.'
     },
     {
-      type: 'Type 5 – Undersøgeren',
+      type: 'Type 5 – Iagttageren',
       difference: 'Begge kan virke tilbagetrukne, men Type 5 trækker sig for at tænke, mens Type 9 trækker sig for at undgå uro og konflikt.'
     },
     {

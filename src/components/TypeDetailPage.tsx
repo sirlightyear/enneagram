@@ -496,7 +496,7 @@ const getWingExplanationForType = (type: string): string => {
     'Type 6': 'Som Loyalist kan du enten være mere analytisk og tilbagetrukken (påvirket af Type 5) eller mere optimistisk og eventyrlysten (påvirket af Type 7).',
     'Type 7': 'Som Entusiast kan du enten være mere loyal og ansvarlig (påvirket af Type 6) eller mere kraftfuld og assertiv (påvirket af Type 8).',
     'Type 8': 'Som Udfordrer kan du enten være mere energisk og optimistisk (påvirket af Type 7) eller mere fredelig og diplomatisk (påvirket af Type 9).',
-    'Type 9': 'Som Fredsmager kan du enten være mere kraftfuld og assertiv (påvirket af Type 8) eller mere principiel og struktureret (påvirket af Type 1).'
+    'Type 9': 'Som Fredsskaber kan du enten være mere kraftfuld og assertiv (påvirket af Type 8) eller mere principiel og struktureret (påvirket af Type 1).'
   };
   return explanations[type] || '';
 };

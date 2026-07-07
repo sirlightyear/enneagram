@@ -179,9 +179,9 @@ export const basicFearsInfo = {
   fears: {
     "Type 1": {
       icon: "🔢",
-      name: "The Perfectionist",
+      name: "The Reformer",
       fear: "Being bad, corrupt, evil, or defective.",
-      description: "The Perfectionist deeply fears being morally wrong or imperfect. To compensate, they strive to be virtuous, responsible, and ethical. They often project their fear outward by pointing out flaws in others and insisting on high standards."
+      description: "The Reformer deeply fears being morally wrong or imperfect. To compensate, they strive to be virtuous, responsible, and ethical. They often project their fear outward by pointing out flaws in others and insisting on high standards."
     },
     "Type 2": {
       icon: "💞",
@@ -243,7 +243,7 @@ export const basicDesiresInfo = {
   desires: {
     "Type 1": {
       icon: "🔢",
-      name: "The Perfectionist",
+      name: "The Reformer",
       desire: "To be good, virtuous, and 'in order' – to be morally correct and integrated.",
       dynamic: "Seeks perfection to avoid guilt and shame"
     },

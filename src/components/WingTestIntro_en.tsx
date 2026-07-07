@@ -107,7 +107,7 @@ const WingTestIntro: React.FC<WingTestIntroProps> = ({ primaryType, onStart, onS
 // Helper functions to explain wings for each type
 const getWingExplanation = (type: string): string => {
   const explanations: Record<string, string> = {
-    'Type 1': 'As a Perfectionist, you can be either more diplomatic and peaceful (influenced by Type 9) or more helpful and relationship-oriented (influenced by Type 2).',
+    'Type 1': 'As a Reformer, you can be either more diplomatic and peaceful (influenced by Type 9) or more helpful and relationship-oriented (influenced by Type 2).',
     'Type 2': 'As a Helper, you can be either more principled and structured (influenced by Type 1) or more ambitious and achievement-oriented (influenced by Type 3).',
     'Type 3': 'As an Achiever, you can be either more helpful and charming (influenced by Type 2) or more creative and individualistic (influenced by Type 4).',
     'Type 4': 'As an Individualist, you can be either more ambitious and outgoing (influenced by Type 3) or more withdrawn and analytical (influenced by Type 5).',
@@ -122,7 +122,7 @@ const getWingExplanation = (type: string): string => {
 
 const getWingNames = (type: string) => {
   const wings: Record<string, {wingA: string, wingB: string}> = {
-    'Type 1': {wingA: 'Type 1w9 - The Idealistic Peacemaker', wingB: 'Type 1w2 - The Helpful Perfectionist'},
+    'Type 1': {wingA: 'Type 1w9 - The Idealistic Peacemaker', wingB: 'Type 1w2 - The Helpful Reformer'},
     'Type 2': {wingA: 'Type 2w1 - The Principled Helper', wingB: 'Type 2w3 - The Ambitious Helper'},
     'Type 3': {wingA: 'Type 3w2 - The Charming Performer', wingB: 'Type 3w4 - The Professional Individualist'},
     'Type 4': {wingA: 'Type 4w3 - The Aristocratic Individualist', wingB: 'Type 4w5 - The Bohemian Individualist'},

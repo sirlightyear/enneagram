@@ -488,7 +488,7 @@ const getWingInfluenceDescription = (type: string, wing: string): string => {
 // Helper function to explain wings for each type
 const getWingExplanationForType = (type: string): string => {
   const explanations: Record<string, string> = {
-    'Type 1': 'As a Perfectionist, you can either be more diplomatic and peaceful (influenced by Type 9) or more helpful and relationship-oriented (influenced by Type 2).',
+    'Type 1': 'As a Reformer, you can either be more diplomatic and peaceful (influenced by Type 9) or more helpful and relationship-oriented (influenced by Type 2).',
     'Type 2': 'As a Helper, you can either be more principled and structured (influenced by Type 1) or more ambitious and achievement-oriented (influenced by Type 3).',
     'Type 3': 'As an Achiever, you can either be more helpful and charming (influenced by Type 2) or more creative and individualistic (influenced by Type 4).',
     'Type 4': 'As an Individualist, you can either be more ambitious and outgoing (influenced by Type 3) or more withdrawn and analytical (influenced by Type 5).',

@@ -227,9 +227,9 @@ export const basicFearsInfo = {
     },
     "Type 9": {
       icon: "☮️",
-      name: "Fredselskeren",
+      name: "Fredsskaberen",
       fear: "At miste forbindelse eller blive fragmenteret.",
-      description: "Fredselskeren frygter konflikt og adskillelse. De søger harmoni og undgår konfrontation, men kan miste sig selv i forsøget på at bevare freden. Deres strategi med at 'tjekke ud' kan få andre til at føle sig overset eller afvist."
+      description: "Fredsskaberen frygter konflikt og adskillelse. De søger harmoni og undgår konfrontation, men kan miste sig selv i forsøget på at bevare freden. Deres strategi med at 'tjekke ud' kan få andre til at føle sig overset eller afvist."
     }
   }
 };
@@ -291,7 +291,7 @@ export const basicDesiresInfo = {
     },
     "Type 9": {
       icon: "☮️",
-      name: "Fredselskeren",
+      name: "Fredsskaberen",
       desire: "At have indre stabilitet og fred i sindet – at føle sig forbundet.",
       dynamic: "Undgår konflikt, men mister sig selv"
     }

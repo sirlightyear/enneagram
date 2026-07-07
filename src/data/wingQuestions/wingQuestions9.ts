@@ -136,7 +136,7 @@ export const type9WingQuestions: WingTestData = {
   ],
   descriptions: {
     w8: {
-      title: "Type 9w8 - Den Kraftfulde Fredsmager",
+      title: "Type 9w8 - Den Kraftfulde Fredsskaber",
       description: "Du kombinerer Type 9's søgen efter harmoni med Type 8's styrke og handlekraft. Du skaber fred gennem rolig, men bestemt lederskab.",
       characteristics: [
         "skaber harmoni gennem stille, men bestemt lederskab",
@@ -147,7 +147,7 @@ export const type9WingQuestions: WingTestData = {
       ]
     },
     w1: {
-      title: "Type 9w1 - Den Principielle Fredsmager",
+      title: "Type 9w1 - Den Principielle Fredsskaber",
       description: "Du kombinerer Type 9's søgen efter harmoni med Type 1's fokus på det rigtige og principielle. Du skaber fred gennem struktur og integritet.",
       characteristics: [
         "skaber harmoni gennem principiel og etisk handling",
