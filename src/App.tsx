@@ -15,6 +15,7 @@ import ResultsPage_nl from './components/ResultsPage_nl';
 import ResultsPage_uk from './components/ResultsPage_uk';
 import { useEnneagramTest } from './hooks/useEnneagramTest';
 import LanguageSelector from './components/LanguageSelector';
+import PublicTypePage from './components/PublicTypePage';
 
 function App() {
   const [language, setLanguage] = React.useState(() => {
@@ -44,6 +45,8 @@ function App() {
   const [showEmailCapture, setShowEmailCapture] = React.useState(false);
   const [userEmail, setUserEmail] = React.useState('');
   const [isDebugMode, setIsDebugMode] = React.useState(false);
+  const publicTypeMatch = window.location.pathname.match(/^\/enneagram\/type-([1-9])\/?$/);
+  const publicTypeNumber = publicTypeMatch ? Number(publicTypeMatch[1]) : null;
 
   // Listen for debug mode event
   React.useEffect(() => {
@@ -112,13 +115,14 @@ function App() {
   };
 
   React.useEffect(() => {
+    if (publicTypeNumber) return;
     const params = new URLSearchParams(window.location.search);
     if (language) {
       params.set('lang', language);
     }
     const newURL = `${window.location.pathname}?${params.toString()}`;
     window.history.replaceState({}, '', newURL);
-  }, [language]);
+  }, [language, publicTypeNumber]);
 
   const handleLanguageChange = (newLanguage: string) => {
     setLanguage(newLanguage);
@@ -138,6 +142,10 @@ function App() {
       default: return <IntroPage {...props} />;
     }
   };
+
+  if (publicTypeNumber) {
+    return <PublicTypePage typeNumber={publicTypeNumber} />;
+  }
 
   if (showIntro) {
     return getIntroPage();
