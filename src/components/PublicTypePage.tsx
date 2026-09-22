@@ -30,6 +30,18 @@ const typeColors: Record<number, { accent: string; soft: string; line: string }>
   9: { accent: '#0f766e', soft: '#e1f5f0', line: '#9edbcf' },
 };
 
+const typeImages: Record<number, string> = {
+  1: '/type_1.png',
+  2: '/type_2.png',
+  3: '/type_3.png',
+  4: '/type_4.png',
+  5: '/type_5.png',
+  6: '/type_6.png',
+  7: '/type_7.png',
+  8: '/type_8.png',
+  9: '/type_9.png',
+};
+
 const getTypeFromPath = (typeNumber: number): TypeDetail => typeDetails[`Type ${typeNumber}`];
 
 const TypeLink: React.FC<{ number: number; current: number }> = ({ number, current }) => (
@@ -100,7 +112,8 @@ const PublicTypePage: React.FC<PublicTypePageProps> = ({ typeNumber }) => {
             <div className="relative flex min-h-[330px] items-center justify-center overflow-hidden rounded-[2rem]" style={{ backgroundColor: colors.soft }}>
               <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full border-[20px] opacity-20" style={{ borderColor: colors.accent }} />
               <div className="absolute -bottom-12 -left-12 h-48 w-48 rounded-full border-[16px] opacity-10" style={{ borderColor: colors.accent }} />
-              <div className="relative z-10 flex flex-col items-center text-center">
+              <img src={typeImages[typeNumber]} alt={`${detail.type} ${detail.title} illustration`} className="relative z-10 max-h-[400px] w-auto max-w-[90%] object-contain drop-shadow-2xl" onError={(e) => { const t = e.currentTarget; t.style.display = 'none'; const fallback = t.nextElementSibling as HTMLElement | null; if (fallback) fallback.style.display = 'flex'; }} />
+              <div className="relative z-10 hidden flex-col items-center text-center" style={{ display: 'none' }}>
                 <span className="text-8xl font-bold leading-none tracking-tight" style={{ color: colors.accent }}>{typeNumber}</span>
                 <span className="mt-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Enneagram</span>
               </div>
